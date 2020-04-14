@@ -54,3 +54,6 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 7. Go mode settings
 (require-package 'go-mode)
+
+;; 8. Don't blink cursor
+(blink-cursor-mode 0)
