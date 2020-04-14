@@ -51,3 +51,6 @@ re-downloaded in order to locate PACKAGE."
 ;; 6. Move everything defined for the customize system to a separate file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
+;; 7. Go mode settings
+(require-package 'go-mode)
