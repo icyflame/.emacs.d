@@ -57,3 +57,7 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
+
+;; 9. Install helm
+(require-package 'helm)
+(global-set-key (kbd "M-x") 'helm-M-x)
