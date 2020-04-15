@@ -73,3 +73,11 @@ re-downloaded in order to locate PACKAGE."
          ("\\.notes\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode))
   :init (setq markdown-command "multimarkdown"))
+
+;; 12. Install general package
+(require-package 'general)
+
+;; 13. Add key mappings for common actions using general
+(general-evil-setup)
+(general-nmap
+    "DEL" 'evil-ex-nohighlight)
