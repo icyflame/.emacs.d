@@ -61,3 +61,15 @@ re-downloaded in order to locate PACKAGE."
 ;; 9. Install helm
 (require-package 'helm)
 (global-set-key (kbd "M-x") 'helm-M-x)
+
+;; 10. Install use-package
+(require-package 'use-package)
+
+;; 11. Install markdown mode
+(require-package 'markdown-mode)
+(use-package markdown-mode
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . gfm-mode)
+         ("\\.notes\\'" . gfm-mode)
+         ("\\.markdown\\'" . gfm-mode))
+  :init (setq markdown-command "multimarkdown"))

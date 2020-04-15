@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (helm go-mode go-mode\.el solarized-theme gnu-elpa-keyring-update evil))))
+    (markdown-mode use-package helm go-mode go-mode\.el solarized-theme gnu-elpa-keyring-update evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
