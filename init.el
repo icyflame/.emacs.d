@@ -81,3 +81,6 @@ re-downloaded in order to locate PACKAGE."
 (general-evil-setup)
 (general-nmap
     "DEL" 'evil-ex-nohighlight)
+
+;; 14. Disable audible bell and all related sounds that could come from Emacs
+(setq ring-bell-function (lambda () ()))
