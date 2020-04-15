@@ -80,7 +80,12 @@ re-downloaded in order to locate PACKAGE."
 ;; 13. Add key mappings for common actions using general
 (general-evil-setup)
 (general-nmap
-    "DEL" 'evil-ex-nohighlight)
+  "DEL" 'evil-ex-nohighlight
+  "C-h" 'evil-window-left
+  "C-j" 'evil-window-down
+  "C-k" 'evil-window-up
+  "C-l" 'evil-window-right
+  )
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
