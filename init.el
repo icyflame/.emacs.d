@@ -89,3 +89,9 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
+
+;; 15. Install plantuml mode; depends on plantuml existing as an executable on
+;; the system
+(require-package 'plantuml-mode)
+(add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
+(setq plantuml-default-exec-mode 'executable)
