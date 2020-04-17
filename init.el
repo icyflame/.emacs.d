@@ -40,9 +40,11 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 4. Download fill-column-indicator.el and put it inside `~/.emacs.d/lisp`
 ;; Turn on fci-mode as a globalized minor mode for all files.
-(require 'fill-column-indicator)
-(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
-(global-fci-mode 1)
+;; TODO: Fill column indicator doesn't move when the text-scale is increased or
+;; decreased
+;; (require 'fill-column-indicator)
+;; (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
+;; (global-fci-mode 1)
 
 ;; 5. Set the color scheme to solarized dark
 (require-package 'solarized-theme)
