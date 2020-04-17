@@ -97,3 +97,12 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
 (setq plantuml-default-exec-mode 'executable)
+
+;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
+;; applications
+;; We use the characters that are typically on top of the actual characters of
+;; these keys to force the usage of shift
+(general-nmap
+  "C-+" 'text-scale-increase
+  "C-_" 'text-scale-decrease
+  )
