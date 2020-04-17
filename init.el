@@ -106,3 +106,8 @@ re-downloaded in order to locate PACKAGE."
   "C-+" 'text-scale-increase
   "C-_" 'text-scale-decrease
   )
+
+;; 17. Get helm-projectile and bind to Ctrl-P
+(require-package 'helm-projectile)
+(general-nmap
+  "C-p" 'helm-projectile)
