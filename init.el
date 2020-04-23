@@ -38,6 +38,20 @@ re-downloaded in order to locate PACKAGE."
 (require 'evil)
 (evil-mode t)
 
+;; 12. Install general package
+(require-package 'general)
+
+;; 13. Add key mappings for common actions using general
+(general-evil-setup)
+(general-nmap
+  "DEL" 'evil-ex-nohighlight
+  "C-h" 'evil-window-left
+  "C-j" 'evil-window-down
+  "C-k" 'evil-window-up
+  "C-l" 'evil-window-right
+  )
+
+
 ;; 4. Download fill-column-indicator.el and put it inside `~/.emacs.d/lisp`
 ;; Turn on fci-mode as a globalized minor mode for all files.
 ;; TODO: Fill column indicator doesn't move when the text-scale is increased or
@@ -56,6 +70,10 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 7. Go mode settings
 (require-package 'go-mode)
+(general-nmap
+  "gd" 'godef-jump
+  "gD" 'godef-describe
+  )
 
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
@@ -75,19 +93,6 @@ re-downloaded in order to locate PACKAGE."
          ("\\.notes\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode))
   :init (setq markdown-command "multimarkdown"))
-
-;; 12. Install general package
-(require-package 'general)
-
-;; 13. Add key mappings for common actions using general
-(general-evil-setup)
-(general-nmap
-  "DEL" 'evil-ex-nohighlight
-  "C-h" 'evil-window-left
-  "C-j" 'evil-window-down
-  "C-k" 'evil-window-up
-  "C-l" 'evil-window-right
-  )
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
