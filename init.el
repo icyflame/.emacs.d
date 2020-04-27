@@ -75,6 +75,11 @@ re-downloaded in order to locate PACKAGE."
   "gD" 'godef-describe
   )
 
+(use-package go-mode
+  :config
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  )
+
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
 
