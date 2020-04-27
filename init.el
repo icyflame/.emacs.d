@@ -121,3 +121,10 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'helm-projectile)
 (general-nmap
   "C-p" 'helm-projectile)
+
+;; 18. Org mode settings
+;;; Set the done time for a TODO item when moving it to DONE
+(setq org-log-done 'time)
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
