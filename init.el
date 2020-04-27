@@ -128,3 +128,10 @@ re-downloaded in order to locate PACKAGE."
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+
+;; 19. Install editorconfig
+(require-package 'editorconfig)
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
