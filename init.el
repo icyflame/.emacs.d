@@ -135,3 +135,6 @@ re-downloaded in order to locate PACKAGE."
   :ensure t
   :config
   (editorconfig-mode 1))
+
+;; 20. Set the default width of a tab character
+(setq-default tab-width 4)
