@@ -142,3 +142,9 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 20. Set the default width of a tab character
 (setq-default tab-width 4)
+
+;; 22. Install git-link and bind OGF ex command to the main function
+(require-package 'git-link)
+(use-package git-link
+  :config
+  (evil-ex-define-cmd "OGF" 'git-link))
