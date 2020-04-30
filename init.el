@@ -35,6 +35,10 @@ re-downloaded in order to locate PACKAGE."
       evil-want-C-u-scroll t
       evil-want-C-w-in-emacs-state t)
 
+(setq evil-emacs-state-modes nil)
+(setq evil-insert-state-modes nil)
+(setq evil-motion-state-modes nil)
+
 (require 'evil)
 (evil-mode t)
 
