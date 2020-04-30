@@ -81,6 +81,7 @@ re-downloaded in order to locate PACKAGE."
 ;; 9. Install helm
 (require-package 'helm)
 (global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-b") 'helm-buffers-list)
 
 ;; 10. Install use-package
 (require-package 'use-package)
