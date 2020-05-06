@@ -1,5 +1,8 @@
 (require 'package)
 
+;; Links to useful Emacs Wiki
+;; 1. https://www.emacswiki.org/emacs/EmacsKeyNotation
+
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
 
