@@ -142,8 +142,26 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'sqlformat)
 (setq sqlformat-command 'pgformatter)
 
+;; 23. SQL format highlighted region
+(general-evil-define-key 'visual sql-mode-map
+  "gq" 'sqlformat-region
+  )
+
 ;; 22. Install git-link and bind OGF ex command to the main function
 (require-package 'git-link)
 (use-package git-link
   :config
   (evil-ex-define-cmd "OGF" 'git-link))
+
+;; 24. Keybindings that use the leader key functionality in normal and visual mode
+(general-create-definer leader-def-visual-mode
+  :states '(visual)
+  :prefix ","
+  )
+(leader-def-visual-mode "c SPC" 'comment-or-uncomment-region)
+
+(general-create-definer leader-def-normal-mode
+  :states '(normal)
+  :prefix ","
+  )
+(leader-def-normal-mode "c SPC" 'comment-line)
