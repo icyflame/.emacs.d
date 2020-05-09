@@ -2,6 +2,10 @@
 
 ;; Links to useful Emacs Wiki
 ;; 1. https://www.emacswiki.org/emacs/EmacsKeyNotation
+;; 2. Temporary files: "#*#" and "*~"; Find commands:
+;; find ~ -iname "#*#"
+;; find ~ -iname "*~"
+
 
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
