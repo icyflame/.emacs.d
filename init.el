@@ -169,3 +169,7 @@ re-downloaded in order to locate PACKAGE."
   :prefix ","
   )
 (leader-def-normal-mode "c SPC" 'comment-line)
+
+;; 25. Yaml Mode
+(require-package 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
