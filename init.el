@@ -158,18 +158,23 @@ re-downloaded in order to locate PACKAGE."
   (evil-ex-define-cmd "OGF" 'git-link))
 
 ;; 24. Keybindings that use the leader key functionality in normal and visual mode
-(general-create-definer leader-def-visual-mode
-  :states '(visual)
+(general-create-definer leader-def-mode
   :prefix ","
   )
-(leader-def-visual-mode "c SPC" 'comment-or-uncomment-region)
 
-(general-create-definer leader-def-normal-mode
-  :states '(normal)
-  :prefix ","
-  )
-(leader-def-normal-mode "c SPC" 'comment-line)
+(leader-def-mode
+ :states '(visual)
+ "c SPC" 'comment-or-uncomment-region
+ )
+
+(leader-def-mode
+ :states '(normal)
+ "c SPC" 'comment-line
+ )
 
 ;; 25. Yaml Mode
 (require-package 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+;; 26. Remove trailing whitespace characters from all files
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
