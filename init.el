@@ -88,6 +88,8 @@ re-downloaded in order to locate PACKAGE."
 ;; 9. Install helm
 (require-package 'helm)
 (global-set-key (kbd "M-x") 'helm-M-x)
+;;; Bind Windows key + x to helm-M-x to avoid `kill-region`
+(global-set-key (kbd "s-x") 'helm-M-x)
 (global-set-key (kbd "M-b") 'helm-buffers-list)
 
 ;; 10. Install use-package
