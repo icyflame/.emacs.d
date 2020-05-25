@@ -190,3 +190,9 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 26. Remove trailing whitespace characters from all files
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; 27. Include powerline
+(require-package 'powerline)
+(use-package powerline
+    :config
+    (powerline-vim-theme))
