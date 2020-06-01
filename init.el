@@ -35,52 +35,82 @@ re-downloaded in order to locate PACKAGE."
 
 (package-initialize)
 
+;; 10. Install use-package
+(require-package 'use-package)
+
 ;; 1. Don't show splash screen at start-up
 (setq inhibit-splash-screen t)
 
+;; 26. Remove trailing whitespace characters from all files
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; 3. Evil mode across most of Emacs
 (require-package 'evil)
-
-(setq evil-search-module 'evil-search
-      evil-want-C-u-scroll t
-      evil-want-C-w-in-emacs-state t)
-
-(setq evil-emacs-state-modes nil)
-(setq evil-insert-state-modes nil)
-(setq evil-motion-state-modes nil)
-
-(require 'evil)
-(evil-mode)
+(use-package evil
+  :init
+  (setq evil-search-module 'evil-search
+		evil-want-C-u-scroll t
+		evil-want-C-w-in-emacs-state t)
+  ;; Normal mode is the default init mode
+  (setq evil-emacs-state-modes nil)
+  (setq evil-insert-state-modes nil)
+  (setq evil-motion-state-modes nil)
+  :config
+  (evil-mode)
+  )
 
 ;; 12. Install general package
 (require-package 'general)
+(use-package general
+  :config
+  ;; 13. Add key mappings for common actions using general
+  (general-evil-setup)
+  (general-nmap
+	"DEL" 'evil-ex-nohighlight
+	"C-h" 'evil-window-left
+	"C-j" 'evil-window-down
+	"C-k" 'evil-window-up
+	"C-l" 'evil-window-right
+	)
+  ;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
+  ;; applications
+  ;; We use the characters that are typically on top of the actual characters of
+  ;; these keys to force the usage of shift
+  (general-nmap
+	"C-+" 'text-scale-increase
+	"C-_" 'text-scale-decrease
+	)
 
-;; 13. Add key mappings for common actions using general
-(general-evil-setup)
-(general-nmap
-  "DEL" 'evil-ex-nohighlight
-  "C-h" 'evil-window-left
-  "C-j" 'evil-window-down
-  "C-k" 'evil-window-up
-  "C-l" 'evil-window-right
+  ;; 24. Keybindings that use the leader key functionality in normal and visual mode
+  (general-create-definer leader-def-mode
+	:prefix ","
+	)
+
+  (leader-def-mode
+	:states '(visual)
+	"c SPC" 'comment-or-uncomment-region
+	)
+
+  (leader-def-mode
+	:states '(normal)
+	"c SPC" 'comment-line
+	)
   )
 
 ;; 5. Set the color scheme to solarized dark
 (require-package 'solarized-theme)
-(load-theme 'solarized-dark t)
+(use-package solarized-theme
+  :init
+  (load-theme 'solarized-dark t)
+  )
 
 ;; 6. Move everything defined for the customize system to a separate file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-;; 10. Install use-package
-(require-package 'use-package)
-
 ;; 7. Go mode settings
-(require-package 'go-mode)
-
 (defun evil-set-jump-args (&rest ns) (evil-set-jump))
-
+(require-package 'go-mode)
 (use-package go-mode
   :config
   (setq gofmt-command '"goimports")
@@ -97,11 +127,15 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 9. Install helm
 (require-package 'helm)
-(global-set-key (kbd "M-x") 'helm-M-x)
-;;; Bind Windows key + x to helm-M-x to avoid `kill-region`
-(global-set-key (kbd "s-x") 'helm-M-x)
-(global-set-key (kbd "M-b") 'helm-buffers-list)
-(global-set-key (kbd "s-b") 'helm-buffers-list)
+(use-package helm
+  :config
+
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "s-x") 'helm-M-x)
+
+  (global-set-key (kbd "M-b") 'helm-buffers-list)
+  (global-set-key (kbd "s-b") 'helm-buffers-list)
+  )
 
 ;; 11. Install markdown mode
 (require-package 'markdown-mode)
@@ -124,22 +158,20 @@ re-downloaded in order to locate PACKAGE."
 ;; 15. Install plantuml mode; depends on plantuml existing as an executable on
 ;; the system
 (require-package 'plantuml-mode)
-(add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
-(setq plantuml-default-exec-mode 'executable)
-
-;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
-;; applications
-;; We use the characters that are typically on top of the actual characters of
-;; these keys to force the usage of shift
-(general-nmap
-  "C-+" 'text-scale-increase
-  "C-_" 'text-scale-decrease
+(use-package plantuml-mode
+  :mode
+  (("\\.puml\\'" . plantuml-mode))
+  :config
+  (setq plantuml-default-exec-mode 'executable)
   )
 
 ;; 17. Get helm-projectile and bind to Ctrl-P
 (require-package 'helm-projectile)
-(general-nmap
-  "C-p" 'helm-projectile)
+(use-package helm-projectile
+  :config
+  (general-nmap
+	"C-p" 'helm-projectile)
+  )
 
 ;; 18. Org mode settings
 ;;; Set the done time for a TODO item when moving it to DONE
@@ -160,11 +192,14 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 21. Format SQL inside SQL mode using pg_format
 (require-package 'sqlformat)
-(setq sqlformat-command 'pgformatter)
+(use-package sqlformat
+  :config
+  (setq sqlformat-command 'pgformatter)
 
-;; 23. SQL format highlighted region
-(general-evil-define-key 'visual sql-mode-map
-  "gq" 'sqlformat-region
+  ;; 23. SQL format highlighted region
+  (general-evil-define-key 'visual sql-mode-map
+	"gq" 'sqlformat-region
+	)
   )
 
 ;; 22. Install git-link and bind OGF ex command to the main function
@@ -173,27 +208,12 @@ re-downloaded in order to locate PACKAGE."
   :config
   (evil-ex-define-cmd "OGF" 'git-link))
 
-;; 24. Keybindings that use the leader key functionality in normal and visual mode
-(general-create-definer leader-def-mode
-  :prefix ","
-  )
-
-(leader-def-mode
- :states '(visual)
- "c SPC" 'comment-or-uncomment-region
- )
-
-(leader-def-mode
- :states '(normal)
- "c SPC" 'comment-line
- )
-
 ;; 25. Yaml Mode
 (require-package 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-
-;; 26. Remove trailing whitespace characters from all files
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(use-package yaml-mode
+  :mode
+  ("\\.yml\\'" . yaml-mode)
+  )
 
 ;; 27. Include powerline
 (require-package 'powerline)
