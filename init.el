@@ -80,15 +80,18 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 7. Go mode settings
 (require-package 'go-mode)
-(general-nmap
-  "gd" 'godef-jump
-  "gD" 'godef-describe
-  )
+
+(defun evil-set-jump-args (&rest ns) (evil-set-jump))
 
 (use-package go-mode
   :config
   (setq gofmt-command '"goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)
+  (advice-add 'godef-jump :before #'evil-set-jump-args)
+  (general-nmap
+	"gd" 'godef-jump
+	"C-]" 'godef-jump
+	)
   )
 
 ;; 8. Don't blink cursor
