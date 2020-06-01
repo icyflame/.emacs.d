@@ -38,11 +38,6 @@ re-downloaded in order to locate PACKAGE."
 ;; 1. Don't show splash screen at start-up
 (setq inhibit-splash-screen t)
 
-;; 2. Automatically wrap lines at 80 columns and auto-fill at 80 columns inside
-;; all major modes
-;; (setq-default fill-column 80)
-;; (setq-default auto-fill-function 'do-auto-fill)
-
 ;; 3. Evil mode across most of Emacs
 (require-package 'evil)
 
@@ -108,17 +103,20 @@ re-downloaded in order to locate PACKAGE."
 (global-set-key (kbd "M-b") 'helm-buffers-list)
 (global-set-key (kbd "s-b") 'helm-buffers-list)
 
-;; 10. Install use-package
-(require-package 'use-package)
-
 ;; 11. Install markdown mode
 (require-package 'markdown-mode)
 (use-package markdown-mode
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . gfm-mode)
-         ("\\.notes\\'" . gfm-mode)
-         ("\\.markdown\\'" . gfm-mode))
-  :init (setq markdown-command "multimarkdown"))
+  :mode
+  (("README\\.md\\'" . gfm-mode)
+   ("\\.md\\'" . gfm-mode)
+   ("\\.notes\\'" . gfm-mode)
+   ("\\.markdown\\'" . gfm-mode))
+  :init
+  (add-hook 'markdown-mode-hook #'auto-fill-mode)
+  (setq markdown-command "multimarkdown")
+  (setq markdown-open-command "firefox")
+  :config
+  (setq-default fill-column 100))
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
