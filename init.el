@@ -40,8 +40,8 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 2. Automatically wrap lines at 80 columns and auto-fill at 80 columns inside
 ;; all major modes
-(setq-default fill-column 80)
-(setq-default auto-fill-function 'do-auto-fill)
+;; (setq-default fill-column 80)
+;; (setq-default auto-fill-function 'do-auto-fill)
 
 ;; 3. Evil mode across most of Emacs
 (require-package 'evil)
