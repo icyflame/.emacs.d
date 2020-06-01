@@ -55,7 +55,7 @@ re-downloaded in order to locate PACKAGE."
 (setq evil-motion-state-modes nil)
 
 (require 'evil)
-(evil-mode t)
+(evil-mode)
 
 ;; 12. Install general package
 (require-package 'general)
@@ -77,6 +77,9 @@ re-downloaded in order to locate PACKAGE."
 ;; 6. Move everything defined for the customize system to a separate file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
+;; 10. Install use-package
+(require-package 'use-package)
 
 ;; 7. Go mode settings
 (require-package 'go-mode)
