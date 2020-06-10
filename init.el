@@ -117,6 +117,7 @@ re-downloaded in order to locate PACKAGE."
   (add-hook 'before-save-hook 'gofmt-before-save)
   (advice-add 'godef-jump :before #'evil-set-jump-args)
   (general-nmap
+	:keymaps 'go-mode-map
 	"gd" 'godef-jump
 	"C-]" 'godef-jump
 	)
