@@ -165,13 +165,16 @@ re-downloaded in order to locate PACKAGE."
   (setq plantuml-default-exec-mode 'executable)
   )
 
+;; 31. helm-ag
+(require-package 'helm-ag)
+
 ;; 17. Get helm-projectile and bind to Ctrl-P
 (require-package 'helm-projectile)
 (use-package helm-projectile
   :config
   (general-nmap
 	"C-p" 'helm-projectile)
-  )
+  (evil-ex-define-cmd "Ag" 'helm-projectile-ag))
 
 ;; 18. Org mode settings
 ;;; Set the done time for a TODO item when moving it to DONE
