@@ -220,3 +220,16 @@ re-downloaded in order to locate PACKAGE."
 (use-package powerline
     :config
     (powerline-vim-theme))
+
+;; 28. PHP mode
+(require-package 'php-mode)
+(use-package php-mode)
+
+;; 29. JSON mode
+(require-package 'json-mode)
+
+;; 30. ggtags
+(require-package 'ggtags)
+
+;; 32. Magit
+(require-package 'magit)
