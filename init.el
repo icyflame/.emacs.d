@@ -141,6 +141,8 @@ re-downloaded in order to locate PACKAGE."
 
   (global-set-key (kbd "M-b") 'helm-buffers-list)
   (global-set-key (kbd "s-b") 'helm-buffers-list)
+
+  (helm-mode t)
   )
 
 ;; 11. Install markdown mode
