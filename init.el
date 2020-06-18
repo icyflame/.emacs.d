@@ -120,6 +120,7 @@ re-downloaded in order to locate PACKAGE."
   :config
   (setq gofmt-command '"goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)
+  (add-hook 'go-mode-hook 'lsp-deferred)
   (advice-add 'godef-jump :before #'evil-set-jump-args)
   (general-nmap
 	:keymaps 'go-mode-map
@@ -141,6 +142,8 @@ re-downloaded in order to locate PACKAGE."
 
   (global-set-key (kbd "M-b") 'helm-buffers-list)
   (global-set-key (kbd "s-b") 'helm-buffers-list)
+
+  (evil-ex-define-cmd ":" 'helm-locate)
 
   (helm-mode t)
   )
@@ -244,3 +247,9 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 32. Magit
 (require-package 'magit)
+
+;; 33. Comp(lete) any(thing)
+(require-package 'lsp-mode)
+
+(require-package 'company)
+(add-hook 'after-init-hook 'global-company-mode)
