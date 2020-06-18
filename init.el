@@ -95,6 +95,11 @@ re-downloaded in order to locate PACKAGE."
 	:states '(normal)
 	"c SPC" 'comment-line
 	)
+
+  (leader-def-mode
+   :states '(normal visual)
+   "w" 'evil-write
+   )
   )
 
 ;; 5. Set the color scheme to solarized dark
