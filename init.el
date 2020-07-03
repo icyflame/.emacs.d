@@ -120,7 +120,8 @@ re-downloaded in order to locate PACKAGE."
   :config
   (setq gofmt-command '"goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (add-hook 'go-mode-hook 'lsp-deferred)
+  ;; gopls does not seem to work properly; the loading icon at the bottom is annoying
+  ;; (add-hook 'go-mode-hook 'lsp-deferred)
   (advice-add 'godef-jump :before #'evil-set-jump-args)
   (general-nmap
 	:keymaps 'go-mode-map
@@ -144,9 +145,12 @@ re-downloaded in order to locate PACKAGE."
   (global-set-key (kbd "s-b") 'helm-buffers-list)
 
   (evil-ex-define-cmd ":" 'helm-locate)
+  (evil-ex-define-cmd "X" 'helm-M-x)
 
   (helm-mode t)
   )
+
+(setq-default fill-column 100)
 
 ;; 11. Install markdown mode
 (require-package 'markdown-mode)
@@ -159,9 +163,7 @@ re-downloaded in order to locate PACKAGE."
   :init
   (add-hook 'markdown-mode-hook #'auto-fill-mode)
   (setq markdown-command "multimarkdown")
-  (setq markdown-open-command "firefox")
-  :config
-  (setq-default fill-column 100))
+  (setq markdown-open-command "firefox"))
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
@@ -193,6 +195,11 @@ re-downloaded in order to locate PACKAGE."
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+
+(add-hook 'org-mode-hook #'auto-fill-mode)
+(general-evil-define-key '(visual normal) org-mode-map
+  "C-c e" 'org-table-edit-formulas
+  )
 
 ;; 19. Install editorconfig
 (require-package 'editorconfig)
@@ -253,3 +260,6 @@ re-downloaded in order to locate PACKAGE."
 
 (require-package 'company)
 (add-hook 'after-init-hook 'global-company-mode)
+(require-package 'company-go)
+(add-hook 'go-mode-hook (lambda ()
+                          (set (make-local-variable 'company-backends) '(company-go))))
