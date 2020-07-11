@@ -33,6 +33,13 @@ re-downloaded in order to locate PACKAGE."
         (package-refresh-contents)
         (require-package package min-version t)))))
 
+;;; similar to require-package but using package-install-fil instead
+(defun require-package-file (package file)
+  "Install a package from the given location"
+  (if (package-installed-p package)
+	  t
+	(package-install-file file)))
+
 (package-initialize)
 
 ;; 10. Install use-package
@@ -273,7 +280,7 @@ re-downloaded in order to locate PACKAGE."
 ;; Don't use this until the `title/titles` thing has been cleaned up
 ;; (require-package 'org-roam)
 
-(package-install-file "~/.emacs.d/lisp/org-roam")
+(require-package-file 'org-roam "~/.emacs.d/lisp/org-roam")
 (use-package org-roam
   :hook
   (after-init . org-roam-mode)
