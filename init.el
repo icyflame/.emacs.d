@@ -285,7 +285,7 @@ re-downloaded in order to locate PACKAGE."
   :hook
   (after-init . org-roam-mode)
   :custom
-  (org-roam-directory "/tmp/org-roam-testing-1")
+  (org-roam-directory "~/personal/notes/org-roam")
 
   :config
   (setq org-roam-capture-templates
@@ -294,6 +294,7 @@ re-downloaded in order to locate PACKAGE."
 		   :file-name "%<%Y-%m-%d>-${slug}"
 		   :head "#+title: ${title}
 #+author:
+#+roam_key:
 
 ** Related
 
