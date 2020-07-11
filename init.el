@@ -96,19 +96,14 @@ re-downloaded in order to locate PACKAGE."
 	)
 
   (leader-def-mode
-	:states '(visual)
-	"c SPC" 'comment-or-uncomment-region
-	)
-
-  (leader-def-mode
 	:states '(normal)
 	"c SPC" 'comment-line
 	)
 
   (leader-def-mode
-   :states '(normal visual)
-   "w" 'evil-write
-   )
+	:states '(normal visual)
+	"w" 'evil-write
+	)
   )
 
 ;; 5. Set the color scheme to solarized dark
@@ -272,3 +267,45 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'company-go)
 (add-hook 'go-mode-hook (lambda ()
                           (set (make-local-variable 'company-backends) '(company-go))))
+
+;; 34. Org Roam
+
+;; Don't use this until the `title/titles` thing has been cleaned up
+;; (require-package 'org-roam)
+
+(package-install-file "~/.emacs.d/lisp/org-roam")
+(use-package org-roam
+  :hook
+  (after-init . org-roam-mode)
+  :custom
+  (org-roam-directory "/tmp/org-roam-testing-1")
+
+  :config
+  (setq org-roam-capture-templates
+		'(("d" "default"
+		   plain #'org-roam-capture--get-point "%?"
+		   :file-name "%<%Y-%m-%d>-${slug}"
+		   :head "#+title: ${title}
+#+author:
+
+** Related
+
+- "
+		   :unnarrowed t
+		   )))
+
+  ;; (push ("d" "default" plain (function org-roam--capture-get-point)
+  ;; 		 "%?"
+  ;; 		 :file-name "%<%Y%m%d%H%M%S>-${slug}"
+  ;; 		 :head "#+title: ${title}\n"
+  ;; 		 :unnarrowed t) 'org-capture-templates)
+
+  ;; Think about moving these to use general.el later
+  ;; ex commands might be better, if these keybindings are not working well
+  :bind (:map org-roam-mode-map
+			  (("C-c n l" . org-roam)
+			   ("C-c n f" . org-roam-find-file)
+			   ("C-c n g" . org-roam-graph-show))
+			  :map org-mode-map
+			  (("C-c n i" . org-roam-insert))
+			  (("C-c n I" . org-roam-insert-immediate))))
