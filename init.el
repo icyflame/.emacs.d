@@ -296,6 +296,10 @@ re-downloaded in order to locate PACKAGE."
 #+author:
 #+roam_key:
 
+** Source
+
+
+
 ** Related
 
 - "
@@ -317,3 +321,22 @@ re-downloaded in order to locate PACKAGE."
 			  :map org-mode-map
 			  (("C-c n i" . org-roam-insert))
 			  (("C-c n I" . org-roam-insert-immediate))))
+
+(require-package 'org-ref)
+(use-package org-ref
+  :config
+  ;; Enable downloading PDFs / getting bibtex entries using DOI
+  (require 'doi-utils)
+  (require 'org-ref-arxiv)
+
+  (setq reftex-default-bibliography '("~/personal/notes/bibliography/references.bib"))
+  ;; Required for org-ref
+  (setq org-ref-bibliography-notes "~/personal/notes/bibliography/notes.org"
+		org-ref-default-bibliography '("~/personal/notes/bibliography/references.bib")
+		org-ref-pdf-directory "~/personal/notes/bibliography/bibtex-pdfs/")
+
+  ;; Required for helm-bibtex
+  (setq bibtex-completion-bibliography "~/personal/notes/bibliography/references.bib"
+		bibtex-completion-library-path "~/personal/notes/bibliography/bibtex-pdfs"
+		bibtex-completion-notes-path "~/personal/notes/bibliography/helm-bibtex-notes")
+  )
