@@ -81,6 +81,15 @@ re-downloaded in order to locate PACKAGE."
 	"C-_" 'text-scale-decrease
 	)
 
+  (general-create-definer ctrl-keybindings
+	:states '(normal visual insert)
+	)
+
+  ;; TODO: This should be active only in the org mode key map
+  (ctrl-keybindings
+   "C-c l c" 'org-cycle-list-bullet
+   )
+
   ;; 24. Keybindings that use the leader key functionality in normal and visual mode
   (general-create-definer leader-def-mode
 	:prefix ","
