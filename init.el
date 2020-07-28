@@ -96,10 +96,16 @@ re-downloaded in order to locate PACKAGE."
 	:states '(normal visual insert)
 	)
 
-  ;; TODO: This should be active only in the org mode key map
   (ctrl-keybindings
+	:keymaps '(org-mode-map)
    "C-c l c" 'org-cycle-list-bullet
+   "C-c e" 'org-table-edit-formulas
    )
+
+  ;; 23. SQL format highlighted region
+  (general-evil-define-key 'visual sql-mode-map
+	"gq" 'run-sqlbeautify
+	)
 
   ;; 24. Keybindings that use the leader key functionality in normal and visual mode
   (general-create-definer leader-def-mode
@@ -212,9 +218,6 @@ re-downloaded in order to locate PACKAGE."
       '((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
 
 (add-hook 'org-mode-hook #'auto-fill-mode)
-(general-evil-define-key '(visual normal) org-mode-map
-  "C-c e" 'org-table-edit-formulas
-  )
 
 ;; 19. Install editorconfig
 (require-package 'editorconfig)
