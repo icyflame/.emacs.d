@@ -42,6 +42,10 @@ re-downloaded in order to locate PACKAGE."
 
 (package-initialize)
 
+(require-package 'init-loader)
+(setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
+(init-loader-load "~/.emacs.d/imported-confs")
+
 ;; 10. Install use-package
 (require-package 'use-package)
 
@@ -221,18 +225,6 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 20. Set the default width of a tab character
 (setq-default tab-width 4)
-
-;; 21. Format SQL inside SQL mode using pg_format
-(require-package 'sqlformat)
-(use-package sqlformat
-  :config
-  (setq sqlformat-command 'pgformatter)
-
-  ;; 23. SQL format highlighted region
-  (general-evil-define-key 'visual sql-mode-map
-	"gq" 'sqlformat-region
-	)
-  )
 
 ;; 22. Install git-link and bind OGF ex command to the main function
 (require-package 'git-link)
