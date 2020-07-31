@@ -196,7 +196,12 @@ re-downloaded in order to locate PACKAGE."
   :mode
   (("\\.puml\\'" . plantuml-mode))
   :config
-  (setq plantuml-default-exec-mode 'executable)
+  (setq plantuml-jar-path "/usr/local/bin/plantuml.jar")
+  (setq plantuml-default-exec-mode 'jar)
+
+  (setq org-plantuml-jar-path (expand-file-name "/usr/local/bin/plantuml.jar"))
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
   )
 
 ;; 31. helm-ag
