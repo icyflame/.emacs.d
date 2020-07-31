@@ -251,11 +251,7 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'powerline)
 (use-package powerline
     :config
-    (powerline-vim-theme))
-
-;; 28. PHP mode
-(require-package 'php-mode)
-(use-package php-mode)
+    (powerline-center-evil-theme))
 
 ;; 29. JSON mode
 (require-package 'json-mode)
