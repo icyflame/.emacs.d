@@ -259,12 +259,23 @@ re-downloaded in order to locate PACKAGE."
 ;; 30. ggtags
 (require-package 'ggtags)
 
+;; 28. PHP mode
+(require-package 'php-mode)
+(use-package php-mode
+  :config
+  (general-nmap
+	:keymaps 'php-mode-map
+	"gd" 'ggtags-find-definition
+	"gD" 'ggtags-find-tag-dwim
+	))
+
 ;; 32. Magit
 (require-package 'magit)
 
-;; 33. Comp(lete) any(thing)
+;; Language server protocol client
 (require-package 'lsp-mode)
 
+;; 33. Comp(lete) any(thing)
 (require-package 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (require-package 'company-go)
