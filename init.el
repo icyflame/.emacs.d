@@ -92,6 +92,13 @@ re-downloaded in order to locate PACKAGE."
 	"C-_" 'text-scale-decrease
 	)
 
+  (general-nmap
+	:keymaps 'lsp-mode-map
+	"gd" 'lsp-find-definition
+	"C-]" 'lsp-find-definition
+	"gt" 'lsp-find-type-definition
+	)
+
   (general-create-definer ctrl-keybindings
 	:states '(normal visual insert)
 	)
@@ -135,21 +142,8 @@ re-downloaded in order to locate PACKAGE."
 (load custom-file)
 
 ;; 7. Go mode settings
-(defun evil-set-jump-args (&rest ns) (evil-set-jump))
+;; (defun evil-set-jump-args (&rest ns) (evil-set-jump))
 (require-package 'go-mode)
-(use-package go-mode
-  :config
-  (setq gofmt-command '"goimports")
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  ;; gopls does not seem to work properly; the loading icon at the bottom is annoying
-  ;; (add-hook 'go-mode-hook 'lsp-deferred)
-  (advice-add 'godef-jump :before #'evil-set-jump-args)
-  (general-nmap
-	:keymaps 'go-mode-map
-	"gd" 'godef-jump
-	"C-]" 'godef-jump
-	)
-  )
 
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
@@ -185,6 +179,14 @@ re-downloaded in order to locate PACKAGE."
   (add-hook 'markdown-mode-hook #'auto-fill-mode)
   (setq markdown-command "multimarkdown")
   (setq markdown-open-command "firefox"))
+
+;; 33. Comp(lete) any(thing)
+(require-package 'lsp-mode)
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (go-mode . lsp-deferred)
+  )
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
@@ -274,13 +276,20 @@ re-downloaded in order to locate PACKAGE."
 
 ;; Language server protocol client
 (require-package 'lsp-mode)
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;; 33. Comp(lete) any(thing)
 (require-package 'company)
 (add-hook 'after-init-hook 'global-company-mode)
-(require-package 'company-go)
-(add-hook 'go-mode-hook (lambda ()
-                          (set (make-local-variable 'company-backends) '(company-go))))
+
+;; (require-package 'company-go)
+;; (add-hook 'go-mode-hook (lambda ()
+;; (set (make-local-variable 'company-backends) '(company-go))))
 
 ;; 34. Org Roam
 
