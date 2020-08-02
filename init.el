@@ -92,13 +92,6 @@ re-downloaded in order to locate PACKAGE."
 	"C-_" 'text-scale-decrease
 	)
 
-  (general-nmap
-	:keymaps 'lsp-mode-map
-	"gd" 'lsp-find-definition
-	"C-]" 'lsp-find-definition
-	"gt" 'lsp-find-type-definition
-	)
-
   (general-create-definer ctrl-keybindings
 	:states '(normal visual insert)
 	)
@@ -204,6 +197,13 @@ re-downloaded in order to locate PACKAGE."
   :ensure t
   :commands (lsp lsp-deferred)
   :hook (go-mode . lsp-deferred)
+  :config
+  (general-nmap
+	"g t" 'lsp-goto-type-definition
+	"g d" 'lsp-find-definition
+	"C-]" 'lsp-find-definition
+	)
+
   )
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
