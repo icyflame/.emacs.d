@@ -145,6 +145,18 @@ re-downloaded in order to locate PACKAGE."
 ;; (defun evil-set-jump-args (&rest ns) (evil-set-jump))
 (require-package 'go-mode)
 
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+(use-package go-mode
+  :config
+  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
+
+(require-package 'gotest)
+
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
 
@@ -276,13 +288,6 @@ re-downloaded in order to locate PACKAGE."
 
 ;; Language server protocol client
 (require-package 'lsp-mode)
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-
 ;; 33. Comp(lete) any(thing)
 (require-package 'company)
 (add-hook 'after-init-hook 'global-company-mode)
