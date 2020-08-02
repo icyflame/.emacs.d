@@ -125,6 +125,12 @@ re-downloaded in order to locate PACKAGE."
 	)
 
   (leader-def-mode
+	:states '(visual)
+	"c SPC" 'comment-or-uncomment-region
+	"c s" 'comment-or-uncomment-region
+	)
+
+  (leader-def-mode
 	:states '(normal visual)
 	"w" 'evil-write
 	)
