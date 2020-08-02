@@ -7,13 +7,6 @@
 ;; find ~ -iname "*~"
 
 ;; Ongoing issues
-;; 1. evil-jump-backward doesn't go back to exactly the location that we jumped
-;; from; function seems to suggest that there is something called a jump
-;; list. Try: going to a word, saving the file :w, press `*`, press 2w, now jump
-;; using `gd` (golang go def), after this is complete, type `ctrl-o` => does NOT
-;; go back to the location after 2w, instead it goes back to the location right
-;; after saving the file (??)
-
 
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
