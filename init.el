@@ -267,8 +267,8 @@ re-downloaded in order to locate PACKAGE."
   :config
   (general-nmap
 	:keymaps 'php-mode-map
-	"gd" 'ggtags-find-definition
-	"gD" 'ggtags-find-tag-dwim
+	"g d" 'ggtags-find-definition
+	"g D" 'ggtags-find-tag-dwim
 	))
 
 ;; 32. Magit
