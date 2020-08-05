@@ -228,7 +228,8 @@ re-downloaded in order to locate PACKAGE."
 (use-package helm-projectile
   :config
   (general-nmap
-	"C-p" 'helm-projectile)
+	"C-p" 'helm-projectile
+	"C-b" 'helm-projectile-switch-to-buffer)
   (evil-ex-define-cmd "Ag" 'helm-projectile-ag))
 
 ;; 18. Org mode settings
