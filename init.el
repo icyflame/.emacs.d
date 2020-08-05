@@ -5,6 +5,8 @@
 ;; 2. Temporary files: "#*#" and "*~"; Find commands:
 ;; find ~ -iname "#*#"
 ;; find ~ -iname "*~"
+;; 3. Evil EX commands list: Display a list of ex commands with the mapped functions
+;; M-x describe-variable evil-ex-commands RET
 
 ;; Ongoing issues
 
