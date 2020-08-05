@@ -61,6 +61,7 @@ re-downloaded in order to locate PACKAGE."
   (setq evil-motion-state-modes nil)
   :config
   (evil-mode)
+  (evil-ex-define-cmd "q" 'kill-this-buffer)
   )
 
 ;; 12. Install general package
