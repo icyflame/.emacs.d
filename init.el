@@ -295,6 +295,8 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 
+(require-package 'protobuf-mode)
+
 ;; (require-package 'company-go)
 ;; (add-hook 'go-mode-hook (lambda ()
 ;; (set (make-local-variable 'company-backends) '(company-go))))
