@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: append
+# key: ap=
+# --
+$1 = append($1, $2)
+$0

@@ -295,7 +295,18 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 
+;; 34. Protobuf mode
 (require-package 'protobuf-mode)
+
+;; 35. Yasnippets
+(require-package 'yasnippet)
+(use-package yasnippet
+  :config
+  ;; (setq yas-snippet-dirs
+  ;; 		'("~/.emacs.d/snippets/yasnippet-snippets/snippets/go-mode"))
+  (yas-reload-all)
+  (add-hook 'go-mode-hook #'yas-minor-mode)
+  )
 
 ;; (require-package 'company-go)
 ;; (add-hook 'go-mode-hook (lambda ()

@@ -1,0 +1,32 @@
+# -*- mode: snippet -*-
+# name: test
+# key: test
+# --
+func Test$1(t *testing.T) {
+	t.Parallel()
+
+	type testCase struct {
+		$0input string
+		want  string
+	}
+
+	testCases := map[string]testCase{
+		"base case": {
+			input: "Test 1",
+			want:  "Test 2",
+		},
+	}
+
+	for name, tc := range testCases {
+		name, tc := name, tc
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			got := $1(tc.input)
+
+			if diff := pretty.Compare(got, tc.want); diff != "" {
+				t.Errorf("unexpected (-got +want): \n%s", diff)
+			}
+		})
+	}
+
+}
