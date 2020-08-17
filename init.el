@@ -194,6 +194,7 @@ re-downloaded in order to locate PACKAGE."
   :commands (lsp lsp-deferred)
   :hook (go-mode . lsp-deferred)
   :config
+  (setq lsp-enable-file-watchers nil)
   (general-nmap
 	"g t" 'lsp-goto-type-definition
 	"g d" 'lsp-find-definition
