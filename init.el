@@ -316,8 +316,6 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'yasnippet)
 (use-package yasnippet
   :config
-  ;; (setq yas-snippet-dirs
-  ;; 		'("~/.emacs.d/snippets/yasnippet-snippets/snippets/go-mode"))
   (yas-reload-all)
   (add-hook 'go-mode-hook #'yas-minor-mode)
   (add-hook 'go-mode-hook #'company-mode)
