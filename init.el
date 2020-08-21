@@ -98,6 +98,9 @@ re-downloaded in order to locate PACKAGE."
    "C-c e" 'org-table-edit-formulas
    "C-c t" 'org-show-todo-tree
    "C-a" 'org-agenda
+   ;; Kill this buffer for these key bindings too
+   "M-k" 'kill-this-buffer
+   "s-k" 'kill-this-buffer
    )
 
   ;; 23. SQL format highlighted region
