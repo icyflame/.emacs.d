@@ -221,8 +221,7 @@ re-downloaded in order to locate PACKAGE."
   (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
   )
 
-;; 31. helm-ag
-(require-package 'helm-ag)
+(require-package 'helm-rg)
 
 ;; 17. Get helm-projectile and bind to Ctrl-P
 (require-package 'helm-projectile)
@@ -231,7 +230,8 @@ re-downloaded in order to locate PACKAGE."
   (general-nmap
 	"C-p" 'helm-projectile
 	"C-b" 'helm-projectile-switch-to-buffer)
-  (evil-ex-define-cmd "Ag" 'helm-projectile-ag))
+  (evil-ex-define-cmd "Ag" 'helm-projectile-rg)
+  (evil-ex-define-cmd "Rg" 'helm-projectile-rg))
 
 ;; 18. Org mode settings
 ;;; Set the done time for a TODO item when moving it to DONE
