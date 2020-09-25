@@ -243,6 +243,8 @@ re-downloaded in order to locate PACKAGE."
       '((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
 
 (add-hook 'org-mode-hook #'auto-fill-mode)
+(add-hook 'org-mode-hook #'flyspell-mode)
+(setq org-agenda-files '("~/work/notes/Monthly/Current.org"))
 
 ;; 19. Install editorconfig
 (require-package 'editorconfig)
@@ -309,6 +311,7 @@ re-downloaded in order to locate PACKAGE."
   ;; 		'("~/.emacs.d/snippets/yasnippet-snippets/snippets/go-mode"))
   (yas-reload-all)
   (add-hook 'go-mode-hook #'yas-minor-mode)
+  (add-hook 'go-mode-hook #'company-mode)
   )
 
 ;; (require-package 'company-go)
