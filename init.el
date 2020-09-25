@@ -298,7 +298,11 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'lsp-mode)
 ;; 33. Comp(lete) any(thing)
 (require-package 'company)
-(add-hook 'after-init-hook 'global-company-mode)
+;; Company mode is a standard completion package that works well with lsp-mode.
+(use-package company
+  :ensure t
+  :config
+  (setq company-minimum-prefix-length 3))
 
 ;; 34. Protobuf mode
 (require-package 'protobuf-mode)
