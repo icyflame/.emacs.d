@@ -202,7 +202,9 @@ re-downloaded in order to locate PACKAGE."
 	"g d" 'lsp-find-definition
 	"C-]" 'lsp-find-definition
 	)
-
+  (lsp-register-custom-settings
+   '(("gopls.completeUnimported" t t)
+	 ("gopls.staticcheck" t t)))
   )
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
