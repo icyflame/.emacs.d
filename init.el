@@ -314,6 +314,8 @@ re-downloaded in order to locate PACKAGE."
   (add-hook 'go-mode-hook #'company-mode)
   )
 
+(require 'ox-confluence)
+
 ;; (require-package 'company-go)
 ;; (add-hook 'go-mode-hook (lambda ()
 ;; (set (make-local-variable 'company-backends) '(company-go))))
