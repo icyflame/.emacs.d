@@ -96,6 +96,8 @@ re-downloaded in order to locate PACKAGE."
 	:keymaps '(org-mode-map)
    "C-c l c" 'org-cycle-list-bullet
    "C-c e" 'org-table-edit-formulas
+   "C-c t" 'org-show-todo-tree
+   "C-a" 'org-agenda
    )
 
   ;; 23. SQL format highlighted region
