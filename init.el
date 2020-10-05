@@ -103,6 +103,11 @@ re-downloaded in order to locate PACKAGE."
    "s-k" 'kill-this-buffer
    )
 
+  (general-evil-define-key '(normal visual) org-agenda-mode-map
+	"F" 'org-agenda-later
+	"B" 'org-agenda-earlier
+	)
+
   ;; 23. SQL format highlighted region
   (general-evil-define-key 'visual sql-mode-map
 	"gq" 'run-sqlbeautify
