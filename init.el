@@ -83,11 +83,6 @@ re-downloaded in order to locate PACKAGE."
   ;; applications
   ;; We use the characters that are typically on top of the actual characters of
   ;; these keys to force the usage of shift
-  (general-nmap
-	"C-+" 'text-scale-increase
-	"C-_" 'text-scale-decrease
-	)
-
   (general-create-definer ctrl-keybindings
 	:states '(normal visual insert)
 	)
@@ -98,9 +93,8 @@ re-downloaded in order to locate PACKAGE."
    "C-c e" 'org-table-edit-formulas
    "C-c t" 'org-show-todo-tree
    "C-a" 'org-agenda
-   ;; Kill this buffer for these key bindings too
-   "M-k" 'kill-this-buffer
-   "s-k" 'kill-this-buffer
+   "C-+" 'text-scale-increase
+   "C-_" 'text-scale-decrease
    )
 
   (general-evil-define-key '(normal visual) org-agenda-mode-map
