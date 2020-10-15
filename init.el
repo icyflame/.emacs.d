@@ -250,6 +250,8 @@ re-downloaded in order to locate PACKAGE."
 (add-hook 'org-mode-hook #'flyspell-mode)
 (setq org-agenda-files '("~/work/notes/Monthly/Current.org"))
 
+(setq org-odt-preferred-output-format '"docx")
+
 ;; 19. Install editorconfig
 (require-package 'editorconfig)
 (use-package editorconfig
