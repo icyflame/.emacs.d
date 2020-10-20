@@ -88,6 +88,11 @@ re-downloaded in order to locate PACKAGE."
 	)
 
   (ctrl-keybindings
+	"s-k" 'kill-this-buffer
+	"M-k" 'kill-this-buffer
+	)
+
+  (ctrl-keybindings
 	:keymaps '(org-mode-map)
    "C-c l c" 'org-cycle-list-bullet
    "C-c e" 'org-table-edit-formulas
