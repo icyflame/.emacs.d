@@ -8,6 +8,9 @@
 ;; 3. Evil EX commands list: Display a list of ex commands with the mapped functions
 ;; M-x describe-variable evil-ex-commands RET
 
+;; Scratch buffer usage: Evaluate expression (C-x C-e)
+;; The result of the expression is printed to the minibuffer
+
 ;; Ongoing issues
 
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
