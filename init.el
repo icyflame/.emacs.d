@@ -394,3 +394,8 @@ Return value: t when a line was killed; nil when the function simply moved to th
   ;; too
   (kill-comment-and-line))
 
+(defun copy-buffer ()
+  "Copy the complete buffer to the system clipboard"
+  (interactive)
+  (kill-new (filter-buffer-substring (point-min) (point-max)))
+  nil)
