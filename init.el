@@ -81,6 +81,8 @@ re-downloaded in order to locate PACKAGE."
 	"C-j" 'evil-window-down
 	"C-k" 'evil-window-up
 	"C-l" 'evil-window-right
+	"f c p" 'copy-buffer
+	"f y" 'copy-buffer
 	)
   ;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
   ;; applications
@@ -134,6 +136,7 @@ re-downloaded in order to locate PACKAGE."
   (leader-def-mode
 	:states '(normal visual)
 	"w" 'evil-write
+	"s c" 'kill-all-comments
 	)
   )
 
