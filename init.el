@@ -348,3 +348,49 @@ re-downloaded in order to locate PACKAGE."
 		 :unnarrowed t)
 		))
 
+(defun line-length ()
+  "Get the length of the current line"
+  (- (line-end-position) (line-beginning-position)))
+
+(defun kill-comment-and-line ()
+  "Remove the first comment on this line;
+If this line is now empty, delete the line;
+Move to the next line;
+Return value: t when a line was killed; nil when the function simply moved to the next line"
+  (interactive)
+  ;; Get line length before deletion
+  (setq line-length-before (line-length))
+  ;; Kill first comment and move to next line
+  (kill-comment 1)
+  ;; Move to the original line
+  (forward-line -1)
+  ;; Get line length after deletion
+  (setq line-length-after (line-length))
+  (defun kill-and-return ()
+	(kill-whole-line)
+	t)
+  (defun forward-and-return ()
+	(forward-line)
+	nil)
+  (if (and (equal line-length-after 0) (not (equal line-length-before 0)))
+	  (kill-and-return)
+	(forward-and-return)
+	)
+  )
+
+(defun kill-all-comments ()
+  "Remove all comments from the active buffer"
+  (interactive)
+  (end-of-buffer)
+  (setq last-line (line-number-at-pos))
+  (beginning-of-buffer)
+  (setq counter 0)
+  (while (and (not (equal (line-number-at-pos) last-line)) (eq t (< counter 100)))
+	(when (eq t (kill-comment-and-line))
+	  (setq last-line (1- last-line)))
+	(1+ counter)
+	)
+  ;; while loop ends when buffer is on last line; if last line is a comment, we need to delete it
+  ;; too
+  (kill-comment-and-line))
+
