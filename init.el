@@ -332,3 +332,19 @@ re-downloaded in order to locate PACKAGE."
 
 (load '"~/.emacs.d/machine-specific/org-roam.el")
 (load '"~/.emacs.d/machine-specific/org-ref.el")
+
+;; 36. Org capture templates
+(defun create-notes-file ()
+  "Create an org file in ~/notes/."
+  (interactive)
+  (let ((name (read-string "Filename: ")))
+	(expand-file-name (format "%s-%s.org"
+							  (format-time-string "%Y-%m-%d") name) "~/personal/notes/japanese")))
+(setq org-capture-templates
+	  '(
+		("j" "Explaining a Japanese news article" plain
+		 (file create-notes-file)
+		 (file "~/personal/notes/japanese/template.org")
+		 :unnarrowed t)
+		))
+
