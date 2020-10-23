@@ -146,6 +146,12 @@ re-downloaded in order to locate PACKAGE."
 	"g f" 'go-test-current-file
 	"g p" 'go-test-current-project
 	)
+
+  (leader-def-mode
+	:states '(normal visual)
+	:keymaps '(magit-mode-map)
+	"g p" 'go-test-current-project
+	)
   )
 
 ;; 5. Set the color scheme to solarized dark
