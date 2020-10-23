@@ -333,6 +333,8 @@ re-downloaded in order to locate PACKAGE."
 (use-package company
   :ensure t
   :config
+  (add-hook 'go-mode-hook #'company-mode)
+  (add-hook 'emacs-lisp-mode-hook #'company-mode)
   (setq company-minimum-prefix-length 3))
 
 ;; 34. Protobuf mode
@@ -344,7 +346,6 @@ re-downloaded in order to locate PACKAGE."
   :config
   (yas-reload-all)
   (add-hook 'go-mode-hook #'yas-minor-mode)
-  (add-hook 'go-mode-hook #'company-mode)
   )
 
 (load '"~/.emacs.d/machine-specific/org-roam.el")
