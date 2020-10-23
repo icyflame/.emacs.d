@@ -138,6 +138,14 @@ re-downloaded in order to locate PACKAGE."
 	"w" 'evil-write
 	"s c" 'kill-all-comments
 	)
+
+  (leader-def-mode
+	:states '(normal visual)
+	:keymaps '(go-mode-map)
+	"g t" 'go-test-current-test
+	"g f" 'go-test-current-file
+	"g p" 'go-test-current-project
+	)
   )
 
 ;; 5. Set the color scheme to solarized dark
