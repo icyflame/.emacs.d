@@ -417,3 +417,5 @@ Return value: t when a line was killed; nil when the function simply moved to th
   (interactive)
   (kill-new (filter-buffer-substring (point-min) (point-max)))
   nil)
+
+(require-package 'ox-hugo)
