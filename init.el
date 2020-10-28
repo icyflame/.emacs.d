@@ -237,21 +237,6 @@ re-downloaded in order to locate PACKAGE."
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
 
-;; 15. Install plantuml mode; depends on plantuml existing as an executable on
-;; the system
-(require-package 'plantuml-mode)
-(use-package plantuml-mode
-  :mode
-  (("\\.puml\\'" . plantuml-mode))
-  :config
-  (setq plantuml-jar-path "/usr/local/bin/plantuml.jar")
-  (setq plantuml-default-exec-mode 'jar)
-
-  (setq org-plantuml-jar-path (expand-file-name "/usr/local/bin/plantuml.jar"))
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
-  )
-
 (require-package 'helm-rg)
 
 ;; 17. Get helm-projectile and bind to Ctrl-P
