@@ -265,7 +265,7 @@ re-downloaded in order to locate PACKAGE."
 
 (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'org-mode-hook #'flyspell-mode)
-(setq org-agenda-files '("~/work/notes/Monthly/Current.org"))
+(setq org-agenda-files '("~/work/notes/Monthly/Current.org" "~/personal/notes/Current.org"))
 
 (add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx")))
 
