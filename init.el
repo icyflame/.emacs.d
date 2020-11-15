@@ -112,6 +112,13 @@ re-downloaded in order to locate PACKAGE."
 	"B" 'org-agenda-earlier
 	)
 
+  ;; Elfeed Search's default mappings work are for Insert mode only
+  (general-evil-define-key '(normal visual) elfeed-search-mode-map
+	"RET" 'elfeed-search-show-entry
+	"u" 'elfeed-search-tag-all-unread
+	"r" 'elfeed-search-untag-all-unread
+	)
+
   ;; 23. SQL format highlighted region
   (general-evil-define-key 'visual sql-mode-map
 	"gq" 'run-sqlbeautify
@@ -404,3 +411,18 @@ Return value: t when a line was killed; nil when the function simply moved to th
   nil)
 
 (require-package 'ox-hugo)
+
+(require-package 'elfeed)
+(use-package elfeed
+  :config
+  ;; Somewhere in your .emacs file
+  (setq elfeed-feeds
+		'(
+		  ;; News
+		  "https://fivethirtyeight.com/all/feed"
+		  "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml"
+		  "https://www.vox.com/rss/index.xml"
+		  "https://rss.politico.com/politics.xml"
+		  "https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml"
+		  ))
+  )
