@@ -421,8 +421,9 @@ Return value: t when a line was killed; nil when the function simply moved to th
 		  ;; News
 		  "https://fivethirtyeight.com/all/feed"
 		  "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml"
+		  "https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml"
 		  "https://www.vox.com/rss/index.xml"
 		  "https://rss.politico.com/politics.xml"
-		  "https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml"
+		  "https://feeds.feedburner.com/ndtvnews-top-stories"
 		  ))
   )
