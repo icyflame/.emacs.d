@@ -117,6 +117,12 @@ re-downloaded in order to locate PACKAGE."
 	"RET" 'elfeed-search-show-entry
 	"u" 'elfeed-search-tag-all-unread
 	"r" 'elfeed-search-untag-all-unread
+	"C-r" 'elfeed-update
+	)
+
+  (general-evil-define-key '(normal) elfeed-show-mode-map
+	"F" 'elfeed-show-next
+	"P" 'elfeed-show-prev
 	)
 
   ;; 23. SQL format highlighted region
