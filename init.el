@@ -428,11 +428,11 @@ Return value: t when a line was killed; nil when the function simply moved to th
   (setq elfeed-feeds
 		'(
 		  ;; News
-		  "https://fivethirtyeight.com/all/feed"
-		  "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml"
-		  "https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml"
-		  "https://www.vox.com/rss/index.xml"
-		  "https://rss.politico.com/politics.xml"
-		  "https://feeds.feedburner.com/ndtvnews-top-stories"
+		  ("https://fivethirtyeight.com/all/feed" fivethirtyeight us-politics)
+		  ("https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml" nytimes us-politics)
+		  ("https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml" nytimes asia)
+		  ("https://www.vox.com/rss/index.xml" vox)
+		  ("https://rss.politico.com/politics-news.xml" politico us-politics)
+		  ("https://feeds.feedburner.com/ndtvnews-top-stories" ndtv india)
 		  ))
   )
