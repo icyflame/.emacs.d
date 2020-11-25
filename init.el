@@ -164,6 +164,10 @@ re-downloaded in order to locate PACKAGE."
 	:states '(normal visual)
 	:keymaps '(magit-mode-map)
 	"g p" 'go-test-current-project
+	"b c" 'magit-branch-create
+	"b s" 'magit-branch-spinoff
+	"c c" 'magit-commit-create
+	"c a" 'magit-commit-amend
 	)
   )
 
