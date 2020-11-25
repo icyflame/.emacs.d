@@ -364,6 +364,7 @@ re-downloaded in order to locate PACKAGE."
 		 :unnarrowed t)
 		))
 
+;; 37. Function to kill all comments
 (defun line-length ()
   "Get the length of the current line"
   (- (line-end-position) (line-beginning-position)))
@@ -410,6 +411,7 @@ Return value: t when a line was killed; nil when the function simply moved to th
   ;; too
   (kill-comment-and-line))
 
+;; 38. Function to copy the entire buffer
 (defun copy-buffer ()
   "Copy the complete buffer to the system clipboard"
   (interactive)
@@ -418,6 +420,7 @@ Return value: t when a line was killed; nil when the function simply moved to th
 
 (require-package 'ox-hugo)
 
+;; 40. Elfeed configuration
 (require-package 'elfeed)
 (use-package elfeed
   :config
