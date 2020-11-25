@@ -436,3 +436,12 @@ Return value: t when a line was killed; nil when the function simply moved to th
 		  ("https://feeds.feedburner.com/ndtvnews-top-stories" ndtv india)
 		  ))
   )
+
+(require-package 'ob-go)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((go . t)))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((perl . t)))
