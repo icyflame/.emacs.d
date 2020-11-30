@@ -449,3 +449,18 @@ Return value: t when a line was killed; nil when the function simply moved to th
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((perl . t)))
+
+(defun insert-current-time ()
+  "Insert the current time string into the active buffer at point"
+  (interactive)
+  (insert-string (current-time-string)))
+
+(defun insert-date ()
+  "Insert the current date string into the active buffer at point"
+  (interactive)
+  (insert-string (format-time-string '"%F")))
+
+(defun insert-time ()
+  "Insert the current time string into the active buffer at point"
+  (interactive)
+  (insert-string (format-time-string '"%R")))
