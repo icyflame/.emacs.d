@@ -164,10 +164,21 @@ re-downloaded in order to locate PACKAGE."
 	:states '(normal visual)
 	:keymaps '(magit-mode-map)
 	"g p" 'go-test-current-project
+
+	;; magit
 	"b c" 'magit-branch-create
 	"b s" 'magit-branch-spinoff
+
+	"s w" 'magit-stash-worktree
+
+	"c o" 'magit-checkout
+
 	"c c" 'magit-commit-create
 	"c a" 'magit-commit-amend
+
+	"f p" 'magit-fetch-all-prune
+	"p p" 'magit-push-current-to-pushremote
+	"m m" 'magit-merge
 	)
   )
 
