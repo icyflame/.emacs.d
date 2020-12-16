@@ -273,7 +273,8 @@ re-downloaded in order to locate PACKAGE."
   :config
   (general-nmap
 	"C-p" 'helm-projectile
-	"C-b" 'helm-projectile-switch-to-buffer)
+	"C-b" 'helm-projectile-switch-to-buffer
+	"M-p" 'helm-projectile-switch-project)
   (evil-ex-define-cmd "Ag" 'helm-projectile-rg)
   (evil-ex-define-cmd "Rg" 'helm-projectile-rg))
 
