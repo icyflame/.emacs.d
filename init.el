@@ -476,3 +476,8 @@ Return value: t when a line was killed; nil when the function simply moved to th
   "Insert the current time string into the active buffer at point"
   (interactive)
   (insert-string (format-time-string '"%R")))
+
+(use-package awesome-tab
+  :config
+  (awesome-tab-mode t))
+
