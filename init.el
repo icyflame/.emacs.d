@@ -481,3 +481,56 @@ Return value: t when a line was killed; nil when the function simply moved to th
   :config
   (awesome-tab-mode t))
 
+;; Elisp functions to unwrap text. Useful when to copying Org markup into text input fields on
+;; browsers which will not be formatted before display
+(defun unwrap-all (file)
+  "Unwrap all the paragraphs in the given file and write to (basename).unwrapped.(extension|).
+
+This function will leave the buffer with the unwrapped text open. The user can switch to that buffer
+after the function runs if they want to look at the contents.
+
+E.g. 1. /.../test-file.ext => /.../test-file.unwrapped.ext
+E.g. 2. /.../test-file => /.../test-file.unwrapped
+
+This function will handle list items properly (i.e. separate list items will not be unwrapped into
+each other). Works well when the file has Org markup with plain paragraphs and nested lists, with
+titles.
+
+Note: This will not work if the file has Org tables
+"
+  (setq output-file-name (concat file ".unwrapped"))
+  (unless (eq nil (string-match "\\." file))
+	(setq comps (reverse (split-string file "\\.")))
+	(setq extension (pop comps))
+	(setq comps (reverse comps))
+	(setq output-file-name (concat (s-join "." comps) ".unwrapped" "." extension)))
+
+  ;; Open the requested file in a buffer
+  (setq old-buffer (find-file-noselect file))
+  ;; Split and prepare new buffer
+  (setq new-buffer (find-file-noselect output-file-name))
+  ;; Insert old buffer into new buffer and edit the new buffer
+  (with-current-buffer new-buffer
+	(erase-buffer)
+	(insert-buffer old-buffer)
+	(setq d nil)
+	(while (not (eq (point-at-eol) (point-max)))
+	  (beginning-of-line)
+	  (setq empty-line (looking-at "^$"))
+
+	  (if empty-line (setq d nil)
+		(setq start-char (char-after))
+		(setq title-line (eq start-char "*"))
+		(setq list-start-line (looking-at "^[ \t]*-"))
+		(if (and (not title-line) (not list-start-line) (not empty-line) (eq d t)) (delete-indentation))
+		(if (not title-line) (setq d t)))
+	  (forward-line 1))
+	;; Write to the output file and leave the buffer open for the user
+	(write-file output-file-name))
+
+  (message "Unwrapped and written to %s" output-file-name))
+
+(defun unwrap-current ()
+  "Unwrap all paragraphs in the current file and write to (basename).unwrapped.(extension)"
+  (interactive)
+  (unwrap-all (buffer-file-name)))
