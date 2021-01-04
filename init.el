@@ -31,7 +31,7 @@ re-downloaded in order to locate PACKAGE."
         (package-refresh-contents)
         (require-package package min-version t)))))
 
-;;; similar to require-package but using package-install-fil instead
+;;; similar to require-package but using package-install-file instead
 (defun require-package-file (package file)
   "Install a package from the given location"
   (if (package-installed-p package)
@@ -118,6 +118,12 @@ re-downloaded in order to locate PACKAGE."
 	"u" 'elfeed-search-tag-all-unread
 	"r" 'elfeed-search-untag-all-unread
 	"C-r" 'elfeed-update
+	)
+
+  ;; Elfeed Search's default mappings work are for Insert mode only
+  (ctrl-keybindings
+	:keymaps '(biblio-selection-mode-map)
+	"RET" 'biblio--selection-insert-quit
 	)
 
   (general-evil-define-key '(normal) elfeed-show-mode-map
@@ -534,3 +540,10 @@ Note: This will not work if the file has Org tables
   "Unwrap all paragraphs in the current file and write to (basename).unwrapped.(extension)"
   (interactive)
   (unwrap-all (buffer-file-name)))
+
+(require-package 'slime)
+(use-package slime)
+
+(setq gnus-select-method '(nntp "news.gwene.org"))
+
+(require-package 'web-mode)
