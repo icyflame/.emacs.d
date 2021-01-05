@@ -378,13 +378,24 @@ re-downloaded in order to locate PACKAGE."
   (let ((name (read-string "Filename: ")))
 	(expand-file-name (format "%s-%s.org"
 							  (format-time-string "%Y-%m-%d") name) "~/personal/notes/japanese")))
+(defun create-blog-file ()
+  "Create an org file in ~/blog/."
+  (interactive)
+  (let ((name (read-string "Filename: ")))
+	(expand-file-name (format "%s-%s.org"
+							  (format-time-string "%Y-%m-%d") name) "~/personal/blog/posts-org")))
+
 (setq org-capture-templates
-	  '(
+	  '(("b" "Blog post" plain
+		 (file create-blog-file)
+		 (file "~/personal/blog/posts-org/template.org")
+		 :prepend t
+		 :jump-to-captured t
+		 :unnarrowed t)
 		("j" "Explaining a Japanese news article" plain
 		 (file create-notes-file)
 		 (file "~/personal/notes/japanese/template.org")
-		 :unnarrowed t)
-		))
+		 :unnarrowed t)))
 
 ;; 37. Function to kill all comments
 (defun line-length ()
