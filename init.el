@@ -396,6 +396,10 @@ re-downloaded in order to locate PACKAGE."
 		 :prepend t
 		 :jump-to-captured t
 		 :unnarrowed t)
+
+		("t" "Todo" entry (file+headline "~/work/notes/TODO.org" "Tasks")
+		 "* TODO %?\n  %i\n  %a")
+
 		("j" "Explaining a Japanese news article" plain
 		 (file create-notes-file)
 		 (file "~/personal/notes/japanese/template.org")
