@@ -83,7 +83,11 @@ re-downloaded in order to locate PACKAGE."
 	"C-l" 'evil-window-right
 	"f c p" 'copy-buffer
 	"f y" 'copy-buffer
+	"C-a" 'org-agenda
+	"C-+" 'text-scale-increase
+	"C-_" 'text-scale-decrease
 	)
+
   ;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
   ;; applications
   ;; We use the characters that are typically on top of the actual characters of
