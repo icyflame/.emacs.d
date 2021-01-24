@@ -20,16 +20,12 @@
 #+author:
 #+created: %T
 #+roam_tags:
-#+roam_key:
 #+publish: no|yes
 
 * Source
 
 
-
-* Related
-
-- "
+"
 		   :unnarrowed t
 		   )))
 
