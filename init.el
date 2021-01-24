@@ -403,6 +403,7 @@ re-downloaded in order to locate PACKAGE."
 		("j" "Explaining a Japanese news article" plain
 		 (file create-notes-file)
 		 (file "~/personal/notes/japanese/template.org")
+		 :jump-to-captured t
 		 :unnarrowed t)))
 
 ;; 37. Function to kill all comments
