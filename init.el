@@ -99,10 +99,10 @@ re-downloaded in order to locate PACKAGE."
 
   (ctrl-keybindings
 	:keymaps '(org-mode-map)
+   "C-a" 'org-agenda
    "C-c l c" 'org-cycle-list-bullet
    "C-c e" 'org-table-edit-formulas
    "C-c t" 'org-show-todo-tree
-   "C-a" 'org-agenda
    "C-+" 'text-scale-increase
    "C-_" 'text-scale-decrease
    )
