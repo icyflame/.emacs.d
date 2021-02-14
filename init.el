@@ -504,7 +504,7 @@ Return value: t when a line was killed; nil when the function simply moved to th
 (defun insert-current-time ()
   "Insert the current time string into the active buffer at point"
   (interactive)
-  (insert-string (current-time-string)))
+  (insert-string (format-time-string '"%F %H:%M:%S %Z")))
 
 (defun insert-date ()
   "Insert the current date string into the active buffer at point"
@@ -514,7 +514,7 @@ Return value: t when a line was killed; nil when the function simply moved to th
 (defun insert-time ()
   "Insert the current time string into the active buffer at point"
   (interactive)
-  (insert-string (format-time-string '"%R")))
+  (insert-string (format-time-string '"%R:%S")))
 
 (require-package-file 'awesome-tab "~/.emacs.d/lisp/awesome-tab")
 (use-package awesome-tab
