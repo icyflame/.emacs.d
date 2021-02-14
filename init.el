@@ -83,7 +83,6 @@ re-downloaded in order to locate PACKAGE."
 	"C-l" 'evil-window-right
 	"f c p" 'copy-buffer
 	"f y" 'copy-buffer
-	"C-a" 'org-agenda
 	"C-+" 'text-scale-increase
 	"C-_" 'text-scale-decrease
 	)
