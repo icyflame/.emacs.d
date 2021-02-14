@@ -37,3 +37,12 @@
 			  :map org-mode-map
 			  (("C-c n i" . org-roam-insert))
 			  (("C-c n I" . org-roam-insert-immediate))))
+
+;; (setq org-publish-project-alist
+;;           '(("notes-blog"
+;;                  :base-directory "/tmp/org-roam"
+;;                  :base-extension "org"
+;;                  :publishing-directory "~/sandbox/blog-notes/content/posts"
+;;                  :recursive t
+;;                  :publishing-function org-hugo--export-file-to-md
+;;                 ))

@@ -576,9 +576,6 @@ Note: This will not work if the file has Org tables
   (interactive)
   (unwrap-all (buffer-file-name)))
 
-(require-package 'slime)
-(use-package slime)
-
 (setq gnus-select-method '(nntp "news.gwene.org"))
 
 (require-package 'web-mode)
