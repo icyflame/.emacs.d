@@ -517,7 +517,9 @@ Return value: t when a line was killed; nil when the function simply moved to th
   (interactive)
   (insert-string (format-time-string '"%R")))
 
+(require-package-file 'awesome-tab "~/.emacs.d/lisp/awesome-tab")
 (use-package awesome-tab
+  :ensure t
   :config
   (awesome-tab-mode t))
 
