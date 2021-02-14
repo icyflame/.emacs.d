@@ -1,3 +1,6 @@
 [submodule "lisp/org-roam"]
 	path = lisp/org-roam
 	url = git@github.com:org-roam/org-roam.git
+[submodule "lisp/awesome-tab"]
+	path = lisp/awesome-tab
+	url = https://github.com/manateelazycat/awesome-tab.git
