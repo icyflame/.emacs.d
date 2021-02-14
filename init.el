@@ -298,8 +298,11 @@ re-downloaded in order to locate PACKAGE."
 (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'org-mode-hook #'flyspell-mode)
 (setq org-agenda-files '(
+						 ;; files at work
 						 "~/work/notes/TODO.org"
 						 "~/work/notes/Current.org"
+						 ;; files at home
+						 "~/personal/notes/TODO.org"
 						 "~/personal/notes/Current.org"
 						 "~/personal/notes/Current.org"))
 
@@ -393,6 +396,14 @@ re-downloaded in order to locate PACKAGE."
 	(expand-file-name (format "%s-%s.org"
 							  (format-time-string "%Y-%m-%d") name) "~/personal/blog/posts-org")))
 
+(defun get-todo-file-for-computer ()
+  "Return the path to the todo file for this computer"
+  (let ((home-computers '("home-thinkpad")))
+  (if (-contains? home-computers (system-name))
+	  '"~/personal/notes/TODO.org"
+	'"~/work/notes/TODO.org")))
+(setq default-todo-file-for-computer (get-todo-file-for-computer))
+
 (setq org-capture-templates
 	  '(("b" "Blog post" plain
 		 (file create-blog-file)
@@ -401,7 +412,7 @@ re-downloaded in order to locate PACKAGE."
 		 :jump-to-captured t
 		 :unnarrowed t)
 
-		("t" "Todo" entry (file+headline "~/work/notes/TODO.org" "Tasks")
+		("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
 		 "* TODO %?\n  %i\n  %a")
 
 		("j" "Explaining a Japanese news article" plain
