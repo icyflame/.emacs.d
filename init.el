@@ -375,8 +375,7 @@ re-downloaded in order to locate PACKAGE."
 (use-package yasnippet
   :config
   (yas-reload-all)
-  (add-hook 'go-mode-hook #'yas-minor-mode)
-  )
+  (add-hook 'go-mode-hook #'yas-minor-mode))
 
 (load '"~/.emacs.d/machine-specific/org-roam.el")
 (load '"~/.emacs.d/machine-specific/org-ref.el")
