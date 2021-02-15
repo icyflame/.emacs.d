@@ -98,6 +98,8 @@ re-downloaded in order to locate PACKAGE."
   (ctrl-keybindings
 	"s-k" 'kill-this-buffer
 	"M-k" 'kill-this-buffer
+	"M-g" 'magit-status
+	"C-x g" 'magit-status
 	)
 
   (ctrl-keybindings
