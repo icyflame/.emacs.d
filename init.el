@@ -371,9 +371,8 @@ re-downloaded in order to locate PACKAGE."
 ;; Company mode is a standard completion package that works well with lsp-mode.
 (use-package company
   :ensure t
+  :hook ((go-mode emacs-lisp-mode) . company-mode)
   :config
-  (add-hook 'go-mode-hook #'company-mode)
-  (add-hook 'emacs-lisp-mode-hook #'company-mode)
   (setq company-minimum-prefix-length 3))
 
 ;; 34. Protobuf mode
@@ -382,10 +381,9 @@ re-downloaded in order to locate PACKAGE."
 ;; 35. Yasnippets
 (require-package 'yasnippet)
 (use-package yasnippet
+  :hook ((org-mode go-mode) . #'yas-minor-mode)
   :config
-  (yas-reload-all)
-  (add-hook 'org-mode-hook #'yas-minor-mode)
-  (add-hook 'go-mode-hook #'yas-minor-mode))
+  (yas-reload-all))
 
 (load '"~/.emacs.d/machine-specific/org-roam.el")
 (load '"~/.emacs.d/machine-specific/org-ref.el")
