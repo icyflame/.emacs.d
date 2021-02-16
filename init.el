@@ -69,6 +69,10 @@ re-downloaded in order to locate PACKAGE."
   (evil-ex-define-cmd "q" 'kill-this-buffer)
   )
 
+(defun kannan/magit-merge-upstream ()
+  "Merge the upstream for this branch into this branch"
+  (magit-merge-plain (magit-get-upstream-branch)))
+
 ;; 12. Install general package
 (require-package 'general)
 (use-package general
@@ -189,7 +193,9 @@ re-downloaded in order to locate PACKAGE."
 
 	"f p" 'magit-fetch-all-prune
 	"p p" 'magit-push-current-to-pushremote
+
 	"m m" 'magit-merge
+	"m u" 'kannan/magit-merge-upstream
 	)
   )
 
