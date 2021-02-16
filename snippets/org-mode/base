@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: base
+# key: base
+# --
+#+TITLE:
+#+OPTIONS: author:nil toc:nil ^:nil

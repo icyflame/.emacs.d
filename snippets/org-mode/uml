@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: uml
+# key: uml
+# --
+#+BEGIN_SRC plantuml :file img/test.png
+#+END_SRC
