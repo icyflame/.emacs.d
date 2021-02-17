@@ -71,6 +71,7 @@ re-downloaded in order to locate PACKAGE."
 
 (defun kannan/magit-merge-upstream ()
   "Merge the upstream for this branch into this branch"
+  (interactive)
   (magit-merge-plain (magit-get-upstream-branch)))
 
 ;; 12. Install general package
