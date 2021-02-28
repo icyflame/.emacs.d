@@ -69,6 +69,12 @@ re-downloaded in order to locate PACKAGE."
   (evil-ex-define-cmd "q" 'kill-this-buffer)
   )
 
+(defun kannan/ask-user-approval (prompt)
+  "A function to ask the user for approval"
+  (interactive)
+  (setq answer (read-string (concat prompt " " "(yes/y/no/n): ")))
+  (or (eq "yes" answer) (eq "y" answer)))
+
 (defun kannan/magit-merge-upstream ()
   "Merge the upstream for this branch into this branch"
   (interactive)
