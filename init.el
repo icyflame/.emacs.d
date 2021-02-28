@@ -74,7 +74,7 @@ re-downloaded in order to locate PACKAGE."
   (setq answer (read-char (concat prompt " " "(y/n): ")))
   (string-equal "y" (string answer)))
 
-(defun kannan/magit-merge-upstream ()
+(defun kannan/magit/merge-upstream-into-current ()
   "Merge the upstream for this branch into this branch"
   (interactive)
   (magit-merge-plain (magit-get-upstream-branch)))
@@ -201,7 +201,7 @@ re-downloaded in order to locate PACKAGE."
 	"p p" 'magit-push-current-to-pushremote
 
 	"m m" 'magit-merge
-	"m u" 'kannan/magit-merge-upstream
+	"m u" 'kannan/magit/merge-upstream-into-current
 	)
   )
 
