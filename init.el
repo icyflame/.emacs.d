@@ -79,6 +79,13 @@ re-downloaded in order to locate PACKAGE."
   (interactive)
   (magit-merge-plain (magit-get-upstream-branch)))
 
+(defun kannan/magit/push-safe-to-current ()
+  "Push safely to the upstream branch of the current branch. Ask user before pushing to master"
+  (interactive)
+  (if (or (not (string-equal "master" (magit-get-current-branch)))
+		  (eq t (kannan/ask-user-approval "Push to upstream on master?")))
+	  (call-interactively #'magit-push-current-to-pushremote)))
+
 ;; 12. Install general package
 (require-package 'general)
 (use-package general
@@ -198,7 +205,7 @@ re-downloaded in order to locate PACKAGE."
 	"c a" 'magit-commit-amend
 
 	"f p" 'magit-fetch-all-prune
-	"p p" 'magit-push-current-to-pushremote
+	"p p" 'kannan/magit/push-safe-to-current
 
 	"m m" 'magit-merge
 	"m u" 'kannan/magit/merge-upstream-into-current
