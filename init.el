@@ -66,8 +66,7 @@ re-downloaded in order to locate PACKAGE."
   (setq evil-motion-state-modes nil)
   :config
   (evil-mode)
-  (evil-ex-define-cmd "q" 'kill-this-buffer)
-  )
+  (evil-ex-define-cmd "q" 'kill-this-buffer))
 
 (defun kannan/ask-user-approval (prompt)
   "A function to ask the user for approval"
