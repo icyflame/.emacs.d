@@ -598,3 +598,5 @@ Note: This will not work if the file has Org tables
 (setq gnus-select-method '(nntp "news.gwene.org"))
 
 (require-package 'web-mode)
+
+(require-package 'dash)
