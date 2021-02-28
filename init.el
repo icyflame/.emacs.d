@@ -416,7 +416,7 @@ re-downloaded in order to locate PACKAGE."
 (defun get-todo-file-for-computer ()
   "Return the path to the todo file for this computer"
   (let ((home-computers '("home-thinkpad")))
-  (if (-contains? home-computers (system-name))
+  (if (seq-contains-p home-computers (system-name))
 	  '"~/personal/notes/TODO.org"
 	'"~/work/notes/TODO.org")))
 (setq default-todo-file-for-computer (get-todo-file-for-computer))
@@ -598,5 +598,3 @@ Note: This will not work if the file has Org tables
 (setq gnus-select-method '(nntp "news.gwene.org"))
 
 (require-package 'web-mode)
-
-(require-package 'dash)
