@@ -90,6 +90,11 @@ re-downloaded in order to locate PACKAGE."
   (interactive)
   (magit-checkout (magit-get-previous-branch)))
 
+(defun kannan/magit/rebase-previous-branch ()
+  "Rebase current branch on the previous branch"
+  (interactive)
+  (magit-rebase-branch (magit-get-previous-branch)))
+
 ;; 12. Install general package
 (require-package 'general)
 (use-package general
@@ -202,6 +207,8 @@ re-downloaded in order to locate PACKAGE."
 	"m u" 'kannan/magit/merge-upstream-into-current
 
 	"p p" 'kannan/magit/push-safe-to-current
+
+	"r b" 'kannan/magit/rebase-previous-branch
 
 	"s w" 'magit-stash-worktree
 	"s b" 'magit-stash-both
