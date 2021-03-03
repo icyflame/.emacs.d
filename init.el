@@ -93,7 +93,7 @@ re-downloaded in order to locate PACKAGE."
 (defun kannan/magit/rebase-previous-branch ()
   "Rebase current branch on the previous branch"
   (interactive)
-  (magit-rebase-branch (magit-get-previous-branch)))
+  (magit-rebase-branch (magit-get-previous-branch) ()))
 
 ;; 12. Install general package
 (require-package 'general)
