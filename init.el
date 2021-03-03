@@ -90,6 +90,11 @@ re-downloaded in order to locate PACKAGE."
   (interactive)
   (magit-checkout (magit-get-previous-branch)))
 
+(defun kannan/magit/checkout-default-branch ()
+  "Checkout the default branch"
+  (interactive)
+  (magit-checkout '"master"))
+
 (defun kannan/magit/rebase-previous-branch ()
   "Rebase current branch on the previous branch"
   (interactive)
@@ -201,6 +206,7 @@ re-downloaded in order to locate PACKAGE."
 
 	"c o" 'magit-checkout
 	"c p" 'kannan/magit/checkout-previous-branch
+	"c d" 'kannan/magit/checkout-default-branch
 
 	"c c" 'magit-commit-create
 	"c a" 'magit-commit-amend
