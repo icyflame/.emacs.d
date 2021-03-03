@@ -195,6 +195,9 @@ re-downloaded in order to locate PACKAGE."
 	"b c" 'magit-branch-create
 	"b s" 'magit-branch-spinoff
 
+	"c P" 'magit-cherry-pick
+	"c a" 'magit-cherry-apply
+
 	"c o" 'magit-checkout
 	"c p" 'kannan/magit/checkout-previous-branch
 
