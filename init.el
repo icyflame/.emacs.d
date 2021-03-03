@@ -85,6 +85,11 @@ re-downloaded in order to locate PACKAGE."
 		  (eq t (kannan/ask-user-approval "Push to upstream on master?")))
 	  (call-interactively #'magit-push-current-to-pushremote)))
 
+(defun kannan/magit/checkout-previous-branch ()
+  "Checkout the previous branch"
+  (interactive)
+  (magit-checkout (magit-get-previous-branch)))
+
 ;; 12. Install general package
 (require-package 'general)
 (use-package general
@@ -186,6 +191,7 @@ re-downloaded in order to locate PACKAGE."
 	"b s" 'magit-branch-spinoff
 
 	"c o" 'magit-checkout
+	"c p" 'kannan/magit/checkout-previous-branch
 
 	"c c" 'magit-commit-create
 	"c a" 'magit-commit-amend
