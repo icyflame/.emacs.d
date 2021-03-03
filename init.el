@@ -194,6 +194,7 @@ re-downloaded in order to locate PACKAGE."
 
 	"b c" 'magit-branch-create
 	"b s" 'magit-branch-spinoff
+	"b d" 'magit-branch-delete
 
 	"c P" 'magit-cherry-pick
 	"c a" 'magit-cherry-apply
