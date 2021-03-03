@@ -175,13 +175,15 @@ re-downloaded in order to locate PACKAGE."
 
   (leader-def-mode
 	:states '(normal visual)
+
+	;;; common
 	"w" 'evil-write
 	"s c" 'kill-all-comments
 
+	;;; magit
+
 	"b c" 'magit-branch-create
 	"b s" 'magit-branch-spinoff
-
-	"s w" 'magit-stash-worktree
 
 	"c o" 'magit-checkout
 
@@ -190,10 +192,12 @@ re-downloaded in order to locate PACKAGE."
 
 	"f p" 'magit-fetch-all-prune
 
-	"p p" 'kannan/magit/push-safe-to-current
-
 	"m m" 'magit-merge
 	"m u" 'kannan/magit/merge-upstream-into-current
+
+	"p p" 'kannan/magit/push-safe-to-current
+
+	"s w" 'magit-stash-worktree
 	)
 
   (leader-def-mode
