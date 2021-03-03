@@ -204,7 +204,10 @@ re-downloaded in order to locate PACKAGE."
 	"p p" 'kannan/magit/push-safe-to-current
 
 	"s w" 'magit-stash-worktree
-	)
+	"s b" 'magit-stash-both
+	"s p" 'magit-stash-pop
+	"s a" 'magit-stash-apply
+	"s d" 'magit-stash-drop)
 
   (leader-def-mode
 	:states '(normal visual)
