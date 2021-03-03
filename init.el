@@ -177,6 +177,23 @@ re-downloaded in order to locate PACKAGE."
 	:states '(normal visual)
 	"w" 'evil-write
 	"s c" 'kill-all-comments
+
+	"b c" 'magit-branch-create
+	"b s" 'magit-branch-spinoff
+
+	"s w" 'magit-stash-worktree
+
+	"c o" 'magit-checkout
+
+	"c c" 'magit-commit-create
+	"c a" 'magit-commit-amend
+
+	"f p" 'magit-fetch-all-prune
+
+	"p p" 'kannan/magit/push-safe-to-current
+
+	"m m" 'magit-merge
+	"m u" 'kannan/magit/merge-upstream-into-current
 	)
 
   (leader-def-mode
@@ -191,23 +208,6 @@ re-downloaded in order to locate PACKAGE."
 	:states '(normal visual)
 	:keymaps '(magit-mode-map)
 	"g p" 'go-test-current-project
-
-	;; magit
-	"b c" 'magit-branch-create
-	"b s" 'magit-branch-spinoff
-
-	"s w" 'magit-stash-worktree
-
-	"c o" 'magit-checkout
-
-	"c c" 'magit-commit-create
-	"c a" 'magit-commit-amend
-
-	"f p" 'magit-fetch-all-prune
-	"p p" 'kannan/magit/push-safe-to-current
-
-	"m m" 'magit-merge
-	"m u" 'kannan/magit/merge-upstream-into-current
 	)
   )
 
