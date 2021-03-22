@@ -625,6 +625,4 @@ Note: This will not work if the file has Org tables
   (interactive)
   (unwrap-all (buffer-file-name)))
 
-(setq gnus-select-method '(nntp "news.gwene.org"))
-
 (require-package 'web-mode)
