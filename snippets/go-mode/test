@@ -28,5 +28,4 @@ func Test$1(t *testing.T) {
 			}
 		})
 	}
-
 }
