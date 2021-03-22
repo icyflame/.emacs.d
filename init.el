@@ -153,6 +153,7 @@ re-downloaded in order to locate PACKAGE."
 	"RET" 'elfeed-search-show-entry
 	"u" 'elfeed-search-tag-all-unread
 	"r" 'elfeed-search-untag-all-unread
+	"/" 'elfeed-search-set-filter
 	"C-r" 'elfeed-update
 	)
 
