@@ -201,6 +201,7 @@ re-downloaded in order to locate PACKAGE."
 	"b c" 'magit-branch-create
 	"b s" 'magit-branch-spinoff
 	"b d" 'magit-branch-delete
+	"b r" 'magit-branch-rename
 
 	"c P" 'magit-cherry-pick
 	"c a" 'magit-cherry-apply
@@ -212,6 +213,8 @@ re-downloaded in order to locate PACKAGE."
 	"c c" 'magit-commit-create
 	"c a" 'magit-commit-amend
 
+	"c p" 'magit-cherry-pick
+
 	"f p" 'magit-fetch-all-prune
 
 	"m m" 'magit-merge
@@ -219,7 +222,13 @@ re-downloaded in order to locate PACKAGE."
 
 	"p p" 'kannan/magit/push-safe-to-current
 
-	"r b" 'kannan/magit/rebase-previous-branch
+	"r b" 'magit-rebase
+	"r p" 'kannan/magit/rebase-previous-branch
+
+	"r v c" 'magit-revert-and-commit
+	"r v n" 'magit-revert-no-commit
+
+	"s h" 'magit-show-commit
 
 	"s w" 'magit-stash-worktree
 	"s b" 'magit-stash-both
