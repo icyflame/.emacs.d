@@ -651,3 +651,5 @@ Note: This will not work if the file has Org tables
   (unwrap-all (buffer-file-name)))
 
 (require-package 'web-mode)
+
+(require-package 'notmuch)
