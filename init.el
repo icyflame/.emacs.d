@@ -542,12 +542,27 @@ Return value: t when a line was killed; nil when the function simply moved to th
   (setq elfeed-feeds
 		'(
 		  ;; News
-		  ("https://fivethirtyeight.com/all/feed" fivethirtyeight us-politics)
-		  ("https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml" nytimes us-politics)
-		  ("https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml" nytimes asia)
-		  ("https://www.vox.com/rss/index.xml" vox)
-		  ("https://rss.politico.com/politics-news.xml" politico us-politics)
-		  ("https://feeds.feedburner.com/ndtvnews-top-stories" ndtv india)
+		  ("https://fivethirtyeight.com/all/feed" news fivethirtyeight us-politics)
+		  ("https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml" news nytimes us-politics)
+		  ("https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml" news nytimes asia)
+		  ("https://www.vox.com/rss/index.xml" news vox)
+		  ("https://rss.politico.com/politics-news.xml" news politico us-politics)
+		  ("https://feeds.feedburner.com/ndtvnews-top-stories" news ndtv asia india)
+
+		  ("https://www.bloomberg.com/authors/AT2bBytfUHQ/john-authers.rss" blogs bloomberg)
+		  ("https://www.bloomberg.com/opinion/authors/AQwaMsNcwy0/matthew-g-yglesias.rss" blogs bloomberg)
+		  ("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" blogs bloomberg)
+
+		  ("https://www.theatlantic.com/feed/author/zeynep-tufekci/" blogs)
+		  ("https://zachholman.com/atom.xml" blogs tech)
+		  ("https://kazeburo.hatenablog.com/feed" blogs tech)
+		  ("https://blog.jessfraz.com/index.xml" blogs tech)
+		  ("https://daniel.haxx.se/blog/feed/" blogs tech)
+
+		  ("https://ppsreejith.net/index.xml" blogs friends)
+		  ("https://code.ghostwriternr.me/feed.xml" blogs friends)
+		  ("https://notes.ppsreejith.net/index.xml" blogs friends)
+		  ("https://www.xypnox.com/blag/atom.xml" blogs friends)
 		  ))
   )
 
