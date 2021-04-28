@@ -473,6 +473,14 @@ re-downloaded in order to locate PACKAGE."
 		("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
 		 "* TODO %?\n  %i\n  %a")
 
+		("r" "Add a recommendation to the recommendations list" checkitem
+		 (file "~/personal/notes/RecommendationsList.org")
+		 "- [ ] %^{Title}
+  - *Date added to this list:* %T
+  - *Source:* %^{Source}
+  - *Author:* %^{Author (if known)}
+  - *Note:* %?")
+
 		("j" "Explaining a Japanese news article" plain
 		 (file create-notes-file)
 		 (file "~/personal/notes/japanese/template.org")
