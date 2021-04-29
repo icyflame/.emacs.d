@@ -131,7 +131,8 @@ re-downloaded in order to locate PACKAGE."
 	"M-k" 'kill-this-buffer
 	"M-g" 'magit-status
 	"C-x g" 'magit-status
-	)
+	"C-x o c" 'org-capture
+	"C-x e b" 'eval-buffer)
 
   (ctrl-keybindings
 	:keymaps '(org-mode-map)
