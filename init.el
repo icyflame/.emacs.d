@@ -100,6 +100,12 @@ re-downloaded in order to locate PACKAGE."
   (interactive)
   (magit-rebase-branch (magit-get-previous-branch) ()))
 
+(defun kannan/buffer/switch-to-scratch-buffer ()
+  "Switch to scratch buffer in the current buffer. Usefule when trying to focus on a single buffer
+and empty out everything else around it"
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
 ;; 12. Install general package
 (require-package 'general)
 (use-package general
@@ -129,6 +135,8 @@ re-downloaded in order to locate PACKAGE."
   (ctrl-keybindings
 	"s-k" 'kill-this-buffer
 	"M-k" 'kill-this-buffer
+	"M-e" 'kannan/buffer/switch-to-scratch-buffer
+
 	"M-g" 'magit-status
 	"C-x g" 'magit-status
 	"C-x o c" 'org-capture
