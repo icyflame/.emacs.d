@@ -155,8 +155,8 @@ and empty out everything else around it"
    )
 
   (general-evil-define-key '(normal visual) org-agenda-mode-map
-	"F" 'org-agenda-later
-	"B" 'org-agenda-earlier
+	"M-n" 'org-agenda-later
+	"M-p" 'org-agenda-earlier
 	)
 
   ;; Elfeed Search's default mappings work are for Insert mode only
@@ -164,7 +164,6 @@ and empty out everything else around it"
 	"RET" 'elfeed-search-show-entry
 	"u" 'elfeed-search-tag-all-unread
 	"r" 'elfeed-search-untag-all-unread
-	"s" 'elfeed-search-set-filter
 	"f" 'elfeed-search-set-filter
 	"C-r" 'elfeed-update
 	)
@@ -176,8 +175,8 @@ and empty out everything else around it"
 	)
 
   (general-evil-define-key '(normal) elfeed-show-mode-map
-	"F" 'elfeed-show-next
-	"P" 'elfeed-show-prev
+	"M-n" 'elfeed-show-next
+	"M-p" 'elfeed-show-prev
 	)
 
   ;; 23. SQL format highlighted region
