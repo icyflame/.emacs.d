@@ -576,7 +576,6 @@ Return value: t when a line was killed; nil when the function simply moved to th
 		  ("https://rss.politico.com/politics-news.xml" news politico us-politics)
 		  ("https://feeds.feedburner.com/ndtvnews-top-stories" news ndtv asia india)
 
-		  ("https://www.bloomberg.com/authors/AT2bBytfUHQ/john-authers.rss" blogs bloomberg)
 		  ("https://www.bloomberg.com/opinion/authors/AQwaMsNcwy0/matthew-g-yglesias.rss" blogs bloomberg)
 		  ("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" blogs bloomberg)
 
