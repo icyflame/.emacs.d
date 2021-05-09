@@ -139,14 +139,17 @@ and empty out everything else around it"
 	"M-k" 'kill-this-buffer
 	"M-e" 'kannan/buffer/switch-to-scratch-buffer
 
+	"C-a" 'org-agenda
+	"C-x o c" 'org-capture
+
 	"M-g" 'magit-status
 	"C-x g" 'magit-status
-	"C-x o c" 'org-capture
+
+	"C-x e p" 'eval-print-last-sexp
 	"C-x e b" 'eval-buffer)
 
   (ctrl-keybindings
 	:keymaps '(org-mode-map)
-   "C-a" 'org-agenda
    "C-c l c" 'org-cycle-list-bullet
    "C-c e" 'org-table-edit-formulas
    "C-c t" 'org-show-todo-tree
@@ -359,8 +362,7 @@ and empty out everything else around it"
   :config
   (general-nmap
 	"C-p" 'helm-projectile
-	"C-b" 'helm-projectile-switch-to-buffer
-	"M-p" 'helm-projectile-switch-project)
+	"C-b" 'helm-projectile-switch-to-buffer)
   (evil-ex-define-cmd "Ag" 'helm-projectile-rg)
   (evil-ex-define-cmd "Rg" 'helm-projectile-rg))
 
