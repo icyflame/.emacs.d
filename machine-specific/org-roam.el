@@ -5,9 +5,8 @@
 
 (require-package-file 'org-roam "~/.emacs.d/lisp/org-roam")
 (use-package org-roam
-  ;; :hook
-  ;; This requires roam_key suddenly
-  ;; (org-mode . org-roam-mode)
+  :hook
+  (after-init . org-roam-mode)
   :custom
   (org-roam-directory "~/personal/notes/org-roam")
 
@@ -20,7 +19,6 @@
 #+author:
 #+created: %T
 #+roam_tags:
-#+publish: no|yes
 
 * Source
 
