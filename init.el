@@ -255,10 +255,16 @@ re-downloaded in order to locate PACKAGE."
 
 ;; 5. Set the color scheme to solarized dark
 (require-package 'solarized-theme)
-(use-package solarized-theme
+;; (use-package solarized-theme
+;;   :init
+;;   (load-theme 'solarized-dark t)
+;;   )
+
+;; 5.1 Set the color scheme to Nord (trial period)
+(require-package 'nord-theme)
+(use-package nord-theme
   :init
-  (load-theme 'solarized-dark t)
-  )
+  (load-theme 'nord t))
 
 ;; 6. Move everything defined for the customize system to a separate file
 (setq custom-file "~/.emacs.d/custom.el")
