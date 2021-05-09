@@ -114,15 +114,10 @@ and empty out everything else around it"
   (general-evil-setup)
   (general-nmap
 	"DEL" 'evil-ex-nohighlight
-	"C-h" 'evil-window-left
-	"C-j" 'evil-window-down
-	"C-k" 'evil-window-up
-	"C-l" 'evil-window-right
 	"f c p" 'copy-buffer
 	"f y" 'copy-buffer
-	"C-+" 'text-scale-increase
-	"C-_" 'text-scale-decrease
 	)
+
 
   ;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
   ;; applications
@@ -133,7 +128,14 @@ and empty out everything else around it"
 	)
 
   (ctrl-keybindings
-	"s-k" 'kill-this-buffer
+	"C-h" 'evil-window-left
+	"C-j" 'evil-window-down
+	"C-k" 'evil-window-up
+	"C-l" 'evil-window-right
+
+	"C-+" 'text-scale-increase
+	"C-_" 'text-scale-decrease
+
 	"M-k" 'kill-this-buffer
 	"M-e" 'kannan/buffer/switch-to-scratch-buffer
 
