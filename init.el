@@ -423,19 +423,6 @@ and empty out everything else around it"
 ;; 29. JSON mode
 (require-package 'json-mode)
 
-;; 30. ggtags
-(require-package 'ggtags)
-
-;; 28. PHP mode
-(require-package 'php-mode)
-(use-package php-mode
-  :config
-  (general-nmap
-	:keymaps 'php-mode-map
-	"g d" 'ggtags-find-definition
-	"g D" 'ggtags-find-tag-dwim
-	))
-
 ;; 32. Magit
 (require-package 'magit)
 
