@@ -157,6 +157,11 @@ and empty out everything else around it"
    "C-_" 'text-scale-decrease
    )
 
+  (ctrl-keybindings
+	:keymaps '(magit-mode-map)
+	"M-=" 'magit-refresh-all
+	)
+
   (general-evil-define-key '(normal visual) org-agenda-mode-map
 	"M-n" 'org-agenda-later
 	"M-p" 'org-agenda-earlier
@@ -168,7 +173,7 @@ and empty out everything else around it"
 	"u" 'elfeed-search-tag-all-unread
 	"r" 'elfeed-search-untag-all-unread
 	"f" 'elfeed-search-set-filter
-	"C-r" 'elfeed-update
+	"M-=" 'elfeed-update
 	)
 
   ;; Elfeed Search's default mappings work are for Insert mode only
