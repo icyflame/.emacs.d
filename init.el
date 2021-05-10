@@ -684,3 +684,7 @@ Note: This will not work if the file has Org tables
 (require-package 'web-mode)
 
 (require-package 'notmuch)
+(use-package notmuch
+  :config
+  (general-nmap
+	"t" 'notmuch-tree-tag))
