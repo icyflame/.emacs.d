@@ -467,13 +467,12 @@ and empty out everything else around it"
 	(expand-file-name (format "%s-%s.org"
 							  (format-time-string "%Y-%m-%d") name) "~/personal/blog/posts-org")))
 
-(defun get-todo-file-for-computer ()
-  "Return the path to the todo file for this computer"
+(defun is-work-computer ()
+  "Return t or nil depending on whether this is a work computer or not"
   (let ((home-computers '("home-thinkpad")))
-  (if (seq-contains-p home-computers (system-name))
-	  '"~/personal/notes/TODO.org"
-	'"~/work/notes/TODO.org")))
-(setq default-todo-file-for-computer (get-todo-file-for-computer))
+	(not (seq-contains-p home-computers (system-name)))))
+
+(setq default-todo-file-for-computer (if (is-work-computer) '"~/work/notes/TODO.org" '"~/personal/notes/TODO.org"))
 
 (setq org-capture-templates
 	  '(("b" "Blog post" plain
