@@ -450,8 +450,10 @@ and empty out everything else around it"
   :config
   (yas-reload-all))
 
-(load '"~/.emacs.d/machine-specific/org-roam.el")
-(load '"~/.emacs.d/machine-specific/org-ref.el")
+(if (not (is-work-computer))
+	((lambda ()
+	  (load '"~/.emacs.d/machine-specific/org-roam.el")
+	  (load '"~/.emacs.d/machine-specific/org-ref.el"))))
 
 ;; 36. Org capture templates
 (defun create-notes-file ()
