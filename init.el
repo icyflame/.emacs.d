@@ -146,7 +146,10 @@ and empty out everything else around it"
 	"C-x g" 'magit-status
 
 	"C-x e p" 'eval-print-last-sexp
-	"C-x e b" 'eval-buffer)
+	"C-x e b" 'eval-buffer
+
+	"C-x e f" 'elfeed
+	"C-x n m" 'notmuch)
 
   (ctrl-keybindings
 	:keymaps '(org-mode-map)
