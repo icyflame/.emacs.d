@@ -679,3 +679,24 @@ Note: This will not work if the file has Org tables
   :config
   (general-nmap
 	"t" 'notmuch-tree-tag))
+
+(defun get-conversion-rate (from to)
+  "Get the conversion rate between any two currencies using a free exchange rate provider
+
+Current implementation uses ratesapi.io. API documentation: https://ratesapi.io/documentation/
+
+This function will return a floating point value"
+  (setq base-cmd "curl 'https://api.ratesapi.io/api/latest?base=%s&symbols=%s' -s | jq '.rates.%s'")
+  (setq actual-cmd (format base-cmd from to to))
+  (message actual-cmd)
+  (string-to-number (shell-command-to-string actual-cmd)))
+
+(defun convert-currencies ()
+  "Convert currencies is a function which will ask a series of questions and convert amounts
+from one currency to another"
+  (interactive)
+  (let ((from-amount (string-to-number (read-string "From amount? ")))
+		(from (read-string "From currency? "))
+		(to (read-string "To currency? ")))
+	(setq to-amount (* from-amount (get-conversion-rate from to)))
+	(message "%0.2f %s = %0.2f %s" from-amount from to-amount to)))
