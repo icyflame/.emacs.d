@@ -450,11 +450,6 @@ and empty out everything else around it"
   :config
   (yas-reload-all))
 
-(if (not (is-work-computer))
-	((lambda ()
-	  (load '"~/.emacs.d/machine-specific/org-roam.el")
-	  (load '"~/.emacs.d/machine-specific/org-ref.el"))))
-
 ;; 36. Org capture templates
 (defun create-notes-file ()
   "Create an org file in ~/notes/."
@@ -473,6 +468,11 @@ and empty out everything else around it"
   "Return t or nil depending on whether this is a work computer or not"
   (let ((home-computers '("home-thinkpad")))
 	(not (seq-contains-p home-computers (system-name)))))
+
+(if (not (is-work-computer))
+	((lambda ()
+	  (load '"~/.emacs.d/machine-specific/org-roam.el")
+	  (load '"~/.emacs.d/machine-specific/org-ref.el"))))
 
 (setq default-todo-file-for-computer (if (is-work-computer) '"~/work/notes/TODO.org" '"~/personal/notes/TODO.org"))
 
