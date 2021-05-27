@@ -640,7 +640,7 @@ Note: This will not work if the file has Org tables
 	(setq comps (reverse (split-string file "\\.")))
 	(setq extension (pop comps))
 	(setq comps (reverse comps))
-	(setq output-file-name (concat (s-join "." comps) ".unwrapped" "." extension)))
+	(setq output-file-name (concat (string-join comps ".") ".unwrapped" "." extension)))
 
   ;; Open the requested file in a buffer
   (setq old-buffer (find-file-noselect file))
