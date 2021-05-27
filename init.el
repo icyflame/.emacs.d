@@ -700,3 +700,6 @@ from one currency to another"
 		(to (read-string "To currency? ")))
 	(setq to-amount (* from-amount (get-conversion-rate from to)))
 	(message "%0.2f %s = %0.2f %s" from-amount from to-amount to)))
+
+(require-package 'atomic-chrome)
+(atomic-chrome-start-server)
