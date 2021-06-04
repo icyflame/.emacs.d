@@ -41,6 +41,8 @@ re-downloaded in order to locate PACKAGE."
 (package-initialize)
 
 (require-package 'init-loader)
+
+;; https://github.com/hanabokuro/dot-files
 (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
 (init-loader-load "~/.emacs.d/imported-confs")
 
@@ -147,6 +149,8 @@ and empty out everything else around it"
 
 	"C-x e p" 'eval-print-last-sexp
 	"C-x e b" 'eval-buffer
+
+	"M-d" 'preview-plantuml-now
 
 	"C-x e f" 'elfeed
 	"C-x n m" 'notmuch)
