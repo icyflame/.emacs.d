@@ -160,8 +160,6 @@ and empty out everything else around it"
    "C-c l c" 'org-cycle-list-bullet
    "C-c e" 'org-table-edit-formulas
    "C-c t" 'org-show-todo-tree
-   "C-+" 'text-scale-increase
-   "C-_" 'text-scale-decrease
    )
 
   (ctrl-keybindings
