@@ -666,15 +666,20 @@ Note: This will not work if the file has Org tables
 	  (setq start-char (char-after))
 	  (setq is-header-line (eq start-char (string-to-char '"*")))
 	  (setq is-list-start-line (org-list-at-regexp-after-bullet-p '""))
+	  (setq is-property-definition (looking-at "^#\\+"))
+	  (setq is-block-end (looking-at "^#\\+end"))
+	  (setq is-block-begin (looking-at "^#\\+begin"))
 
 	  (if is-line-empty (setq d nil)
 		(if (and
+			 (not is-property-definition)
+			 (not is-block-end)
 			 (not is-header-line)
 			 (not is-list-start-line)
 			 (not is-line-empty)
 			 (eq d t))
 			(delete-indentation))
-		(if (not is-header-line) (setq d t)))
+		(if (and (not is-block-begin) (not is-header-line)) (setq d t)))
 
 	  (message "%d: Start char: %s; Begin: %s; Header: %s; Does: %s" line-number start-char is-block-begin is-header-line d)
 
