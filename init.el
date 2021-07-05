@@ -665,7 +665,7 @@ Note: This will not work if the file has Org tables
 
 	  (if is-line-empty (setq d nil)
 		(setq start-char (char-after))
-		(setq is-header-line (eq start-char "*"))
+		(setq is-header-line (eq start-char (string-to-char '"*")))
 		(setq is-list-start-line (org-list-at-regexp-after-bullet-p '""))
 		(if (and
 			 (not is-header-line)
