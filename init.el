@@ -654,14 +654,11 @@ Note: This will not work if the file has Org tables
 	(erase-buffer)
 	(insert-buffer old-buffer)
 	;; Prepare tracker variable to keep track if previous line allows indentation or not
-	(setq d nil)
-	;; Prepare line-number variable (useful for debugging)
-	(setq line-number 0)
+	(setq does-previous-line-allow-indentation nil)
 	;; Iterate over the complete buffer, starting at the beginning
 	(while (not (eq (point-at-eol) (point-max)))
 	  (beginning-of-line)
 	  (setq is-line-empty (looking-at "^$"))
-	  (setq line-number (1+ line-number))
 
 	  (setq start-char (char-after))
 	  (setq is-header-line (eq start-char (string-to-char '"*")))
@@ -670,7 +667,7 @@ Note: This will not work if the file has Org tables
 	  (setq is-block-end (looking-at "^#\\+end"))
 	  (setq is-block-begin (looking-at "^#\\+begin"))
 
-	  (if is-line-empty (setq d nil)
+	  (if is-line-empty (setq does-previous-line-allow-indentation nil)
 		(if (and
 			 (not (org-in-src-block-p))
 			 (not is-property-definition)
@@ -678,11 +675,9 @@ Note: This will not work if the file has Org tables
 			 (not is-header-line)
 			 (not is-list-start-line)
 			 (not is-line-empty)
-			 (eq d t))
+			 (eq does-previous-line-allow-indentation t))
 			(delete-indentation))
-		(if (and (not is-block-begin) (not is-header-line)) (setq d t)))
-
-	  (message "%d: Start char: %s; Begin: %s; Header: %s; Does: %s" line-number start-char is-block-begin is-header-line d)
+		(if (and (not is-block-begin) (not is-header-line)) (setq does-previous-line-allow-indentation t)))
 
 	  (forward-line 1))
 	;; Write to the output file and leave the buffer open for the user
