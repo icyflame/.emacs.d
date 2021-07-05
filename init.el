@@ -663,7 +663,7 @@ Note: This will not work if the file has Org tables
 	  (if is-line-empty (setq d nil)
 		(setq start-char (char-after))
 		(setq is-header-line (eq start-char "*"))
-		(setq is-list-start-line (or (looking-at "^[ \t]*[-\+]") (looking-at "^[ \t]*[0-9]+[\.\)]")))
+		(setq is-list-start-line (org-list-at-regexp-after-bullet-p '""))
 		(if (and (not is-header-line) (not is-list-start-line) (not is-line-empty) (eq d t)) (delete-indentation))
 		(if (not is-header-line) (setq d t)))
 	  (forward-line 1))
