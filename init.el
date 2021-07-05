@@ -663,10 +663,11 @@ Note: This will not work if the file has Org tables
 	  (setq is-line-empty (looking-at "^$"))
 	  (setq line-number (1+ line-number))
 
+	  (setq start-char (char-after))
+	  (setq is-header-line (eq start-char (string-to-char '"*")))
+	  (setq is-list-start-line (org-list-at-regexp-after-bullet-p '""))
+
 	  (if is-line-empty (setq d nil)
-		(setq start-char (char-after))
-		(setq is-header-line (eq start-char (string-to-char '"*")))
-		(setq is-list-start-line (org-list-at-regexp-after-bullet-p '""))
 		(if (and
 			 (not is-header-line)
 			 (not is-list-start-line)
@@ -675,7 +676,7 @@ Note: This will not work if the file has Org tables
 			(delete-indentation))
 		(if (not is-header-line) (setq d t)))
 
-	  (message "%d: Begin: %s; Header: %s; Does: %s" line-number is-block-begin is-header-line does-previous-line-allow-delete-indentation)
+	  (message "%d: Start char: %s; Begin: %s; Header: %s; Does: %s" line-number start-char is-block-begin is-header-line d)
 
 	  (forward-line 1))
 	;; Write to the output file and leave the buffer open for the user
