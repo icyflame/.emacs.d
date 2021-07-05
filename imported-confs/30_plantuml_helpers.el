@@ -7,10 +7,12 @@
 ;; Rendering plantuml
 (defun plantuml-render-buffer ()
   (interactive)
+  (if (not (file-exists-p '"/usr/local/bin/plantuml.jar"))
+	  (message "Plantuml.jar not found at /usr/local/bin/plantuml.jar")
   (message "PLANTUML Start rendering")
   (shell-command (concat "java -jar /usr/local/bin/plantuml.jar "
                          buffer-file-name))
-  (message (concat "PLANTUML Rendered:  " (buffer-name))))
+  (message (concat "PLANTUML Rendered:  " (buffer-name)))))
 
 ;; Image reloading
 (defun reload-image-at-point ()
