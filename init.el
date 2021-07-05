@@ -661,7 +661,7 @@ Note: This will not work if the file has Org tables
 	  (if empty-line (setq d nil)
 		(setq start-char (char-after))
 		(setq title-line (eq start-char "*"))
-		(setq list-start-line (looking-at "^[ \t]*-"))
+		(setq list-start-line (or (looking-at "^[ \t]*[-\*\+]") (looking-at "^[ \t]*[0-9]+[\.\)]")))
 		(if (and (not title-line) (not list-start-line) (not empty-line) (eq d t)) (delete-indentation))
 		(if (not title-line) (setq d t)))
 	  (forward-line 1))
