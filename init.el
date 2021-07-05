@@ -672,6 +672,7 @@ Note: This will not work if the file has Org tables
 
 	  (if is-line-empty (setq d nil)
 		(if (and
+			 (not (org-in-src-block-p))
 			 (not is-property-definition)
 			 (not is-block-end)
 			 (not is-header-line)
