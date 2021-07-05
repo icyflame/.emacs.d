@@ -707,3 +707,20 @@ from one currency to another"
 
 (require-package 'atomic-chrome)
 (atomic-chrome-start-server)
+
+(require-package 'org-journal)
+(use-package org-journal
+  :init
+  ;; Change default prefix key; needs to be set before loading org-journal
+  (setq org-journal-prefix-key "C-c j ")
+  :config
+  (setq org-journal-dir "~/personal/notes/journal/"
+        org-journal-date-format "%A, %d %B %Y"))
+
+(require-package 'nov)
+(use-package nov
+  :config
+  (add-hook 'nov-mode-hook 'visual-line-mode)
+  (add-hook 'nov-mode-hook 'visual-fill-column-mode)
+  (setq nov-text-width 80)
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
