@@ -584,6 +584,7 @@ Return value: t when a line was killed; nil when the function simply moved to th
 		  ("https://kazeburo.hatenablog.com/feed" blogs tech)
 		  ("https://blog.jessfraz.com/index.xml" blogs tech)
 		  ("https://daniel.haxx.se/blog/feed/" blogs tech)
+		  ("https://pluralistic.net/feed/" blogs tech links)
 
 		  ("https://ppsreejith.net/index.xml" blogs friends)
 		  ("https://code.ghostwriternr.me/feed.xml" blogs friends)
