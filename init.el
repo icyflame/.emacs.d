@@ -655,10 +655,13 @@ Note: This will not work if the file has Org tables
 	(insert-buffer old-buffer)
 	;; Prepare tracker variable to keep track if previous line allows indentation or not
 	(setq d nil)
+	;; Prepare line-number variable (useful for debugging)
+	(setq line-number 0)
 	;; Iterate over the complete buffer, starting at the beginning
 	(while (not (eq (point-at-eol) (point-max)))
 	  (beginning-of-line)
 	  (setq is-line-empty (looking-at "^$"))
+	  (setq line-number (1+ line-number))
 
 	  (if is-line-empty (setq d nil)
 		(setq start-char (char-after))
@@ -671,6 +674,9 @@ Note: This will not work if the file has Org tables
 			 (eq d t))
 			(delete-indentation))
 		(if (not is-header-line) (setq d t)))
+
+	  (message "%d: Begin: %s; Header: %s; Does: %s" line-number is-block-begin is-header-line does-previous-line-allow-delete-indentation)
+
 	  (forward-line 1))
 	;; Write to the output file and leave the buffer open for the user
 	(write-file output-file-name))
