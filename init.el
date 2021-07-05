@@ -653,17 +653,19 @@ Note: This will not work if the file has Org tables
   (with-current-buffer new-buffer
 	(erase-buffer)
 	(insert-buffer old-buffer)
+	;; Prepare tracker variable to keep track if previous line was NOT a title-line
 	(setq d nil)
+	;; Iterate over the complete buffer, starting at the beginning
 	(while (not (eq (point-at-eol) (point-max)))
 	  (beginning-of-line)
-	  (setq empty-line (looking-at "^$"))
+	  (setq is-line-empty (looking-at "^$"))
 
-	  (if empty-line (setq d nil)
+	  (if is-line-empty (setq d nil)
 		(setq start-char (char-after))
-		(setq title-line (eq start-char "*"))
-		(setq list-start-line (or (looking-at "^[ \t]*[-\*\+]") (looking-at "^[ \t]*[0-9]+[\.\)]")))
-		(if (and (not title-line) (not list-start-line) (not empty-line) (eq d t)) (delete-indentation))
-		(if (not title-line) (setq d t)))
+		(setq is-header-line (eq start-char "*"))
+		(setq is-list-start-line (or (looking-at "^[ \t]*[-\*\+]") (looking-at "^[ \t]*[0-9]+[\.\)]")))
+		(if (and (not is-header-line) (not is-list-start-line) (not is-line-empty) (eq d t)) (delete-indentation))
+		(if (not is-header-line) (setq d t)))
 	  (forward-line 1))
 	;; Write to the output file and leave the buffer open for the user
 	(write-file output-file-name))
