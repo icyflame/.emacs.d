@@ -653,7 +653,7 @@ Note: This will not work if the file has Org tables
   (with-current-buffer new-buffer
 	(erase-buffer)
 	(insert-buffer old-buffer)
-	;; Prepare tracker variable to keep track if previous line was NOT a title-line
+	;; Prepare tracker variable to keep track if previous line allows indentation or not
 	(setq d nil)
 	;; Iterate over the complete buffer, starting at the beginning
 	(while (not (eq (point-at-eol) (point-max)))
@@ -664,7 +664,12 @@ Note: This will not work if the file has Org tables
 		(setq start-char (char-after))
 		(setq is-header-line (eq start-char "*"))
 		(setq is-list-start-line (org-list-at-regexp-after-bullet-p '""))
-		(if (and (not is-header-line) (not is-list-start-line) (not is-line-empty) (eq d t)) (delete-indentation))
+		(if (and
+			 (not is-header-line)
+			 (not is-list-start-line)
+			 (not is-line-empty)
+			 (eq d t))
+			(delete-indentation))
 		(if (not is-header-line) (setq d t)))
 	  (forward-line 1))
 	;; Write to the output file and leave the buffer open for the user
