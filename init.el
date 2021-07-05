@@ -653,17 +653,37 @@ Note: This will not work if the file has Org tables
   (with-current-buffer new-buffer
 	(erase-buffer)
 	(insert-buffer old-buffer)
+	;; Prepare tracker variable to keep track if previous line allows indentation or not
 	(setq d nil)
+	;; Prepare line-number variable (useful for debugging)
+	(setq line-number 0)
+	;; Iterate over the complete buffer, starting at the beginning
 	(while (not (eq (point-at-eol) (point-max)))
 	  (beginning-of-line)
-	  (setq empty-line (looking-at "^$"))
+	  (setq is-line-empty (looking-at "^$"))
+	  (setq line-number (1+ line-number))
 
-	  (if empty-line (setq d nil)
-		(setq start-char (char-after))
-		(setq title-line (eq start-char "*"))
-		(setq list-start-line (looking-at "^[ \t]*-"))
-		(if (and (not title-line) (not list-start-line) (not empty-line) (eq d t)) (delete-indentation))
-		(if (not title-line) (setq d t)))
+	  (setq start-char (char-after))
+	  (setq is-header-line (eq start-char (string-to-char '"*")))
+	  (setq is-list-start-line (org-list-at-regexp-after-bullet-p '""))
+	  (setq is-property-definition (looking-at "^#\\+"))
+	  (setq is-block-end (looking-at "^#\\+end"))
+	  (setq is-block-begin (looking-at "^#\\+begin"))
+
+	  (if is-line-empty (setq d nil)
+		(if (and
+			 (not (org-in-src-block-p))
+			 (not is-property-definition)
+			 (not is-block-end)
+			 (not is-header-line)
+			 (not is-list-start-line)
+			 (not is-line-empty)
+			 (eq d t))
+			(delete-indentation))
+		(if (and (not is-block-begin) (not is-header-line)) (setq d t)))
+
+	  (message "%d: Start char: %s; Begin: %s; Header: %s; Does: %s" line-number start-char is-block-begin is-header-line d)
+
 	  (forward-line 1))
 	;; Write to the output file and leave the buffer open for the user
 	(write-file output-file-name))
