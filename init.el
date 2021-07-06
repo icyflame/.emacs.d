@@ -344,6 +344,9 @@ and empty out everything else around it"
   (setq markdown-open-command "firefox"))
 
 ;; 33. Comp(lete) any(thing)
+(require-package 'lsp-ui)
+(use-package lsp-ui)
+
 (require-package 'lsp-mode)
 (use-package lsp-mode
   :ensure t
