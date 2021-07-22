@@ -498,6 +498,8 @@ and empty out everything else around it"
   - *Date added to this list:* %T
   - *Source:* %^{Source}
   - *Author:* %^{Author (if known)}
+  - *Link:* %^{Link (if known)}
+  - *Tags:* %^{Tags (if required)}
   - *Note:* %?")
 
 		("j" "Explaining a Japanese news article" plain
