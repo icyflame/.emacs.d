@@ -756,3 +756,9 @@ from one currency to another"
   (add-hook 'nov-mode-hook 'visual-fill-column-mode)
   (setq nov-text-width 80)
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+
+(defun kannan/golang-download-dependncies ()
+  "This function will download dependencies using gomods"
+  (interactive)
+  (start-process "download-go-dependencies" "*Go mods*" "go" "mod" "vendor"))
+
