@@ -775,3 +775,21 @@ from one currency to another"
           (apply 'delete-region remove)
           (insert description)))))
 
+(require 'simpleclip)
+(defun kannan/org/replace-link-from-clipboard ()
+    "Replace an Org link with the same description and the link from the clipboard
+
+Adapted from afs/org-replace-link-by-link-description"
+  (interactive)
+  (if (org-in-regexp org-link-bracket-re 1)
+      (save-excursion
+        (let ((remove (list (match-beginning 0) (match-end 0)))
+              (description
+               (if (match-end 2)
+                   (org-match-string-no-properties 2)
+                 (org-match-string-no-properties 1))))
+          (apply 'delete-region remove)
+		  (let
+			  ((new-link (simpleclip-get-contents)))
+			(org-insert-link nil new-link description)
+			(message new-link))))))
