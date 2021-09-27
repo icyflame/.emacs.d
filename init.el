@@ -80,6 +80,19 @@ re-downloaded in order to locate PACKAGE."
   (interactive)
   (magit-merge-plain (magit-get-upstream-branch)))
 
+(defun kannan/magit/delete-branch (branch)
+  (magit-run-git "branch" "-d" branch))
+
+(defun kannan/magit/delete-all-merged-branches ()
+  "Delete all branches that have been merged into the current branch"
+  (interactive)
+  (let ((current-branch (magit-get-current-branch)))
+	(if (or (string-equal "master" current-branch)
+			(eq t (kannan/ask-user-approval "Delete merged branches, even though we are not on master?")))
+		(let ((branches-to-delete (delete current-branch (magit-list-merged-branches))))
+		  (mapc #'kannan/magit/delete-branch branches-to-delete)
+		  (message "Deleted all branches: %s" (string-join branches-to-delete ", "))))))
+
 (defun kannan/magit/push-safe-to-current ()
   "Push safely to the upstream branch of the current branch. Ask user before pushing to master"
   (interactive)
