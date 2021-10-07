@@ -170,9 +170,11 @@ and empty out everything else around it"
 
   (ctrl-keybindings
 	:keymaps '(org-mode-map)
-   "C-c l c" 'org-cycle-list-bullet
-   "C-c e" 'org-table-edit-formulas
-   "C-c t" 'org-show-todo-tree
+	"C-c e" 'org-table-edit-formulas
+
+	"C-c l c" 'kannan/org/copy-link-to-clipboard
+	"C-c l r" 'kannan/org/replace-link-from-clipboard
+	"C-c l s" 'kannan/org/show-link
    )
 
   (ctrl-keybindings
