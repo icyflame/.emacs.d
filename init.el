@@ -793,3 +793,24 @@ Adapted from afs/org-replace-link-by-link-description"
 			  ((new-link (simpleclip-get-contents)))
 			(org-insert-link nil new-link description)
 			(message new-link))))))
+
+(defun kannan/org/copy-link-to-clipboard ()
+    "Replace an Org link with the same description and the link from the clipboard
+
+Adapted from afs/org-replace-link-by-link-description"
+  (interactive)
+  (if (org-in-regexp org-link-bracket-re 1)
+	  (save-excursion
+		(let ((link (org-match-string-no-properties 1)))
+		  (simpleclip-set-contents link)
+		  (message link)))))
+
+(defun kannan/org/show-link ()
+    "Replace an Org link with the same description and the link from the clipboard
+
+Adapted from afs/org-replace-link-by-link-description"
+  (interactive)
+  (if (org-in-regexp org-link-bracket-re 1)
+	  (save-excursion
+		(let ((link (org-match-string-no-properties 1)))
+		  (message link)))))
