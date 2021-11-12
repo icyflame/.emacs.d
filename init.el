@@ -290,18 +290,10 @@ and empty out everything else around it"
 	)
   )
 
-;; 5. Set the color scheme to solarized dark
-(require-package 'solarized-theme)
-;; (use-package solarized-theme
-;;   :init
-;;   (load-theme 'solarized-dark t)
-;;   )
-
-;; 5.1 Set the color scheme to Nord (trial period)
-(require-package 'nord-theme)
-(use-package nord-theme
-  :init
-  (load-theme 'nord t))
+;; 5.2 Set the color scheme to Tomorrow Night - Bright (trial)
+(require 'color-theme-tomorrow)
+(color-theme-tomorrow--define-theme night)
+(enable-theme 'tomorrow-night)
 
 ;; 6. Move everything defined for the customize system to a separate file
 (setq custom-file "~/.emacs.d/custom.el")
