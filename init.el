@@ -330,6 +330,7 @@ and empty out everything else around it"
   (global-set-key (kbd "s-b") 'helm-buffers-list)
 
   (evil-ex-define-cmd ":" 'helm-locate)
+  (evil-ex-define-cmd "P" 'helm-projectile-switch-project)
   (evil-ex-define-cmd "X" 'helm-M-x)
 
   (helm-mode t)
