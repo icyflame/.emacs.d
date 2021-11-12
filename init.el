@@ -364,6 +364,8 @@ and empty out everything else around it"
   (general-nmap
 	"g t" 'lsp-goto-type-definition
 	"g d" 'lsp-find-definition
+	"g i" 'lsp-treemacs-implementations
+	"g r" 'lsp-treemacs-references
 	"C-]" 'lsp-find-definition
 	)
   (lsp-register-custom-settings
@@ -810,3 +812,12 @@ Adapted from afs/org-replace-link-by-link-description"
 	  (save-excursion
 		(let ((link (org-match-string-no-properties 1)))
 		  (message link)))))
+
+(require-package 'treemacs)
+(require-package 'treemacs-evil)
+(require-package 'treemacs-projectile)
+
+(require-package 'lsp-treemacs)
+(use-package lsp-treemacs
+  :config
+  (lsp-treemacs-sync-mode 1))
