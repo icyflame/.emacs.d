@@ -148,8 +148,8 @@ and empty out everything else around it"
 	"C-k" 'evil-window-up
 	"C-l" 'evil-window-right
 
-	"C-+" 'text-scale-increase
-	"C-_" 'text-scale-decrease
+	"C-+" 'increase-emacs-font-size
+	"C-_" 'decrease-emacs-font-size
 
 	"M-k" 'kill-this-buffer
 	"M-e" 'kannan/buffer/switch-to-scratch-buffer
@@ -822,3 +822,100 @@ Adapted from afs/org-replace-link-by-link-description"
 (use-package lsp-treemacs
   :config
   (lsp-treemacs-sync-mode 1))
+
+;; ============================================
+;; Coldnew's Font Size Conf for Org-Table
+;; ============================================
+;;
+;; Use narrow fonts, which ensure that column width is always the same.
+;;
+;; Source: https://github.com/kuanyui/.emacs.d/blob/11b67bbeb00b254f4504c73c7c8bf6dad2a8e53e/rc/rc-basic.el#L168
+;; Answers: https://emacs.stackexchange.com/a/59700, https://emacs.stackexchange.com/a/10474
+;; Original blog post: https://coldnew.github.io/d5011be2/
+;; 特殊字型設定
+(defun get-screen-pixel-density ()
+  "Return nil on terminal.
+Otherwise, return DPI (1 inch = 2.54 cm)
+"
+  (let* ((screen0 (car (display-monitor-attributes-list)))
+         (mm (alist-get 'mm-size screen0))
+         (px (alist-get 'geometry screen0))
+         (w-mm (nth 0 mm))
+         (w-px (nth 2 px))
+         )
+    (if (eq w-mm nil)
+        nil
+      (* 25.4 (/ w-px (float w-mm)))
+      )))
+
+(when (window-system)
+  (if (eq system-type 'windows-nt)
+      (set-face-attribute 'default nil :font "Consolas-9"))
+  (if (eq system-type 'windows-nt)
+      (setq emacs-cjk-font "Consolas"
+            emacs-english-font "Consolas"))
+
+  (defvar emacs-english-font "DejaVu Sans Mono" "The font name of English.")
+  (defvar emacs-cjk-font "Noto Sans CJK JP" "The font name for CJK.")
+  ;;; for test
+  ;; (find-font (font-spec :name "LiHei Pro"))
+  ;; (font-family-list)
+
+  (defvar emacs-font-size-pair '(17 . 20)
+    "Default font size pair for (english . chinese)")
+
+  ;; Auto adjust font-size for Hi-res screen
+  (let ((dpi (get-screen-pixel-density)))
+    (setq emacs-font-size-pair
+          (cond
+           ((eq dpi nil) (error "This should not be executed under terminal."))
+           ((> dpi 150) '(24 . 28))
+           (t '(17 . 20))
+           )))
+
+  (defvar emacs-font-size-pair-list
+    '(( 5 .  6) (9 . 10) (10 . 12)(12 . 14)
+      (13 . 16) (15 . 18) (17 . 20) (19 . 22)
+      (20 . 24) (21 . 26) (24 . 28) (26 . 32)
+      (28 . 34) (30 . 36) (34 . 40) (36 . 44))
+    "This list is used to store matching (english . chinese) font-size.")
+
+  (defun font-exist-p (fontname)
+    "Test if this font is exist or not."
+    (if (or (not fontname) (string= fontname ""))
+        nil
+      (if (not (x-list-fonts fontname)) nil t)))
+
+  (defun set-font (english chinese size-pair)
+    "Setup emacs English and Chinese font on x window-system."
+
+    (if (font-exist-p english)
+        (set-frame-font (format "%s:pixelsize=%d" english (car size-pair)) t))
+
+    (if (font-exist-p chinese)
+        (dolist (charset '(kana han symbol cjk-misc bopomofo))
+          (set-fontset-font (frame-parameter nil 'font) charset
+                            (font-spec :family chinese :size (cdr size-pair))))))
+
+  ;; Setup font size based on emacs-font-size-pair
+  (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair)
+
+  (defun emacs-step-font-size (step)
+    "Increase/Decrease emacs's font size."
+    (let ((scale-steps emacs-font-size-pair-list))
+      (if (< step 0) (setq scale-steps (reverse scale-steps)))
+      (setq emacs-font-size-pair
+            (or (cadr (member emacs-font-size-pair scale-steps))
+                emacs-font-size-pair))
+      (when emacs-font-size-pair
+        (message "emacs font size set to %.1f" (car emacs-font-size-pair))
+        (set-font emacs-english-font emacs-cjk-font emacs-font-size-pair))))
+
+  (defun increase-emacs-font-size ()
+    "Decrease emacs's font-size acording emacs-font-size-pair-list."
+    (interactive) (emacs-step-font-size 1))
+
+  (defun decrease-emacs-font-size ()
+    "Increase emacs's font-size acording emacs-font-size-pair-list."
+    (interactive) (emacs-step-font-size -1))
+  )
