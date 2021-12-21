@@ -489,7 +489,9 @@ and empty out everything else around it"
 	  (load '"~/.emacs.d/machine-specific/org-roam.el")
 	  (load '"~/.emacs.d/machine-specific/org-ref.el"))))
 
-(if (is-work-computer) (set-frame-font "Menlo 14" nil t))
+(if (and
+	 (x-list-fonts "Menlo 14")
+	 (is-work-computer)) (set-frame-font "Menlo 14" nil t))
 
 (setq default-todo-file-for-computer (if (is-work-computer) '"~/work/notes/TODO.org" '"~/personal/notes/TODO.org"))
 
