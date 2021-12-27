@@ -686,7 +686,8 @@ Note: This will not work if the file has Org tables
 	  (setq is-block-end (looking-at "^#\\+end"))
 	  (setq is-block-begin (looking-at "^#\\+begin"))
 
-	  (if is-line-empty (setq does-previous-line-allow-indentation nil)
+	  (if is-line-empty
+		  (setq does-previous-line-allow-indentation nil)
 		(if (and
 			 (not (org-in-src-block-p))
 			 (not is-property-definition)
@@ -696,7 +697,9 @@ Note: This will not work if the file has Org tables
 			 (not is-line-empty)
 			 (eq does-previous-line-allow-indentation t))
 			(delete-indentation))
-		(if (and (not is-block-begin) (not is-header-line)) (setq does-previous-line-allow-indentation t)))
+
+		;; Allow indentation on next line if this line is neither a header and nor a block begin
+		(setq does-previous-line-allow-indentation (and (not is-block-begin) (not is-header-line))))
 
 	  (forward-line 1))
 	;; Write to the output file and leave the buffer open for the user
