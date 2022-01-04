@@ -8,7 +8,7 @@
   :hook
   (after-init . org-roam-mode)
   :custom
-  (org-roam-directory "~/personal/notes/org-roam")
+  (org-roam-directory (notes-directory-file '"org-roam"))
 
   :config
   (setq org-roam-capture-templates

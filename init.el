@@ -42,6 +42,18 @@ re-downloaded in order to locate PACKAGE."
 
 (require-package 'init-loader)
 
+(defun is-work-computer ()
+  "Return t or nil depending on whether this is a work computer or not"
+  (let ((home-computers '("home-thinkpad")))
+	(not (seq-contains-p home-computers (system-name)))))
+
+(setq notes-directory (if (is-work-computer) '"~/work/notes/" '"~/personal/notes/"))
+(defun notes-directory-file (filename)
+  "Return the path to filename when placed inside the notes-directory"
+  (concat notes-directory filename))
+
+(setq default-todo-file-for-computer (notes-directory-file '"TODO.org"))
+
 ;; https://github.com/hanabokuro/dot-files
 (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
 (init-loader-load "~/.emacs.d/imported-confs")
@@ -473,6 +485,7 @@ and empty out everything else around it"
   (let ((name (read-string "Filename: ")))
 	(expand-file-name (format "%s-%s.org"
 							  (format-time-string "%Y-%m-%d") name) "~/personal/notes/japanese")))
+
 (defun create-blog-file ()
   "Create an org file in ~/blog/."
   (interactive)
@@ -480,21 +493,14 @@ and empty out everything else around it"
 	(expand-file-name (format "%s-%s.org"
 							  (format-time-string "%Y-%m-%d") name) "~/personal/blog/posts-org")))
 
-(defun is-work-computer ()
-  "Return t or nil depending on whether this is a work computer or not"
-  (let ((home-computers '("home-thinkpad")))
-	(not (seq-contains-p home-computers (system-name)))))
-
+(load '"~/.emacs.d/machine-specific/org-roam.el")
 (if (not (is-work-computer))
 	((lambda ()
-	  (load '"~/.emacs.d/machine-specific/org-roam.el")
 	  (load '"~/.emacs.d/machine-specific/org-ref.el"))))
 
 (if (and
 	 (x-list-fonts "Menlo 14")
 	 (is-work-computer)) (set-frame-font "Menlo 14" nil t))
-
-(setq default-todo-file-for-computer (if (is-work-computer) '"~/work/notes/TODO.org" '"~/personal/notes/TODO.org"))
 
 (setq org-capture-templates
 	  '(("b" "Blog post" plain
@@ -508,7 +514,7 @@ and empty out everything else around it"
 		 "* TODO %?\n  %i\n  %a")
 
 		("r" "Add a recommendation to the recommendations list" checkitem
-		 (file "~/personal/notes/RecommendationsList.org")
+		 (file (notes-directory-file '"RecommendationsList.org"))
 		 "- [ ] %^{Title}
   - *Date added to this list:* %T
   - *Source:* %^{Source}
@@ -519,7 +525,7 @@ and empty out everything else around it"
 
 		("j" "Explaining a Japanese news article" plain
 		 (file create-notes-file)
-		 (file "~/personal/notes/japanese/template.org")
+		 (file (notes-directory-file "japanese/template.org"))
 		 :jump-to-captured t
 		 :unnarrowed t)))
 
@@ -751,7 +757,7 @@ from one currency to another"
   ;; Change default prefix key; needs to be set before loading org-journal
   (setq org-journal-prefix-key "C-c j ")
   :config
-  (setq org-journal-dir "~/personal/notes/journal/"
+  (setq org-journal-dir (notes-directory-file "journal/")
         org-journal-date-format "%A, %d %B %Y"))
 
 (require-package 'nov)
