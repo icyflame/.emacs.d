@@ -226,6 +226,7 @@ and empty out everything else around it"
 	:states '(visual)
 	"c SPC" 'comment-or-uncomment-region
 	"c s" 'comment-or-uncomment-region
+	"a s" 'kannan/convert-region-to-ascii
 	)
 
   (leader-def-mode
@@ -924,3 +925,11 @@ Otherwise, return DPI (1 inch = 2.54 cm)
     "Increase emacs's font-size acording emacs-font-size-pair-list."
     (interactive) (emacs-step-font-size -1))
   )
+
+(defun kannan/convert-region-to-ascii (beg end &optional arg)
+  "Convert the highlighted region to ASCII through transliteration offered by iconv.
+
+iconv should be present on the host."
+  (interactive "r\nP")
+  (shell-command-on-region beg end '"iconv --to ascii//translit" nil t)
+  (message "where I %d you %d" end beg))
