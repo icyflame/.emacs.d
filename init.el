@@ -502,32 +502,35 @@ and empty out everything else around it"
 	 (is-work-computer)
 	 (x-list-fonts "Menlo 14")) (set-frame-font "Menlo 14" nil t))
 
-(setq org-capture-templates
-	  '(("b" "Blog post" plain
-		 (file create-blog-file)
-		 (file "~/personal/blog/posts-org/template.org")
-		 :prepend t
-		 :jump-to-captured t
-		 :unnarrowed t)
+(add-to-list 'org-capture-templates
+			 '("j" "Explaining a Japanese news article" plain
+			   (file create-notes-file)
+			   (file (notes-directory-file "japanese/template.org"))
+			   :jump-to-captured t
+			   :unnarrowed t))
 
-		("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
-		 "* TODO %?\n  %i\n  %a")
+(add-to-list 'org-capture-templates
+			 '("b" "Blog post" plain
+			   (file create-blog-file)
+			   (file "~/personal/blog/posts-org/template.org")
+			   :prepend t
+			   :jump-to-captured t
+			   :unnarrowed t))
 
-		("r" "Add a recommendation to the recommendations list" checkitem
-		 (file (notes-directory-file '"RecommendationsList.org"))
-		 "- [ ] %^{Title}
-  - *Date added to this list:* %T
-  - *Source:* %^{Source}
-  - *Author:* %^{Author (if known)}
-  - *Link:* %^{Link (if known)}
-  - *Tags:* %^{Tags (if required)}
-  - *Note:* %?")
+(add-to-list 'org-capture-templates
+			 '("r" "Add a recommendation to the recommendations list" checkitem
+			   (file (notes-directory-file '"RecommendationsList.org"))
+			   "- [ ] %^{Title}
+- *Date added to this list:* %T
+- *Source:* %^{Source}
+- *Author:* %^{Author (if known)}
+- *Link:* %^{Link (if known)}
+- *Tags:* %^{Tags (if required)}
+- *Note:* %?"))
 
-		("j" "Explaining a Japanese news article" plain
-		 (file create-notes-file)
-		 (file (notes-directory-file "japanese/template.org"))
-		 :jump-to-captured t
-		 :unnarrowed t)))
+(add-to-list 'org-capture-templates
+			 '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
+			   "* TODO %?\n  %i\n  %a"))
 
 ;; 37. Function to kill all comments
 (defun line-length ()
