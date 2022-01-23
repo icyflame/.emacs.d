@@ -11,12 +11,11 @@
 ;; Scratch buffer usage: Evaluate expression (C-x C-e)
 ;; The result of the expression is printed to the minibuffer
 
-;; Ongoing issues
-
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+(setq org-capture-templates '())
 
 ;;; from purcell/emacs.d
 (defun require-package (package &optional min-version no-refresh)
@@ -46,6 +45,10 @@ re-downloaded in order to locate PACKAGE."
   "Return t or nil depending on whether this is a work computer or not"
   (let ((home-computers '("home-thinkpad")))
 	(not (seq-contains-p home-computers (system-name)))))
+
+(defun is-personal-computer ()
+  "Return t or nil depending on whether this is a personal computer or not"
+  (not (is-work-computer)))
 
 (setq notes-directory (if (is-work-computer) '"~/work/notes/" '"~/personal/notes/"))
 (defun notes-directory-file (filename)
@@ -505,21 +508,22 @@ and empty out everything else around it"
 (add-to-list 'org-capture-templates
 			 '("j" "Explaining a Japanese news article" plain
 			   (file create-notes-file)
-			   (file (notes-directory-file "japanese/template.org"))
+			   (file (lambda () (notes-directory-file '"japanese/template.org")))
 			   :jump-to-captured t
 			   :unnarrowed t))
 
-(add-to-list 'org-capture-templates
-			 '("b" "Blog post" plain
-			   (file create-blog-file)
-			   (file "~/personal/blog/posts-org/template.org")
-			   :prepend t
-			   :jump-to-captured t
-			   :unnarrowed t))
+(if (is-personal-computer)
+	(add-to-list 'org-capture-templates
+				 '("b" "Blog post" plain
+				   (file create-blog-file)
+				   (file "~/personal/blog/posts-org/template.org")
+				   :prepend t
+				   :jump-to-captured t
+				   :unnarrowed t)))
 
 (add-to-list 'org-capture-templates
 			 '("r" "Add a recommendation to the recommendations list" checkitem
-			   (file (notes-directory-file '"RecommendationsList.org"))
+			   (file (lambda () (notes-directory-file '"RecommendationsList.org")))
 			   "- [ ] %^{Title}
 - *Date added to this list:* %T
 - *Source:* %^{Source}
