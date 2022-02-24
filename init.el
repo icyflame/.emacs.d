@@ -946,3 +946,5 @@ iconv should be present on the host."
   (interactive "r\nP")
   (shell-command-on-region beg end '"iconv --to ascii//translit" nil t)
   (message "where I %d you %d" end beg))
+
+(require-package 'olivetti)
