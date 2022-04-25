@@ -536,6 +536,20 @@ and empty out everything else around it"
 			 '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
 			   "* TODO %?\n  %i\n  %a"))
 
+
+(add-to-list 'org-capture-templates
+			 '("w" "Wordle" entry (file "~/work/notes/org-roam/2022-01-21-wordle_turn_history.org")
+			   "* %<%Y-%m-%d>
+
+%x
+
+"
+			   :prepend t
+			   :no-save t
+			   :jump-to-captured t
+			   :unnarrowed t))
+
+
 ;; 37. Function to kill all comments
 (defun line-length ()
   "Get the length of the current line"
