@@ -966,11 +966,19 @@ iconv should be present on the host."
 (require-package 'olivetti)
 
 (defun kannan/sql-pretty-print ()
-  "Pretty print the SQL query in the current buffer"
+  "Pretty print the SQL query in the current buffer
+
+pg_format is a binary that can be built using Perl 5. The code for this binary is
+available here: https://github.com/darold/pgFormatter
+"
   (interactive)
   (shell-command-on-region (point-min) (point-max) '"pg_format -f 2 -" nil t))
 
 (defun kannan/sql-single-line ()
-  "Convert the SQL query in this buffer into a single line query"
+  "Convert the SQL query in this buffer into a single line query
+
+This is required for some MySQL command line clients which don't support multiline
+SQL queries.
+"
   (interactive)
   (delete-indentation nil (point-min) (point-max)))
