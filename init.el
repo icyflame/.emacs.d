@@ -748,8 +748,7 @@ Note: This will not work if the file has Org tables
 (use-package notmuch
   :config
   (general-nmap
-	"M-a" 'notmuch-show-archive-message-then-next-or-next-thread
-	"t" 'notmuch-tree-tag))
+	"M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
 (defun get-conversion-rate (from to)
   "Get the conversion rate between any two currencies using a free exchange rate provider
