@@ -962,3 +962,13 @@ iconv should be present on the host."
   (message "where I %d you %d" end beg))
 
 (require-package 'olivetti)
+
+(defun kannan/sql-pretty-print ()
+  "Pretty print the SQL query in the current buffer"
+  (interactive)
+  (shell-command-on-region (point-min) (point-max) '"pg_format -f 2 -" nil t))
+
+(defun kannan/sql-single-line ()
+  "Convert the SQL query in this buffer into a single line query"
+  (interactive)
+  (delete-indentation nil (point-min) (point-max)))
