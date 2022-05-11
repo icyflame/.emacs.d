@@ -221,12 +221,6 @@ and empty out everything else around it"
 	"M-n" 'elfeed-show-next
 	"M-p" 'elfeed-show-prev
 	)
-
-  ;; 23. SQL format highlighted region
-  (general-evil-define-key 'visual sql-mode-map
-	"gq" 'run-sqlbeautify
-	)
-
   ;; 24. Keybindings that use the leader key functionality in normal and visual mode
   (general-create-definer leader-def-mode
 	:prefix ","
@@ -303,6 +297,14 @@ and empty out everything else around it"
 	:states '(normal visual)
 	:keymaps '(magit-mode-map)
 	"g p" 'go-test-current-project
+	)
+
+  ;; 23. SQL format highlighted region
+  (leader-def-mode
+	:states '(normal visual)
+	:keymaps '(sql-mode-map)
+	"g q" 'kannan/sql-pretty-print
+	"g s" 'kannan/sql-single-line
 	)
   )
 
