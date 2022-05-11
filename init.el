@@ -748,6 +748,7 @@ Note: This will not work if the file has Org tables
 (use-package notmuch
   :config
   (general-nmap
+	"M-a" 'notmuch-show-archive-message-then-next-or-next-thread
 	"t" 'notmuch-tree-tag))
 
 (defun get-conversion-rate (from to)
