@@ -964,3 +964,30 @@ SQL queries.
   (delete-indentation nil (point-min) (point-max)))
 
 (init-loader-load "~/.emacs.d/local-confs")
+
+;; Japanese language input using Mozc
+;; On Ubuntu: apt-get install emacs-mozc
+;; This should put mozc.el inside /usr/share/emacs/site-lisp
+;; And it should also put mozc_emacs_helper in the $PATH (maybe /usr/bin)
+;; Link to the mozc.el file which is under ~/.emacs.d/lisp:
+;;     https://github.com/google/mozc/blob/master/src/unix/emacs/mozc.el
+
+;; Japanese language input using Mozc
+;;
+;; Step 1: Install mozc server
+;;     On Ubuntu: apt-get install emacs-mozc
+;;
+;;     This should put mozc.el inside /usr/share/emacs/site-lisp
+;;     and it should also put ~mozc_emacs_helper~ in the $PATH (maybe /usr/bin)
+;;
+;; Step 2: Download the mozc.el file which makes Emacs a client of the Mozc server
+;;
+;;     Put this file inside ~/.emacs.d/lisp.
+;;
+;;     Link to the mozc.el file:
+;;         https://github.com/google/mozc/blob/master/src/unix/emacs/mozc.el
+;;
+;; Switch input methods using C-\. When in the "Insert" mode, Japanese can be added to the
+;; buffer. When in other modes, Emacs keybindings will continue to work as usual.
+(require 'mozc)
+(setq default-input-method "japanese-mozc")
