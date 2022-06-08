@@ -972,6 +972,14 @@ SQL queries.
 ;; Link to the mozc.el file which is under ~/.emacs.d/lisp:
 ;;     https://github.com/google/mozc/blob/master/src/unix/emacs/mozc.el
 
+(use-package eshell-syntax-highlighting
+  :after eshell-mode
+  :hook (eshell-mode-hook)
+  :ensure t ;; Install if not already installed.
+  :config
+  ;; Enable in all Eshell buffers.
+  (eshell-syntax-highlighting-global-mode +1))
+
 ;; Japanese language input using Mozc
 ;;
 ;; Step 1: Install mozc server
