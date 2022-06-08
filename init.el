@@ -935,7 +935,7 @@ Otherwise, return DPI (1 inch = 2.54 cm)
     (interactive) (emacs-step-font-size -1))
   )
 
-(defun kannan/convert-region-to-ascii (beg end &optional arg)
+(defun kannan/convert-region-to-ascii (beg end)
   "Convert the highlighted region to ASCII through transliteration offered by iconv.
 
 iconv should be present on the host."
