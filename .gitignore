@@ -1,3 +1,13 @@
 elpa
 auto-save-list
 local-confs/*.el
+.org-id-locations
+bookmarks
+eshell/
+network-security.data
+newsticker
+projectile-bookmarks.eld
+tramp
+transient
+url
+.lsp-session-*
