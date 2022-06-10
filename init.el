@@ -15,7 +15,6 @@
                          ("melpa" . "https://melpa.org/packages/")))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(setq org-capture-templates '())
 
 ;;; from purcell/emacs.d
 (defun require-package (package &optional min-version no-refresh)
@@ -507,6 +506,7 @@ and empty out everything else around it"
 	 (is-work-computer)
 	 (x-list-fonts "Menlo 14")) (set-frame-font "Menlo 14" nil t))
 
+(setq org-capture-templates '())
 (add-to-list 'org-capture-templates
 			 '("j" "Explaining a Japanese news article" plain
 			   (file create-notes-file)
@@ -962,3 +962,5 @@ SQL queries.
 "
   (interactive)
   (delete-indentation nil (point-min) (point-max)))
+
+(init-loader-load "~/.emacs.d/local-confs")
