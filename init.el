@@ -538,7 +538,6 @@ and empty out everything else around it"
 			 '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
 			   "* TODO %?\n  %i\n  %a"))
 
-
 (add-to-list 'org-capture-templates
 			 '("w" "Wordle" entry (file "~/work/notes/org-roam/2022-01-21-wordle_turn_history.org")
 			   "* %<%Y-%m-%d>
@@ -693,6 +692,8 @@ Note: This will not work if the file has Org tables
 	(setq extension (pop comps))
 	(setq comps (reverse comps))
 	(setq output-file-name (concat (string-join comps ".") ".unwrapped" "." extension)))
+
+  (message output-file-name)
 
   ;; Open the requested file in a buffer
   (setq old-buffer (find-file-noselect file))
