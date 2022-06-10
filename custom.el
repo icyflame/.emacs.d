@@ -29,7 +29,7 @@
    '("~/work/notes/TODO.org" "~/work/notes/Current.org" "~/personal/notes/Current.org" "~/personal/notes/Current.org"))
  '(org-roam-directory "~/work/notes/org-roam")
  '(package-selected-packages
-   '(rust-mode olivetti color-theme-tomorrow lsp-treemacs treemacs-projectile treemacs-evil treemacs "treemacs" nov org-journal lsp-ui solarized-theme atomic-chrome nord-theme notmuch awesome-tab web-mode ob-perl ob-go elfeed ox-hugo ox-confluence helm-rg yasnippet protobuf-mode org-roam-doctor gotest org-ref org-roam-bibtex org-roam-completion org-roam company-lsp lsp-mode company company-mode magit ggtags json-mode php-mode helm-ag powerline jsx-mode yaml-mode git-link sqlformat editorconfig helm-projectile plantuml-mode general markdown-mode use-package helm go-mode go-mode\.el gnu-elpa-keyring-update evil))
+   '(filenotify-recursive emacsql-sqlite org-roam-id rust-mode olivetti color-theme-tomorrow lsp-treemacs treemacs-projectile treemacs-evil treemacs "treemacs" nov org-journal lsp-ui solarized-theme atomic-chrome nord-theme notmuch awesome-tab web-mode ob-perl ob-go elfeed ox-hugo ox-confluence helm-rg yasnippet protobuf-mode org-roam-doctor gotest org-ref org-roam-bibtex org-roam-completion org-roam company-lsp lsp-mode company company-mode magit ggtags json-mode php-mode helm-ag powerline jsx-mode yaml-mode git-link sqlformat editorconfig helm-projectile plantuml-mode general markdown-mode use-package helm go-mode go-mode\.el gnu-elpa-keyring-update evil))
  '(send-mail-function 'sendmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

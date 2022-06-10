@@ -3,6 +3,13 @@
 ;; Don't use this until the `title/titles` thing has been cleaned up
 ;; (require-package 'org-roam)
 
+(require-package 'dash)
+(require-package 'f)
+(require-package 's)
+(require-package 'emacsql)
+(require-package 'emacsql-sqlite)
+(require-package 'magit-section)
+
 (require-package-file 'org-roam "~/.emacs.d/lisp/org-roam")
 (use-package org-roam
   :hook
