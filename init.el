@@ -829,15 +829,6 @@ Adapted from afs/org-replace-link-by-link-description"
 		(let ((link (org-match-string-no-properties 1)))
 		  (message link)))))
 
-(require-package 'treemacs)
-(require-package 'treemacs-evil)
-(require-package 'treemacs-projectile)
-
-(require-package 'lsp-treemacs)
-(use-package lsp-treemacs
-  :config
-  (lsp-treemacs-sync-mode 1))
-
 ;; ============================================
 ;; Coldnew's Font Size Conf for Org-Table
 ;; ============================================
