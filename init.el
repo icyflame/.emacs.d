@@ -929,7 +929,11 @@ Otherwise, return DPI (1 inch = 2.54 cm)
 (defun kannan/convert-region-to-ascii (beg end &optional arg)
   "Convert the highlighted region to ASCII through transliteration offered by iconv.
 
-iconv should be present on the host."
+iconv should be present on the host.
+
+I don't know what the third argument to this function is, but not having the third argument
+causes the function to throw an error when this function is executed from visual mode.
+"
   (interactive "r\nP")
   (shell-command-on-region beg end '"iconv --to ascii//translit" nil t)
   (message "where I %d you %d" end beg))
