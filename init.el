@@ -147,7 +147,6 @@ and empty out everything else around it"
 	"f y" 'copy-buffer
 	)
 
-
   ;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
   ;; applications
   ;; We use the characters that are typically on top of the actual characters of
@@ -184,6 +183,7 @@ and empty out everything else around it"
 
   (ctrl-keybindings
 	:keymaps '(org-mode-map)
+	"TAB" 'org-cycle
 	"C-c e" 'org-table-edit-formulas
 
 	"C-c l c" 'kannan/org/copy-link-to-clipboard
