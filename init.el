@@ -204,8 +204,6 @@ and empty out everything else around it"
   ;; Elfeed Search's default mappings work are for Insert mode only
   (general-evil-define-key '(normal visual) elfeed-search-mode-map
 	"RET" 'elfeed-search-show-entry
-	"u" 'elfeed-search-tag-all-unread
-	"r" 'elfeed-search-untag-all-unread
 	"f" 'elfeed-search-set-filter
 	"M-=" 'elfeed-update
 	)
