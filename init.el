@@ -458,11 +458,62 @@ and empty out everything else around it"
   ("\\.yml\\'" . yaml-mode)
   )
 
+(defun powerline-theme-personal ()
+  "Setup a mode-line with major, evil, and minor modes centered."
+  (interactive)
+  (setq-default mode-line-format
+				'("%e"
+				  (:eval
+				   (let* ((active (powerline-selected-window-active))
+						  (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
+						  (mode-line (if active 'mode-line 'mode-line-inactive))
+						  (face0 (if active 'powerline-active0 'powerline-inactive0))
+						  (face1 (if active 'powerline-active1 'powerline-inactive1))
+						  (face2 (if active 'powerline-active2 'powerline-inactive2))
+						  (separator-left (intern (format "powerline-%s-%s"
+														  (powerline-current-separator)
+														  (car powerline-default-separator-dir))))
+						  (separator-right (intern (format "powerline-%s-%s"
+														   (powerline-current-separator)
+														   (cdr powerline-default-separator-dir))))
+						  (lhs (list (powerline-raw "%*" face0 'l)
+									 (when powerline-display-buffer-size
+									   (powerline-buffer-size face0 'l))
+									 (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
+									 (powerline-raw " " face0)
+									 (funcall separator-left face0 face1)
+									 (powerline-narrow face1 'l)
+
+									 (powerline-raw global-mode-string face1 'r)
+									 (powerline-raw "%4l" face1 'r)
+									 (powerline-raw ":" face1)
+									 (powerline-raw "%3c" face1 'r)
+									 (funcall separator-right face1 face0)
+									 (powerline-raw " " face0)
+									 (powerline-raw "%6p" face0 'r)
+
+									 (powerline-vc face1)))
+						  (rhs (list (when powerline-display-hud
+									   (powerline-hud face2 face1))))
+						  (center (append (list (powerline-major-mode face2 'l)
+												(powerline-process face2)
+												(powerline-raw " " face2))
+										  (if evil-mode
+											  (list (funcall separator-right face2 face1)
+													(powerline-raw evil-mode-line-tag face1 'l)
+													(powerline-raw " " face1)
+													(funcall separator-left face1 face2)))
+										  )))
+					 (concat (powerline-render lhs)
+							 (powerline-fill-center face1 (/ (powerline-width center) 2.0))
+							 (powerline-render center)
+							 (powerline-fill face1 (powerline-width rhs))
+							 (powerline-render rhs)))))))
 ;; 27. Include powerline
 (require-package 'powerline)
 (use-package powerline
-    :config
-    (powerline-center-evil-theme))
+  :config
+(powerline-theme-personal))
 
 ;; 29. JSON mode
 (require-package 'json-mode)
