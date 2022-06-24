@@ -208,6 +208,17 @@ and empty out everything else around it"
 	"M-=" 'elfeed-update
 	)
 
+  (general-evil-define-key '(insert) elfeed-search-mode-map
+	"RET" 'elfeed-search-show-entry
+	"f" 'elfeed-search-set-filter
+	"=" 'elfeed-update
+	)
+
+  (general-evil-define-key '(insert) elfeed-show-mode-map
+	"n" 'elfeed-show-next
+	"p" 'elfeed-show-prev
+	)
+
   ;; Elfeed Search's default mappings work are for Insert mode only
   (ctrl-keybindings
 	:keymaps '(biblio-selection-mode-map)
