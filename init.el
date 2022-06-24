@@ -642,7 +642,6 @@ Return value: t when a line was killed; nil when the function simply moved to th
 		  ("https://pluralistic.net/feed/" blogs tech links)
 
 		  ("https://ppsreejith.net/index.xml" blogs friends)
-		  ("https://code.ghostwriternr.me/feed.xml" blogs friends)
 		  ("https://notes.ppsreejith.net/index.xml" blogs friends)
 		  ("https://www.xypnox.com/blag/atom.xml" blogs friends)
 		  ))
