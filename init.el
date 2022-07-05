@@ -186,8 +186,10 @@ and empty out everything else around it"
 	"TAB" 'org-cycle
 	"C-c e" 'org-table-edit-formulas
 
-	"C-c l c" 'kannan/org/copy-link-to-clipboard
+	"C-c l c l" 'kannan/org/copy-link-to-clipboard
+	"C-c l c d" 'kannan/org/copy-description-to-clipboard
 	"C-c l r" 'kannan/org/replace-link-from-clipboard
+	"C-c l d" 'afs/delete-link-at-point
 	"C-c l s" 'kannan/org/show-link
    )
 
@@ -853,18 +855,22 @@ Note: This will not work if the file has Org tables
   (interactive)
   (start-process "download-go-dependencies" "*Go mods*" "go" "mod" "vendor"))
 
-(defun afs/org-replace-link-by-link-description ()
-    "Replace an org link by its description or if empty its address"
+(defun afs/delete-link-at-point ()
+  "Replace an org link by its description or if empty its address
+
+Source function name: afs/org-replace-link-by-link-description
+"
   (interactive)
   (if (org-in-regexp org-link-bracket-re 1)
-      (save-excursion
-        (let ((remove (list (match-beginning 0) (match-end 0)))
-              (description
-               (if (match-end 2)
-                   (org-match-string-no-properties 2)
-                 (org-match-string-no-properties 1))))
-          (apply 'delete-region remove)
-          (insert description)))))
+	  (save-excursion
+		(let ((remove (list (match-beginning 0) (match-end 0)))
+			  (description
+			   (if (match-end 2)
+				   (org-match-string-no-properties 2)
+				 (org-match-string-no-properties 1))))
+		  (apply 'delete-region remove)
+		  (insert description)
+		  (message '"Removed link and inserted title instead")))))
 
 (require 'simpleclip)
 (defun kannan/org/replace-link-from-clipboard ()
@@ -894,7 +900,18 @@ Adapted from afs/org-replace-link-by-link-description"
 	  (save-excursion
 		(let ((link (org-match-string-no-properties 1)))
 		  (simpleclip-set-contents link)
-		  (message link)))))
+		  (message '"Copied: %s" link)))))
+
+(defun kannan/org/copy-description-to-clipboard ()
+    "Replace an Org link with the same description and the link from the clipboard
+
+Adapted from afs/org-replace-link-by-link-description"
+  (interactive)
+  (if (org-in-regexp org-link-bracket-re 1)
+	  (save-excursion
+		(let ((description (org-match-string-no-properties 2)))
+		  (simpleclip-set-contents description)
+		  (message '"Copied: %s" description)))))
 
 (defun kannan/org/show-link ()
     "Replace an Org link with the same description and the link from the clipboard
