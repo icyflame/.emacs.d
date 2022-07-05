@@ -923,6 +923,14 @@ Adapted from afs/org-replace-link-by-link-description"
 		(let ((link (org-match-string-no-properties 1)))
 		  (message link)))))
 
+(defun kannan/org/paste-as-quote ()
+  "Paste the content that is the system clipboard as a quote block in Org mode."
+  (interactive)
+  (org-insert-structure-template '"quote")
+  (insert '"\n")
+  (previous-line)
+  (insert (simpleclip-get-contents)))
+
 ;; ============================================
 ;; Coldnew's Font Size Conf for Org-Table
 ;; ============================================
