@@ -558,7 +558,7 @@ and empty out everything else around it"
 ;; 35. Yasnippets
 (require-package 'yasnippet)
 (use-package yasnippet
-    :hook ((org-mode go-mode) . #'yas-minor-mode)
+    :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
     :config
     (yas-reload-all))
 

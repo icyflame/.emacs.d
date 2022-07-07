@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: begin writing a Perl script
+# key: base
+# --
+use strict;
+use warnings;
+
+$0
