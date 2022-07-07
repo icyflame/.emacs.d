@@ -42,20 +42,20 @@
     (eval (cons 'concat (funcall _escape (string-to-list src))))
 ))
 
-(defun search-at-google ()
+(defun search-in-browser ()
   (interactive)
 
   (let (keyword)
     (setq keyword (if (region-active-p)
                       (buffer-substring-no-properties (region-beginning) (region-end))
                     (or (thing-at-point 'symbol) (thing-at-point 'word) "")))
-    (setq keyword (read-string (format "Search at google with [%s]" keyword) nil nil keyword))
-    (browse-url (format "http://www.google.co.jp/search?q=%s" (escape-string keyword)))
+    (setq keyword (read-string (format "Search the string [%s]" keyword) nil nil keyword))
+    (browse-url (format "http://www.duckduckgo.com/%s" (escape-string keyword)))
 ))
 
 (defun toggle-camelcase-and-snakecase ()
   (interactive)
- 
+
   (let (start end bounds)
     (if (and transient-mark-mode mark-active)
         (progn
