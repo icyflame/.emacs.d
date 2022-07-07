@@ -830,6 +830,13 @@ Note: This will not work if the file has Org tables
   (general-nmap
 	"M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
+;; When archiving a thread, remove both inbox and unread tags.
+(advice-add
+ 'notmuch-search-archive-thread
+ :before
+ (lambda (&rest r) (notmuch-search-remove-tag '("-unread")))
+ '((name . "notmuch-remove-unread-on-archive")))
+
 (require-package 'atomic-chrome)
 (atomic-chrome-start-server)
 
