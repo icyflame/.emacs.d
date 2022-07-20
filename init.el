@@ -209,28 +209,21 @@ and empty out everything else around it"
         "f" 'elfeed-search-set-filter
         "M-=" 'elfeed-update
         )
-
     (general-evil-define-key '(insert) elfeed-search-mode-map
         "RET" 'elfeed-search-show-entry
         "f" 'elfeed-search-set-filter
         "=" 'elfeed-update
         )
-
-    (general-evil-define-key '(insert) elfeed-show-mode-map
-        "n" 'elfeed-show-next
-        "p" 'elfeed-show-prev
+    (general-evil-define-key '(normal) elfeed-show-mode-map
+        "M-n" 'elfeed-show-next
+        "M-p" 'elfeed-show-prev
         )
 
-    ;; Elfeed Search's default mappings work are for Insert mode only
     (ctrl-keybindings
         :keymaps '(biblio-selection-mode-map)
         "RET" 'biblio--selection-insert-quit
         )
 
-    (general-evil-define-key '(normal) elfeed-show-mode-map
-        "M-n" 'elfeed-show-next
-        "M-p" 'elfeed-show-prev
-        )
     ;; 24. Keybindings that use the leader key functionality in normal and visual mode
     (general-create-definer leader-def-mode
         :prefix ","
