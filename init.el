@@ -592,7 +592,7 @@ and empty out everything else around it"
 (add-to-list 'org-capture-templates
     '("j" "Explaining a Japanese news article" plain
          (file create-notes-file)
-         (file (lambda () (notes-directory-file '"japanese/template.org")))
+         (file "~/personal/notes/japanese/template.org")
          :jump-to-captured t
          :unnarrowed t))
 
