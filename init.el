@@ -346,6 +346,12 @@ and empty out everything else around it"
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
 
+;; TODO: Use Ivy instead of helm because it is fast
+;; (require-package 'ivy)
+;; (use-package ivy
+;;     :config
+;;     (ivy-mode))
+
 ;; 9. Install helm
 (require-package 'helm)
 (use-package helm
