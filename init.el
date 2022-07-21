@@ -167,6 +167,10 @@ and empty out everything else around it"
         "M-k" 'kill-this-buffer
         "M-e" 'kannan/buffer/switch-to-scratch-buffer
 
+        "M-b" 'switch-to-buffer
+        "C-b" 'projectile-switch-to-buffer
+        "C-p" 'projectile-find-file
+
         "C-a" 'org-agenda
         "C-x o c" 'org-capture
 
@@ -339,29 +343,22 @@ and empty out everything else around it"
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
 
-;; TODO: Use Ivy instead of helm because it is fast
-;; (require-package 'ivy)
-;; (use-package ivy
-;;     :config
-;;     (ivy-mode))
+;; 9. Use Ivy instead of helm because it is fast
+(require-package 'ivy)
+(use-package ivy
+    :hook
+    (after-init . ivy-mode))
+;; TODO: Is there a replacement for ivy-locate? Do I want to use it?
+;; (evil-ex-define-cmd ":" 'helm-locate)
 
-;; 9. Install helm
-(require-package 'helm)
-(use-package helm
+(require-package 'projectile)
+(use-package projectile
+    :hook
+    (after-init . projectile-mode)
     :config
-
-    (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "s-x") 'helm-M-x)
-
-    (global-set-key (kbd "M-b") 'helm-buffers-list)
-    (global-set-key (kbd "s-b") 'helm-buffers-list)
-
-    (evil-ex-define-cmd ":" 'helm-locate)
-    (evil-ex-define-cmd "P" 'helm-projectile-switch-project)
-    (evil-ex-define-cmd "X" 'helm-M-x)
-
-    (helm-mode t)
-    )
+    ;; TODO: This doesn't work yet. I want a package which does "rg" and supports other things too.
+    ;; (require-package 'helm-rg)
+    (evil-ex-define-cmd "Ag" 'projectile-grep))
 
 (setq-default fill-column 100)
 
@@ -403,18 +400,6 @@ and empty out everything else around it"
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
-
-(require-package 'helm-rg)
-
-;; 17. Get helm-projectile and bind to Ctrl-P
-(require-package 'helm-projectile)
-(use-package helm-projectile
-    :config
-    (general-nmap
-        "C-p" 'helm-projectile
-        "C-b" 'helm-projectile-switch-to-buffer)
-    (evil-ex-define-cmd "Ag" 'helm-projectile-rg)
-    (evil-ex-define-cmd "Rg" 'helm-projectile-rg))
 
 ;; 18. Org mode settings
 ;;; Set the done time for a TODO item when moving it to DONE
