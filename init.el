@@ -425,14 +425,17 @@ and empty out everything else around it"
 
 (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'org-mode-hook #'flyspell-mode)
-(setq org-agenda-files '(
-                            ;; files at work
-                            "~/work/notes/TODO.org"
-                            "~/work/notes/Current.org"
-                            ;; files at home
-                            "~/personal/notes/TODO.org"
-                            "~/personal/notes/Current.org"
-                            "~/personal/notes/Current.org"))
+(if (not (is-work-computer))
+    (setq org-agenda-files '(
+                                ;; files at home
+                                "~/personal/notes/TODO.org"
+                                "~/personal/notes/Current.org"
+                                "~/personal/notes/Current.org"))
+    (setq org-agenda-files '(
+                                ;; files at work
+                                "~/work/notes/TODO.org"
+                                "~/work/notes/Current.org")))
+
 
 (add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx")))
 
