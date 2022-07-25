@@ -169,6 +169,7 @@ and empty out everything else around it"
 
         "M-b" 'switch-to-buffer
         "C-b" 'projectile-switch-to-buffer
+        "M-p" 'projectile-switch-project
         "C-p" 'projectile-find-file
 
         "C-a" 'org-agenda
@@ -356,6 +357,7 @@ and empty out everything else around it"
     :hook
     (after-init . projectile-mode)
     :config
+    (setq projectile-completion-system 'ivy)
     ;; TODO: This doesn't work yet. I want a package which does "rg" and supports other things too.
     ;; (require-package 'helm-rg)
     (evil-ex-define-cmd "Ag" 'projectile-grep))
