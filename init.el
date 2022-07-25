@@ -178,6 +178,8 @@ and empty out everything else around it"
 
         "M-d" 'preview-plantuml-now
 
+        "C-c g h" 'git-link
+
         "C-x e f" 'elfeed
         "C-x n m" 'notmuch)
 
