@@ -357,6 +357,7 @@ and empty out everything else around it"
     :hook
     (after-init . projectile-mode)
     :config
+    (setq projectile-enable-caching t)
     (setq projectile-completion-system 'ivy)
     ;; TODO: This doesn't work yet. I want a package which does "rg" and supports other things too.
     ;; (require-package 'helm-rg)
