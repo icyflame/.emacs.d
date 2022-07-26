@@ -169,7 +169,6 @@ and empty out everything else around it"
 
         "M-b" 'switch-to-buffer
         "C-b" 'projectile-switch-to-buffer
-        "M-p" 'projectile-switch-project
         "C-p" 'projectile-find-file
 
         "C-a" 'org-agenda
