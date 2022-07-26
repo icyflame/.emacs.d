@@ -1092,10 +1092,8 @@ SQL queries.
 (require 'mozc)
 (setq default-input-method "japanese-mozc")
 
-;; Originally inspired from git-grep integration with counsel:
+;; Inspired by git-grep integration with counsel:
 ;;   https://oremacs.com/2015/04/19/git-grep-ivy/
-;; combined with other posts on oremacs.com
-;;   - dynamic-completion
 (defun make-command-from-reg-comp (comp)
   (format "/usr/local/bin/rg --ignore-case \"%s\"" comp))
 
@@ -1121,17 +1119,14 @@ SQL queries.
         (find-file val)
         (goto-char (point-min))))
 
-;; Current performance: OK
-;;
-;;     Indexing: 22 seconds
-;;     Files count: 2.40 million
-;;     Search performance: OK (no noticeable lag)
-;;
-;; Problems:
+;; *Problems:*
 ;;
 ;; Now, the function works as required. But it keeps searching on every single keypress. That is not
-;; performant enough. Instead, we have to use C-m, C-j, and RET in conjunction, so that C-j will
-;; update the list of suggestions, and RET will actually enter that file; while typing a single
-;; keypress will not run any shell command at all.
+;; performant enough. Instead, we have to use C-m, C-j, and RET in conjunction, so that C-j will update
+;; the list of suggestions, and RET will actually enter that file; while typing a single keypress will
+;; not do anything except update the search pattern.
 ;;
-;; Follow this guide: https://oremacs.com/2019/06/27/ivy-directory-improvements/
+;; With 2.4 million file names in the index, the simple replacement works without lag. But with more
+;; files, this will probably change and we will hit performance problems.
+;;
+;; Explanation: https://oremacs.com/2019/06/27/ivy-directory-improvements/
