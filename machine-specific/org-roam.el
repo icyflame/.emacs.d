@@ -4,8 +4,9 @@
     :hook
     (after-init . org-roam-mode)
     :custom
-    (org-roam-directory '"~/work/notes/org-roam")
+    (org-roam-directory (notes-directory-file '"org-roam/"))
     :config
+    (setq org-roam-db-location (notes-directory-file '"org-roam/org-roam.db"))
 
     (org-roam-setup)
 
