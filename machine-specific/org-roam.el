@@ -1,53 +1,33 @@
 ;; 34. Org Roam
-
-;; Don't use this until the `title/titles` thing has been cleaned up
-;; (require-package 'org-roam)
-
-(require-package 'dash)
-(require-package 'f)
-(require-package 's)
-(require-package 'emacsql)
-(require-package 'emacsql-sqlite)
-(require-package 'magit-section)
-
-(require-package-file 'org-roam "~/.emacs.d/lisp/org-roam")
+(require-package 'org-roam)
 (use-package org-roam
     :hook
     (after-init . org-roam-mode)
     :custom
-    (org-roam-directory (notes-directory-file '"org-roam"))
-
+    (org-roam-directory '"~/work/notes/org-roam")
     :config
+
+    (org-roam-setup)
+
+    (cl-defmethod org-roam-node-hierarchy ((node org-roam-node))
+        (let ((level (org-roam-node-level node)))
+            (concat
+                (when (> level 0) (concat (org-roam-node-file-title node) " > "))
+                (when (> level 1) (concat (string-join (org-roam-node-olp node) " > ") " > "))
+                (org-roam-node-title node))))
+
+    (setq org-roam-node-display-template "${tags:100} ${hierarchy:*}")
     (setq org-roam-capture-templates
-        '(("d" "default"
-              plain #'org-roam-capture--get-point "%?"
-              :file-name "%<%Y-%m-%d>-${slug}"
-              :head "#+title: ${title}
-#+author:
-#+created: %T
-#+roam_tags:
+        '(("d" "default" plain "%?
 
 * Source
 
-
 "
-              :unnarrowed t
-              )))
+              :target (file+head "%<%Y-%m-%d>-${slug}.org" "#+title: ${title}
+#+author:
+#+created: %T
+#+filetags:")
+              :unnarrowed t))))
 
-    ;; Think about moving these to use general.el later
-    :bind (:map org-roam-mode-map
-              (("C-c n l" . org-roam)
-                  ("C-c n f" . org-roam-find-file)
-                  ("C-c n g" . org-roam-graph))
-              :map org-mode-map
-              (("C-c n i" . org-roam-insert))
-              (("C-c n I" . org-roam-insert-immediate))))
-
-;; (setq org-publish-project-alist
-;;           '(("notes-blog"
-;;                  :base-directory "/tmp/org-roam"
-;;                  :base-extension "org"
-;;                  :publishing-directory "~/sandbox/blog-notes/content/posts"
-;;                  :recursive t
-;;                  :publishing-function org-hugo--export-file-to-md
-;;                 ))
+;; To move to v2, first install the latest version of org-roam. And then, run the "org-roam-migrate-wizard" function, which rewrites everything.
+;; More about v2: https://github.com/org-roam/org-roam/wiki/Hitchhiker's-Rough-Guide-to-Org-roam-V2
