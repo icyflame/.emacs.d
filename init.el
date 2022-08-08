@@ -147,6 +147,11 @@ and empty out everything else around it"
         "f y" 'copy-buffer
         )
 
+    (general-nmap
+        :keymap magit-mode-map
+        "s" 'magit-stage
+        "u" 'magit-unstage)
+
     ;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
     ;; applications
     ;; We use the characters that are typically on top of the actual characters of
