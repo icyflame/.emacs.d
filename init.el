@@ -148,7 +148,7 @@ and empty out everything else around it"
         )
 
     (general-nmap
-        :keymap magit-mode-map
+        :keymaps '(magit-mode-map)
         "s" 'magit-stage
         "u" 'magit-unstage)
 
