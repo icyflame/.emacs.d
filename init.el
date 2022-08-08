@@ -181,6 +181,7 @@ and empty out everything else around it"
         "C-x e b" 'eval-buffer
 
         "M-d" 'preview-plantuml-now
+        "C-c n f" 'org-roam-node-find
 
         "C-x e f" 'elfeed
         "C-x n m" 'notmuch)
@@ -195,6 +196,8 @@ and empty out everything else around it"
         "C-c l r" 'kannan/org/replace-link-from-clipboard
         "C-c l d" 'afs/delete-link-at-point
         "C-c l s" 'kannan/org/show-link
+        "C-c n i" 'org-roam-node-insert
+        "C-c n l" 'org-roam-buffer-toggle
         )
 
     (ctrl-keybindings
