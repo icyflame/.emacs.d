@@ -556,8 +556,11 @@ and empty out everything else around it"
 ;; 35. Yasnippets
 (require-package 'yasnippet)
 (use-package yasnippet
-    :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
+    ;; :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
     :config
+    (add-hook 'go-mode-hook #'yas-minor-mode)
+    (add-hook 'org-mode-hook #'yas-minor-mode)
+    (add-hook 'perl-mode-hook #'yas-minor-mode)
     (yas-reload-all))
 
 ;; 36. Org capture templates
