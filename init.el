@@ -397,6 +397,7 @@ and empty out everything else around it"
     :config
     (setq lsp-enable-file-watchers nil)
     (general-nmap
+        :keymaps '(go-mode-map)
         "g t" 'lsp-goto-type-definition
         "g d" 'lsp-find-definition
         "g i" 'lsp-treemacs-implementations
@@ -407,6 +408,13 @@ and empty out everything else around it"
         '(("gopls.completeUnimported" t t)
              ("gopls.staticcheck" t t)))
     )
+
+(use-package xref
+    :config
+    (general-nmap
+        :keymaps '(emacs-lisp-mode-map)
+        "g d" 'xref-find-definitions
+        "g r" 'xref-find-references))
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
