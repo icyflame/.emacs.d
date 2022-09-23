@@ -59,6 +59,7 @@ re-downloaded in order to locate PACKAGE."
 ;; https://github.com/hanabokuro/dot-files
 (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
 (init-loader-load "~/.emacs.d/imported-confs")
+(init-loader-load "~/.emacs.d/local-confs")
 
 ;; 10. Install use-package
 (require-package 'use-package)
@@ -148,7 +149,7 @@ and empty out everything else around it"
         )
 
     (general-nmap
-        :keymap magit-mode-map
+        :keymaps '(magit-mode-map)
         "s" 'magit-stage
         "u" 'magit-unstage)
 
@@ -186,6 +187,7 @@ and empty out everything else around it"
         "C-x e b" 'eval-buffer
 
         "M-d" 'preview-plantuml-now
+        "C-c n f" 'org-roam-node-find
 
         "C-c g h" 'git-link
 
@@ -202,6 +204,8 @@ and empty out everything else around it"
         "C-c l r" 'kannan/org/replace-link-from-clipboard
         "C-c l d" 'afs/delete-link-at-point
         "C-c l s" 'kannan/org/show-link
+        "C-c n i" 'org-roam-node-insert
+        "C-c n l" 'org-roam-buffer-toggle
         )
 
     (ctrl-keybindings
@@ -555,8 +559,11 @@ and empty out everything else around it"
 ;; 35. Yasnippets
 (require-package 'yasnippet)
 (use-package yasnippet
-    :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
+    ;; :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
     :config
+    (add-hook 'go-mode-hook #'yas-minor-mode)
+    (add-hook 'org-mode-hook #'yas-minor-mode)
+    (add-hook 'perl-mode-hook #'yas-minor-mode)
     (yas-reload-all))
 
 ;; 36. Org capture templates
@@ -583,6 +590,7 @@ and empty out everything else around it"
         (is-work-computer)
         (x-list-fonts "Menlo 14")) (set-frame-font "Menlo 14" nil t))
 
+;; Documentation: https://orgmode.org/manual/Capture-templates.html
 (setq org-capture-templates '())
 (add-to-list 'org-capture-templates
     '("j" "Explaining a Japanese news article" plain
@@ -590,6 +598,35 @@ and empty out everything else around it"
          (file "~/personal/notes/japanese/template.org")
          :jump-to-captured t
          :unnarrowed t))
+
+(if (not (boundp 'local-competitive-programming-note-file))
+    (message '"ERROR: Variable local-competitive-programming-note-file is not available. Bind it in local-confs/10_local.el")
+    (add-to-list 'org-capture-templates
+        '("l" "Captures related to competitive programming problem solving"))
+    (add-to-list 'org-capture-templates
+        '("lc" "Org entry for solving a new programming problem" entry
+             (file (lambda () (notes-directory-file local-competitive-programming-note-file)))
+             "* [%^{Level|UNKNOWN|EASY|MEDIUM|HARD}] %^{Link to Competitive Programming Problem}"
+             :clock-in t
+             :jump-to-captured t
+             :unnarrowed t))
+
+    (defun create-competitive-programming-file ()
+        "A function which will read the link to a programming problem and return a stub"
+        (let ((link (read-string "Link to programming problem: ")))
+            (expand-file-name (format "%s.go" (car (last (split-string (string-trim-right link "/") "/"))))
+                "~/go_workspace/src/github.com/icyflame/leetcode/")))
+
+    (add-to-list 'org-capture-templates
+        '("lg" "Go code for solving a programming problem" plain
+             (file create-competitive-programming-file)
+             "package main
+
+func main() {
+}
+
+%?"
+             :jump-to-captured t)))
 
 (if (is-personal-computer)
     (add-to-list 'org-capture-templates
@@ -1060,8 +1097,6 @@ SQL queries.
 "
     (interactive)
     (delete-indentation nil (point-min) (point-max)))
-
-(init-loader-load "~/.emacs.d/local-confs")
 
 ;; Japanese language input using Mozc
 ;; On Ubuntu: apt-get install emacs-mozc
