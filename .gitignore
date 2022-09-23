@@ -11,3 +11,5 @@ tramp
 transient
 url
 .lsp-session-*
+.cask/
+session.*

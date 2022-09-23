@@ -172,6 +172,10 @@ and empty out everything else around it"
         "M-k" 'kill-this-buffer
         "M-e" 'kannan/buffer/switch-to-scratch-buffer
 
+        "M-b" 'switch-to-buffer
+        "C-b" 'projectile-switch-to-buffer
+        "C-p" 'projectile-find-file
+
         "C-a" 'org-agenda
         "C-x o c" 'org-capture
 
@@ -346,29 +350,25 @@ and empty out everything else around it"
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
 
-;; TODO: Use Ivy instead of helm because it is fast
-;; (require-package 'ivy)
-;; (use-package ivy
-;;     :config
-;;     (ivy-mode))
+;; 9. Use Ivy instead of helm because it is fast
+(require-package 'ivy)
+(use-package ivy
+    :hook
+    (after-init . ivy-mode))
+;; TODO: Is there a replacement for ivy-locate? Do I want to use it?
+;; (evil-ex-define-cmd ":" 'helm-locate)
 
-;; 9. Install helm
-(require-package 'helm)
-(use-package helm
+(require-package 'projectile)
+(use-package projectile
+    :hook
+    (after-init . projectile-mode)
     :config
-
-    (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "s-x") 'helm-M-x)
-
-    (global-set-key (kbd "M-b") 'helm-buffers-list)
-    (global-set-key (kbd "s-b") 'helm-buffers-list)
-
-    (evil-ex-define-cmd ":" 'helm-locate)
-    (evil-ex-define-cmd "P" 'helm-projectile-switch-project)
-    (evil-ex-define-cmd "X" 'helm-M-x)
-
-    (helm-mode t)
-    )
+    (setq projectile-enable-caching t)
+    (setq projectile-completion-system 'ivy)
+    (setq projectile-sort-order 'modification-time)
+    ;; TODO: This doesn't work yet. I want a package which does "rg" and supports other things too.
+    ;; (require-package 'helm-rg)
+    (evil-ex-define-cmd "Ag" 'projectile-grep))
 
 (setq-default fill-column 100)
 
@@ -410,18 +410,6 @@ and empty out everything else around it"
 
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
-
-(require-package 'helm-rg)
-
-;; 17. Get helm-projectile and bind to Ctrl-P
-(require-package 'helm-projectile)
-(use-package helm-projectile
-    :config
-    (general-nmap
-        "C-p" 'helm-projectile
-        "C-b" 'helm-projectile-switch-to-buffer)
-    (evil-ex-define-cmd "Ag" 'helm-projectile-rg)
-    (evil-ex-define-cmd "Rg" 'helm-projectile-rg))
 
 ;; 18. Org mode settings
 ;;; Set the done time for a TODO item when moving it to DONE
@@ -599,7 +587,7 @@ and empty out everything else around it"
 (add-to-list 'org-capture-templates
     '("j" "Explaining a Japanese news article" plain
          (file create-notes-file)
-         (file (lambda () (notes-directory-file '"japanese/template.org")))
+         (file "~/personal/notes/japanese/template.org")
          :jump-to-captured t
          :unnarrowed t))
 
@@ -1109,3 +1097,42 @@ SQL queries.
 ;; buffer. When in other modes, Emacs keybindings will continue to work as usual.
 (require 'mozc)
 (setq default-input-method "japanese-mozc")
+
+;; Inspired by git-grep integration with counsel:
+;;   https://oremacs.com/2015/04/19/git-grep-ivy/
+(defun make-command-from-reg-comp (comp)
+  (format "/usr/local/bin/rg --ignore-case \"%s\"" comp))
+
+(defun ivy-locate-replacement-helper-function (string &optional _pred &rest _u)
+    "Grep in the current git repository for STRING."
+    (let ((rg-part (string-join (mapcar #'make-command-from-reg-comp (split-string string " ")) " | ")))
+        (split-string
+            (shell-command-to-string
+                (format
+                    "cat ~/.locate-simple-replacement-index | %s | head"
+                    rg-part))
+            "\n"
+            t)))
+
+(defun ivy-locate-replacement-helper ()
+    "Grep for a string in the current git repository."
+    (interactive)
+    (let ((default-directory (locate-dominating-file
+                                 default-directory ".git"))
+             (val (ivy-read "pattern: " 'ivy-locate-replacement-helper-function
+                      :dynamic-collection t
+                      )))
+        (find-file val)
+        (goto-char (point-min))))
+
+;; *Problems:*
+;;
+;; Now, the function works as required. But it keeps searching on every single keypress. That is not
+;; performant enough. Instead, we have to use C-m, C-j, and RET in conjunction, so that C-j will update
+;; the list of suggestions, and RET will actually enter that file; while typing a single keypress will
+;; not do anything except update the search pattern.
+;;
+;; With 2.4 million file names in the index, the simple replacement works without lag. But with more
+;; files, this will probably change and we will hit performance problems.
+;;
+;; Explanation: https://oremacs.com/2019/06/27/ivy-directory-improvements/
