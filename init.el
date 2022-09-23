@@ -148,11 +148,6 @@ and empty out everything else around it"
         "f y" 'copy-buffer
         )
 
-    (general-nmap
-        :keymaps '(magit-mode-map)
-        "s" 'magit-stage
-        "u" 'magit-unstage)
-
     ;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
     ;; applications
     ;; We use the characters that are typically on top of the actual characters of
@@ -461,11 +456,6 @@ and empty out everything else around it"
     ("\\.yml\\'" . yaml-mode)
     )
 
-;; 27. Include powerline
-(defpowerline powerline-wc
-    (format " %d words" (count-words (point-min) (point-max))))
-(setq-default powerline-display-word-count 'nil)
-
 (defun kannan/show-word-count-in-modeline ()
     "An interactive function which shows the word count of the current buffer in the modeline."
     (interactive)
@@ -534,6 +524,12 @@ and empty out everything else around it"
 (require-package 'powerline)
 (use-package powerline
     :config
+
+    ;; 27. Include powerline
+    (defpowerline powerline-wc
+        (format " %d words" (count-words (point-min) (point-max))))
+    (setq-default powerline-display-word-count 'nil)
+
     (powerline-theme-personal))
 
 ;; 29. JSON mode
@@ -541,6 +537,12 @@ and empty out everything else around it"
 
 ;; 32. Magit
 (require-package 'magit)
+(use-package magit
+    :config
+    (general-nmap
+        :keymaps '(magit-mode-map)
+        "s" 'magit-stage
+        "u" 'magit-unstage))
 
 ;; Language server protocol client
 (require-package 'lsp-mode)
