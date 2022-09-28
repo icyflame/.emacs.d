@@ -1,3 +1,5 @@
+(require-package 'ivy-bibtex)
+(require-package 'pdf-tools)
 (require-package 'org-ref)
 (use-package org-ref
     :config
@@ -14,5 +16,5 @@
     ;; Required for helm-bibtex
     (setq bibtex-completion-bibliography "~/personal/notes/bibliography/references.bib"
         bibtex-completion-library-path "~/personal/notes/bibliography/bibtex-pdfs"
-        bibtex-completion-notes-path "~/personal/notes/bibliography/helm-bibtex-notes")
+        bibtex-completion-notes-path "~/personal/notes/bibliography/ivy-bibtex-notes")
     )
