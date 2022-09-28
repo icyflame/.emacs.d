@@ -2,7 +2,7 @@
 (require-package 'org-roam)
 (use-package org-roam
     :hook
-    (after-init . org-roam-mode)
+    (after-init . org-roam-db-autosync-mode)
     :custom
     (org-roam-directory (notes-directory-file '"org-roam/"))
     :config
