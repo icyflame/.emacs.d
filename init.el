@@ -54,6 +54,7 @@ re-downloaded in order to locate PACKAGE."
     "Return the path to filename when placed inside the notes-directory"
     (concat notes-directory filename))
 
+(setq org-capture-templates '())
 (setq default-todo-file-for-computer (notes-directory-file '"TODO.org"))
 
 ;; https://github.com/hanabokuro/dot-files
@@ -593,7 +594,6 @@ and empty out everything else around it"
         (x-list-fonts "Menlo 14")) (set-frame-font "Menlo 14" nil t))
 
 ;; Documentation: https://orgmode.org/manual/Capture-templates.html
-(setq org-capture-templates '())
 (add-to-list 'org-capture-templates
     '("j" "Explaining a Japanese news article" plain
          (file create-notes-file)
@@ -745,8 +745,6 @@ Return value: t when a line was killed; nil when the function simply moved to th
              ("https://daniel.haxx.se/blog/feed/" blogs tech)
              ("https://pluralistic.net/feed/" blogs tech links)
 
-             ("https://ppsreejith.net/index.xml" blogs friends)
-             ("https://notes.ppsreejith.net/index.xml" blogs friends)
              ("https://www.xypnox.com/blag/atom.xml" blogs friends)
              ))
     )
