@@ -49,7 +49,10 @@ re-downloaded in order to locate PACKAGE."
     "Return t or nil depending on whether this is a work computer or not"
     (not (is-personal-computer)))
 
-(setq notes-directory (if (is-work-computer) '"~/work/notes/" '"/media/notes/notes/"))
+(defun personal-computer-notes-directory ()
+    (if (file-directory-p '"/media/notes/notes/") '"/media/notes/notes/" '"~/personal/notes/org-roam"))
+
+(setq notes-directory (if (is-work-computer) '"~/work/notes/" (personal-computer-notes-directory)))
 (defun notes-directory-file (filename)
     "Return the path to filename when placed inside the notes-directory"
     (concat notes-directory filename))
