@@ -40,16 +40,16 @@ re-downloaded in order to locate PACKAGE."
 
 (require-package 'init-loader)
 
-(defun is-work-computer ()
-    "Return t or nil depending on whether this is a work computer or not"
-    (let ((home-computers '("home-thinkpad")))
-        (not (seq-contains-p home-computers (system-name)))))
-
 (defun is-personal-computer ()
     "Return t or nil depending on whether this is a personal computer or not"
-    (not (is-work-computer)))
+(let ((home-computers '("home-dell")))
+        (seq-contains-p home-computers (system-name))))
 
-(setq notes-directory (if (is-work-computer) '"~/work/notes/" '"~/personal/notes/"))
+(defun is-work-computer ()
+    "Return t or nil depending on whether this is a work computer or not"
+    (not (is-personal-computer)))
+
+(setq notes-directory (if (is-work-computer) '"~/work/notes/" '"/media/notes/notes/"))
 (defun notes-directory-file (filename)
     "Return the path to filename when placed inside the notes-directory"
     (concat notes-directory filename))
