@@ -1,0 +1,40 @@
+# -*- mode: snippet -*-
+# name: make a full-fledged Perl script
+# key: script
+# --
+use strict;
+use warnings;
+
+use Getopt::Long;
+use Pod::Usage;
+
+my $help,
+my $option;
+GetOptions(
+    'help|h|?' => \$help,
+    'option=s' => \$option,
+    ) or pod2usage(2);
+
+pod2usage(-exitval => 0, -verbose => 2) if $help;
+pod2usage(-exitval => 0, -verbose => 2, -output => *STDERR) unless defined($option);
+
+$0
+
+__END__
+
+=head1 NAME
+
+script-name - script-description
+
+=head1 SYNOPSIS
+
+script-name [options]
+
+ Options:
+     --help    Show help message
+
+=head1 EXAMPLE
+
+ $ perl script-name
+
+=cut
