@@ -64,6 +64,7 @@ re-downloaded in order to locate PACKAGE."
 (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
 (init-loader-load "~/.emacs.d/imported-confs")
 (init-loader-load "~/.emacs.d/local-confs")
+(init-loader-load "~/.emacs.d/separated-confs")
 
 ;; 10. Install use-package
 (require-package 'use-package)
