@@ -1,0 +1,27 @@
+#+TITLE: @icyflame's Emacs Configuration
+
+* Deleting a package
+
+`M-x package-delete RET package-name TAB RET`
+
+Packages have to be deleted manually, it seems. I was unable to find any command
+that would cross reference the `init.el` file and check which packages are not
+being used and clean them up.
+
+* Helm vs. Ivy
+
+I started using Emacs in February 2020. A few months after using Emacs without any list completion
+framework, I installed Helm and started using it. Helm was very good back then.
+
+However, as I have gotten more proficient at Elisp and started writing more functions and importing
+more packages into my configuration, I am seeing that Helm is too slow for some actions. For e.g.,
+the simple action of showing the list of notes under =org-roam= takes a noticeable half-second.
+
+To solve this performance problem, I switched to Ivy. Ivy is a *simple* list completion
+framework. It does not do anything else. It simply adds the fuzzy completion feature to whichever
+Emacs command provides a list for selection.
+
+The Ivy package actually has 3 components: Ivy (list completion for commands that provide lists
+already), Counsel (list completion for everything, including enhanced completion for commands that
+don't provide lists or have dynamic list generating functinos), Swiper (an ivy-powered interactive
+search inside a single buffer). Counsel includes both Swiper and Ivy.

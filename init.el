@@ -40,25 +40,30 @@ re-downloaded in order to locate PACKAGE."
 
 (require-package 'init-loader)
 
-(defun is-work-computer ()
-    "Return t or nil depending on whether this is a work computer or not"
-    (let ((home-computers '("home-thinkpad")))
-        (not (seq-contains-p home-computers (system-name)))))
-
 (defun is-personal-computer ()
     "Return t or nil depending on whether this is a personal computer or not"
-    (not (is-work-computer)))
+(let ((home-computers '("home-dell")))
+        (seq-contains-p home-computers (system-name))))
 
-(setq notes-directory (if (is-work-computer) '"~/work/notes/" '"~/personal/notes/"))
+(defun is-work-computer ()
+    "Return t or nil depending on whether this is a work computer or not"
+    (not (is-personal-computer)))
+
+(defun personal-computer-notes-directory ()
+    (if (file-directory-p '"/media/notes/notes/") '"/media/notes/notes/" '"~/personal/notes/org-roam"))
+
+(setq notes-directory (if (is-work-computer) '"~/work/notes/" (personal-computer-notes-directory)))
 (defun notes-directory-file (filename)
     "Return the path to filename when placed inside the notes-directory"
     (concat notes-directory filename))
 
+(setq org-capture-templates '())
 (setq default-todo-file-for-computer (notes-directory-file '"TODO.org"))
 
 ;; https://github.com/hanabokuro/dot-files
 (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
 (init-loader-load "~/.emacs.d/imported-confs")
+(init-loader-load "~/.emacs.d/local-confs")
 
 ;; 10. Install use-package
 (require-package 'use-package)
@@ -147,11 +152,6 @@ and empty out everything else around it"
         "f y" 'copy-buffer
         )
 
-    (general-nmap
-        :keymap magit-mode-map
-        "s" 'magit-stage
-        "u" 'magit-unstage)
-
     ;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
     ;; applications
     ;; We use the characters that are typically on top of the actual characters of
@@ -172,6 +172,10 @@ and empty out everything else around it"
         "M-k" 'kill-this-buffer
         "M-e" 'kannan/buffer/switch-to-scratch-buffer
 
+        "M-b" 'switch-to-buffer
+        "C-b" 'projectile-switch-to-buffer
+        "C-p" 'projectile-find-file
+
         "C-a" 'org-agenda
         "C-x o c" 'org-capture
 
@@ -182,6 +186,7 @@ and empty out everything else around it"
         "C-x e b" 'eval-buffer
 
         "M-d" 'preview-plantuml-now
+        "C-c n f" 'org-roam-node-find
 
         "C-c g h" 'git-link
 
@@ -198,6 +203,8 @@ and empty out everything else around it"
         "C-c l r" 'kannan/org/replace-link-from-clipboard
         "C-c l d" 'afs/delete-link-at-point
         "C-c l s" 'kannan/org/show-link
+        "C-c n i" 'org-roam-node-insert
+        "C-c n l" 'org-roam-buffer-toggle
         )
 
     (ctrl-keybindings
@@ -346,29 +353,25 @@ and empty out everything else around it"
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
 
-;; TODO: Use Ivy instead of helm because it is fast
-;; (require-package 'ivy)
-;; (use-package ivy
-;;     :config
-;;     (ivy-mode))
+;; 9. Use Ivy instead of helm because it is fast
+(require-package 'ivy)
+(use-package ivy
+    :hook
+    (after-init . ivy-mode))
+;; TODO: Is there a replacement for ivy-locate? Do I want to use it?
+;; (evil-ex-define-cmd ":" 'helm-locate)
 
-;; 9. Install helm
-(require-package 'helm)
-(use-package helm
+(require-package 'projectile)
+(use-package projectile
+    :hook
+    (after-init . projectile-mode)
     :config
-
-    (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "s-x") 'helm-M-x)
-
-    (global-set-key (kbd "M-b") 'helm-buffers-list)
-    (global-set-key (kbd "s-b") 'helm-buffers-list)
-
-    (evil-ex-define-cmd ":" 'helm-locate)
-    (evil-ex-define-cmd "P" 'helm-projectile-switch-project)
-    (evil-ex-define-cmd "X" 'helm-M-x)
-
-    (helm-mode t)
-    )
+    (setq projectile-enable-caching t)
+    (setq projectile-completion-system 'ivy)
+    (setq projectile-sort-order 'modification-time)
+    ;; TODO: This doesn't work yet. I want a package which does "rg" and supports other things too.
+    ;; (require-package 'helm-rg)
+    (evil-ex-define-cmd "Ag" 'projectile-grep))
 
 (setq-default fill-column 100)
 
@@ -419,18 +422,6 @@ and empty out everything else around it"
 ;; 14. Disable audible bell and all related sounds that could come from Emacs
 (setq ring-bell-function (lambda () ()))
 
-(require-package 'helm-rg)
-
-;; 17. Get helm-projectile and bind to Ctrl-P
-(require-package 'helm-projectile)
-(use-package helm-projectile
-    :config
-    (general-nmap
-        "C-p" 'helm-projectile
-        "C-b" 'helm-projectile-switch-to-buffer)
-    (evil-ex-define-cmd "Ag" 'helm-projectile-rg)
-    (evil-ex-define-cmd "Rg" 'helm-projectile-rg))
-
 ;; 18. Org mode settings
 ;;; Set the done time for a TODO item when moving it to DONE
 (setq org-log-done 'time)
@@ -476,11 +467,6 @@ and empty out everything else around it"
     :mode
     ("\\.yml\\'" . yaml-mode)
     )
-
-;; 27. Include powerline
-(defpowerline powerline-wc
-    (format " %d words" (count-words (point-min) (point-max))))
-(setq-default powerline-display-word-count 'nil)
 
 (defun kannan/show-word-count-in-modeline ()
     "An interactive function which shows the word count of the current buffer in the modeline."
@@ -550,6 +536,12 @@ and empty out everything else around it"
 (require-package 'powerline)
 (use-package powerline
     :config
+
+    ;; 27. Include powerline
+    (defpowerline powerline-wc
+        (format " %d words" (count-words (point-min) (point-max))))
+    (setq-default powerline-display-word-count 'nil)
+
     (powerline-theme-personal))
 
 ;; 29. JSON mode
@@ -557,6 +549,12 @@ and empty out everything else around it"
 
 ;; 32. Magit
 (require-package 'magit)
+(use-package magit
+    :config
+    (general-nmap
+        :keymaps '(magit-mode-map)
+        "s" 'magit-stage
+        "u" 'magit-unstage))
 
 ;; Language server protocol client
 (require-package 'lsp-mode)
@@ -575,8 +573,11 @@ and empty out everything else around it"
 ;; 35. Yasnippets
 (require-package 'yasnippet)
 (use-package yasnippet
-    :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
+    ;; :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
     :config
+    (add-hook 'go-mode-hook #'yas-minor-mode)
+    (add-hook 'org-mode-hook #'yas-minor-mode)
+    (add-hook 'perl-mode-hook #'yas-minor-mode)
     (yas-reload-all))
 
 ;; 36. Org capture templates
@@ -603,13 +604,42 @@ and empty out everything else around it"
         (is-work-computer)
         (x-list-fonts "Menlo 14")) (set-frame-font "Menlo 14" nil t))
 
-(setq org-capture-templates '())
+;; Documentation: https://orgmode.org/manual/Capture-templates.html
 (add-to-list 'org-capture-templates
     '("j" "Explaining a Japanese news article" plain
          (file create-notes-file)
-         (file (lambda () (notes-directory-file '"japanese/template.org")))
+         (file "~/personal/notes/japanese/template.org")
          :jump-to-captured t
          :unnarrowed t))
+
+(if (not (boundp 'local-competitive-programming-note-file))
+    (message '"ERROR: Variable local-competitive-programming-note-file is not available. Bind it in local-confs/10_local.el")
+    (add-to-list 'org-capture-templates
+        '("l" "Captures related to competitive programming problem solving"))
+    (add-to-list 'org-capture-templates
+        '("lc" "Org entry for solving a new programming problem" entry
+             (file (lambda () (notes-directory-file local-competitive-programming-note-file)))
+             "* [%^{Level|UNKNOWN|EASY|MEDIUM|HARD}] %^{Link to Competitive Programming Problem}"
+             :clock-in t
+             :jump-to-captured t
+             :unnarrowed t))
+
+    (defun create-competitive-programming-file ()
+        "A function which will read the link to a programming problem and return a stub"
+        (let ((link (read-string "Link to programming problem: ")))
+            (expand-file-name (format "%s.go" (car (last (split-string (string-trim-right link "/") "/"))))
+                "~/go_workspace/src/github.com/icyflame/leetcode/")))
+
+    (add-to-list 'org-capture-templates
+        '("lg" "Go code for solving a programming problem" plain
+             (file create-competitive-programming-file)
+             "package main
+
+func main() {
+}
+
+%?"
+             :jump-to-captured t)))
 
 (if (is-personal-computer)
     (add-to-list 'org-capture-templates
@@ -726,8 +756,6 @@ Return value: t when a line was killed; nil when the function simply moved to th
              ("https://daniel.haxx.se/blog/feed/" blogs tech)
              ("https://pluralistic.net/feed/" blogs tech links)
 
-             ("https://ppsreejith.net/index.xml" blogs friends)
-             ("https://notes.ppsreejith.net/index.xml" blogs friends)
              ("https://www.xypnox.com/blag/atom.xml" blogs friends)
              ))
     )
@@ -1081,8 +1109,6 @@ SQL queries.
     (interactive)
     (delete-indentation nil (point-min) (point-max)))
 
-(init-loader-load "~/.emacs.d/local-confs")
-
 ;; Japanese language input using Mozc
 ;; On Ubuntu: apt-get install emacs-mozc
 ;; This should put mozc.el inside /usr/share/emacs/site-lisp
@@ -1117,3 +1143,42 @@ SQL queries.
 ;; buffer. When in other modes, Emacs keybindings will continue to work as usual.
 (require 'mozc)
 (setq default-input-method "japanese-mozc")
+
+;; Inspired by git-grep integration with counsel:
+;;   https://oremacs.com/2015/04/19/git-grep-ivy/
+(defun make-command-from-reg-comp (comp)
+  (format "/usr/local/bin/rg --ignore-case \"%s\"" comp))
+
+(defun ivy-locate-replacement-helper-function (string &optional _pred &rest _u)
+    "Grep in the current git repository for STRING."
+    (let ((rg-part (string-join (mapcar #'make-command-from-reg-comp (split-string string " ")) " | ")))
+        (split-string
+            (shell-command-to-string
+                (format
+                    "cat ~/.locate-simple-replacement-index | %s | head"
+                    rg-part))
+            "\n"
+            t)))
+
+(defun ivy-locate-replacement-helper ()
+    "Grep for a string in the current git repository."
+    (interactive)
+    (let ((default-directory (locate-dominating-file
+                                 default-directory ".git"))
+             (val (ivy-read "pattern: " 'ivy-locate-replacement-helper-function
+                      :dynamic-collection t
+                      )))
+        (find-file val)
+        (goto-char (point-min))))
+
+;; *Problems:*
+;;
+;; Now, the function works as required. But it keeps searching on every single keypress. That is not
+;; performant enough. Instead, we have to use C-m, C-j, and RET in conjunction, so that C-j will update
+;; the list of suggestions, and RET will actually enter that file; while typing a single keypress will
+;; not do anything except update the search pattern.
+;;
+;; With 2.4 million file names in the index, the simple replacement works without lag. But with more
+;; files, this will probably change and we will hit performance problems.
+;;
+;; Explanation: https://oremacs.com/2019/06/27/ivy-directory-improvements/
