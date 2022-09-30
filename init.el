@@ -1182,3 +1182,6 @@ SQL queries.
 ;; files, this will probably change and we will hit performance problems.
 ;;
 ;; Explanation: https://oremacs.com/2019/06/27/ivy-directory-improvements/
+
+(setq org-html-postamble 'nil)
+(setq org-html-head-include-default-style 'nil)
