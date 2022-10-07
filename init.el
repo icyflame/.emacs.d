@@ -806,7 +806,8 @@ This function will handle list items properly (i.e. separate list items will not
 each other). Works well when the file has Org markup with plain paragraphs and nested lists, with
 titles.
 
-Note: This will not work if the file has Org tables
+Note: This will not unwrap text which is not inside an Org subtree. If you have such a file, then
+consider adding an Org header at the top of the file.
 "
     (setq output-file-name (concat file ".unwrapped"))
     (unless (eq nil (string-match "\\." file))
@@ -842,6 +843,7 @@ Note: This will not work if the file has Org tables
             (if is-line-empty
                 (setq does-previous-line-allow-indentation nil)
                 (if (and
+                        (org-in-subtree-not-table-p)
                         (not (org-in-src-block-p))
                         (not is-property-definition)
                         (not is-block-end)
