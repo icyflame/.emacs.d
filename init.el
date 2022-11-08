@@ -42,7 +42,7 @@ re-downloaded in order to locate PACKAGE."
 
 (defun is-personal-computer ()
     "Return t or nil depending on whether this is a personal computer or not"
-(let ((home-computers '("home-dell")))
+    (let ((home-computers '("home-dell")))
         (seq-contains-p home-computers (system-name))))
 
 (defun is-work-computer ()
@@ -1150,7 +1150,7 @@ SQL queries.
 ;; Inspired by git-grep integration with counsel:
 ;;   https://oremacs.com/2015/04/19/git-grep-ivy/
 (defun make-command-from-reg-comp (comp)
-  (format "/usr/local/bin/rg --ignore-case \"%s\"" comp))
+    (format "/usr/local/bin/rg --ignore-case \"%s\"" comp))
 
 (defun ivy-locate-replacement-helper-function (string &optional _pred &rest _u)
     "Grep in the current git repository for STRING."
