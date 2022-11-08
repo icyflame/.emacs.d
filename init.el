@@ -1150,7 +1150,7 @@ SQL queries.
 ;; Inspired by git-grep integration with counsel:
 ;;   https://oremacs.com/2015/04/19/git-grep-ivy/
 (defun make-command-from-reg-comp (comp)
-    (format "/usr/local/bin/rg --ignore-case \"%s\"" comp))
+    (format "%s --ignore-case \"%s\"" (executable-find '"rg") comp))
 
 (defun ivy-locate-replacement-helper-function (string &optional _pred &rest _u)
     "Grep in the current git repository for STRING."
