@@ -1188,3 +1188,18 @@ SQL queries.
 
 (setq org-html-postamble 'nil)
 (setq org-html-head-include-default-style 'nil)
+
+(if (not (boundp 'local-clippings-file))
+    (message '"ERROR: Variable local-clipping-file is not available. Bind it in local-confs/10_local.el")
+    (add-to-list 'org-capture-templates
+        '("c" "Clip whatever is in the clipboard"))
+    (add-to-list 'org-capture-templates
+        '("cb" "Something copied from the Firefox Browser" entry
+             (file+datetree (lambda () (notes-directory-file local-clippings-file)))
+             "* Clipping from Firefox at %<%R>
+
+#+begin_quote
+%c
+#+end_quote"
+             :empty-lines-before 1
+             :unnarrowed t)))
