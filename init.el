@@ -39,6 +39,7 @@ re-downloaded in order to locate PACKAGE."
 (package-initialize)
 
 (require-package 'init-loader)
+(require-package 'async)
 
 (defun is-personal-computer ()
     "Return t or nil depending on whether this is a personal computer or not"
@@ -1203,3 +1204,10 @@ SQL queries.
 #+end_quote"
              :empty-lines-before 1
              :unnarrowed t)))
+
+(add-to-list 'org-latex-classes '("siddharthkannanresume" "\\documentclass[]{siddharthkannanresume}"
+  ("\\section{%s}" . "\\section*{%s}")
+  ("\\subsection{%s}" . "\\subsection*{%s}")
+  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
