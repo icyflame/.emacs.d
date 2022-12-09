@@ -1,6 +1,7 @@
 elpa
 auto-save-list
 local-confs/*.el
+!local-confs/*.el.template
 .org-id-locations
 bookmarks
 eshell/
