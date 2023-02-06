@@ -740,18 +740,16 @@ Return value: t when a line was killed; nil when the function simply moved to th
 (require-package 'elfeed)
 (use-package elfeed
     :config
+    (setq-default elfeed-search-filter "+unread -news")
     ;; Somewhere in your .emacs file
     (setq elfeed-feeds
         '(
              ;; News
              ("https://feeds.feedburner.com/ndtvnews-top-stories?format=xml" news ndtv asia india)
              ("https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml" news nytimes asia)
-             ("https://www.vox.com/rss/index.xml" news vox)
+             ("https://www.vox.com/rss/index.xml" news america vox)
+             ("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" news finance blogs bloomberg)
 
-             ("https://www.bloomberg.com/opinion/authors/AQwaMsNcwy0/matthew-g-yglesias.rss" blogs bloomberg)
-             ("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" blogs bloomberg)
-
-             ("https://www.theatlantic.com/feed/author/zeynep-tufekci/" blogs)
              ("https://zachholman.com/atom.xml" blogs tech)
              ("https://kazeburo.hatenablog.com/feed" blogs tech)
              ("https://blog.jessfraz.com/index.xml" blogs tech)
