@@ -874,6 +874,8 @@ consider adding an Org header at the top of the file.
     (general-nmap
         "M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
+(setq-default mml-secure-openpgp-sign-with-sender t)
+
 ;; When archiving a thread, remove both inbox and unread tags.
 (advice-add
     'notmuch-search-archive-thread
