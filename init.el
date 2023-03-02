@@ -1220,3 +1220,10 @@ SQL queries.
                                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
                                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
+(require-package 'tree-sitter)
+(require-package 'tree-sitter-langs)
+(use-package tree-sitter
+    :config
+    (add-hook 'go-mode-hook #'tree-sitter-hl-mode))
+
+(require-package 'php-mode)
