@@ -13,6 +13,8 @@
 
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                             ("melpa" . "https://melpa.org/packages/")))
+(with-eval-after-load 'package
+  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
