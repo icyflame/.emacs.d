@@ -1212,9 +1212,11 @@ SQL queries.
              :empty-lines-before 1
              :unnarrowed t)))
 
-(add-to-list 'org-latex-classes '("siddharthkannanresume" "\\documentclass[]{siddharthkannanresume}"
-  ("\\section{%s}" . "\\section*{%s}")
-  ("\\subsection{%s}" . "\\subsection*{%s}")
-  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+(if (boundp 'org-latex-classes)
+    (add-to-list 'org-latex-classes '("siddharthkannanresume" "\\documentclass[]{siddharthkannanresume}"
+                                         ("\\section{%s}" . "\\section*{%s}")
+                                         ("\\subsection{%s}" . "\\subsection*{%s}")
+                                         ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                         ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                         ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
