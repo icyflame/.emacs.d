@@ -327,6 +327,11 @@ and empty out everything else around it"
         "g q" 'kannan/sql-pretty-print
         "g s" 'kannan/sql-single-line
         )
+
+    (leader-def-mode
+        :states '(normal visual)
+        :keymaps '(perl-mode-map)
+        "d c" 'cperl-perldoc-at-point)
     )
 
 ;; 5.2 Set the color scheme to Tomorrow Night - Bright (trial)
