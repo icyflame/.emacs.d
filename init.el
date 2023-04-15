@@ -337,6 +337,7 @@ and empty out everything else around it"
 ;; 5.2 Set the color scheme to Tomorrow Night - Bright (trial)
 (require 'color-theme-tomorrow)
 (color-theme-tomorrow--define-theme night)
+(color-theme-tomorrow--define-theme day)
 (enable-theme 'tomorrow-night)
 
 ;; 6. Move everything defined for the customize system to a separate file
@@ -602,7 +603,7 @@ and empty out everything else around it"
     (interactive)
     (let ((name (read-string "Filename: ")))
         (expand-file-name (format "%s-%s.org"
-                              (format-time-string "%Y-%m-%d") name) "~/personal/blog/posts-org")))
+                              (format-time-string "%Y-%m-%d") name) "~/code/blog/posts-org")))
 
 (load '"~/.emacs.d/machine-specific/org-roam.el")
 (if (not (is-work-computer))
@@ -654,7 +655,7 @@ func main() {
     (add-to-list 'org-capture-templates
         '("b" "Blog post" plain
              (file create-blog-file)
-             (file "~/personal/blog/posts-org/template.org")
+             (file "~/code/blog/posts-org/template.org")
              :prepend t
              :jump-to-captured t
              :unnarrowed t)))
