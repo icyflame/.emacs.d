@@ -45,7 +45,7 @@ re-downloaded in order to locate PACKAGE."
 
 (defun is-personal-computer ()
     "Return t or nil depending on whether this is a personal computer or not"
-    (let ((home-computers '("home-dell")))
+    (let ((home-computers '("home-dell" "home-thinkpad-2")))
         (seq-contains-p home-computers (system-name))))
 
 (defun is-work-computer ()
