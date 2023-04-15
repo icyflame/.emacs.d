@@ -53,7 +53,7 @@ re-downloaded in order to locate PACKAGE."
     (not (is-personal-computer)))
 
 (defun personal-computer-notes-directory ()
-    (if (file-directory-p '"/media/notes/notes/") '"/media/notes/notes/" '"~/personal/notes/org-roam"))
+    (if (file-directory-p '"/media/notes/notes/") '"/media/notes/notes/" '"~/personal/notes/"))
 
 (setq notes-directory (if (is-work-computer) '"~/work/notes/" (personal-computer-notes-directory)))
 (defun notes-directory-file (filename)
