@@ -1229,3 +1229,8 @@ SQL queries.
     (add-hook 'go-mode-hook #'tree-sitter-hl-mode))
 
 (require-package 'php-mode)
+
+(require-package 'ts-fold)
+(use-package ts-fold)
+
+(require 'benchmark)
