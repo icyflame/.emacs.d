@@ -18,7 +18,7 @@
                 (when (> level 1) (concat (string-join (org-roam-node-olp node) " > ") " > "))
                 (org-roam-node-title node))))
 
-    (setq org-roam-node-display-template '"${hierarchy:*} ${tags:10}")
+    (setq org-roam-node-display-template '"${hierarchy:*} (${tags:10})")
 
     (setq org-roam-capture-templates
         '(("d" "default" plain "%?
