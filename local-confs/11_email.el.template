@@ -8,3 +8,13 @@
         mail-specify-envelope-from t
         mail-envelope-from 'header
         message-sendmail-envelope-from 'header))
+
+;; Directory where messages that are still being drafted will be saved
+;; If you don't configure this properly, then the messages that are drafted and sent will be stored
+;; in the home directory.
+;;
+;; notmuch-message-mode is used to compose emails, and this is based on message-mode.
+;; message-mode documentation mentions this configuration variable
+;;
+;; https://www.emacswiki.org/emacs/MessageMode
+(setq message-auto-save-directory "~/work/mail/TAD/drafts")
