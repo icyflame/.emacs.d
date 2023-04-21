@@ -895,10 +895,10 @@ consider adding an Org header at the top of the file.
 
 ;; When generating a unique message ID for emails sent from Emacs, replace the ".fsf" prefix with
 ;; ".emacs".
-(advice-add 'message-unique-id :around #'kannan/message-unique-id)
-(defun kannan/message-unique-id (original-func &rest args)
-    (let ((original-return-val (apply original-func args)))
-       (string-replace ".fsf" ".emacs" original-return-val)))
+;; :filter-return is cleaner. Guide: https://emacs.stackexchange.com/a/26556
+(advice-add 'message-unique-id :filter-return #'kannan/message-unique-id)
+(defun kannan/message-unique-id (original-return-val)
+    (string-replace ".fsf" ".emacs" original-return-val))
 
 (require-package 'atomic-chrome)
 (atomic-chrome-start-server)
