@@ -893,6 +893,13 @@ consider adding an Org header at the top of the file.
     (lambda (&rest r) (notmuch-search-remove-tag '("-unread")))
     '((name . "notmuch-remove-unread-on-archive")))
 
+;; When generating a unique message ID for emails sent from Emacs, replace the ".fsf" prefix with
+;; ".emacs".
+(advice-add 'message-unique-id :around #'kannan/message-unique-id)
+(defun kannan/message-unique-id (original-func &rest args)
+    (let ((original-return-val (apply original-func args)))
+       (string-replace ".fsf" ".emacs" original-return-val)))
+
 (require-package 'atomic-chrome)
 (atomic-chrome-start-server)
 
