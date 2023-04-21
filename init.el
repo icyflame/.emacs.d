@@ -338,8 +338,9 @@ and empty out everything else around it"
 ;; 5.2 Set the color scheme to Tomorrow Night - Bright (trial)
 (require 'color-theme-tomorrow)
 (color-theme-tomorrow--define-theme night)
+(color-theme-tomorrow--define-theme night-bright)
 (color-theme-tomorrow--define-theme day)
-(enable-theme 'tomorrow-night)
+(enable-theme 'tomorrow-night-bright)
 
 ;; 6. Move everything defined for the customize system to a separate file
 (setq custom-file "~/.emacs.d/custom.el")
