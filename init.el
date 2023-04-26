@@ -800,8 +800,6 @@ Return value: t when a line was killed; nil when the function simply moved to th
     :config
     (awesome-tab-mode t))
 
-;; Elisp functions to unwrap text. Useful when to copying Org markup into text input fields on
-;; browsers which will not be formatted before display
 (defun unwrap-all (file)
     "Unwrap all the paragraphs in the given file and write to (basename).unwrapped.(extension|).
 
@@ -840,15 +838,13 @@ consider adding an Org header at the top of the file.
         ;; Iterate over the complete buffer, starting at the beginning
         (while (not (eq (point-at-eol) (point-max)))
             (beginning-of-line)
-            (setq is-line-empty (looking-at "^$"))
-
-            (setq start-char (char-after))
-            (setq is-header-line (eq start-char (string-to-char '"*")))
-            (setq is-list-start-line (org-list-at-regexp-after-bullet-p '""))
-            (setq is-property-definition (looking-at "^#\\+"))
-            (setq is-block-end (looking-at "^#\\+end"))
-            (setq is-block-begin (looking-at "^#\\+begin"))
-
+            (let ((is-line-empty (looking-at "^$"))
+                     (start-char (char-after))
+                     (is-header-line (eq start-char (string-to-char '"*")))
+                     (is-list-start-line (org-list-at-regexp-after-bullet-p '""))
+                     (is-property-definition (looking-at "^#\\+"))
+                     (is-block-end (looking-at "^#\\+end"))
+                     (is-block-begin (looking-at "^#\\+begin")))
             (if is-line-empty
                 (setq does-previous-line-allow-indentation nil)
                 (if (and
@@ -865,7 +861,7 @@ consider adding an Org header at the top of the file.
                 ;; Allow indentation on next line if this line is neither a header and nor a block begin
                 (setq does-previous-line-allow-indentation (and (not is-block-begin) (not is-header-line))))
 
-            (forward-line 1))
+            (forward-line 1)))
         ;; Write to the output file and leave the buffer open for the user
         (write-file output-file-name))
 
