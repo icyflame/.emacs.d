@@ -400,9 +400,21 @@ and empty out everything else around it"
     (setq markdown-command "multimarkdown")
     (setq markdown-open-command "firefox"))
 
-;; 33. Comp(lete) any(thing)
 (require-package 'lsp-ui)
 (use-package lsp-ui)
+
+;; https://github.com/leoliu/ggtags
+(require-package 'ggtags)
+(use-package ggtags
+    :config
+    (general-nmap
+        :keymaps '(c-mode-map)
+        "g t" 'ggtags-find-definition
+        "g d" 'ggtags-find-tag-dwim))
+    (add-hook 'c-mode-common-hook
+        (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                (ggtags-mode 1)))))
 
 (require-package 'lsp-mode)
 (use-package lsp-mode
