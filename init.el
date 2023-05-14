@@ -196,7 +196,10 @@ and empty out everything else around it"
         "C-c g h" 'git-link
 
         "C-x e f" 'elfeed
-        "C-x n m" 'notmuch)
+
+        "C-x n m" 'notmuch
+        "C-x n j" 'notmuch-jump-search
+        "C-x n s" 'notmuch-search)
 
     (ctrl-keybindings
         :keymaps '(org-mode-map)
