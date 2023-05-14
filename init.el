@@ -413,11 +413,11 @@ and empty out everything else around it"
     (general-nmap
         :keymaps '(c-mode-map)
         "g t" 'ggtags-find-definition
-        "g d" 'ggtags-find-tag-dwim))
+        "g d" 'ggtags-find-tag-dwim)
     (add-hook 'c-mode-common-hook
         (lambda ()
             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-                (ggtags-mode 1)))))
+              (ggtags-mode 1)))))
 
 (require-package 'lsp-mode)
 (use-package lsp-mode
