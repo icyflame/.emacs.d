@@ -894,6 +894,12 @@ consider adding an Org header at the top of the file.
 (require-package 'notmuch)
 (use-package notmuch
     :config
+    (general-imap
+        :keymaps '(notmuch-search-mode-map)
+        "d" 'kannan/notmuch/delete-thread)
+    (general-nmap
+        :keymaps '(notmuch-show-mode-map)
+        "o" 'kannan/notmuch/view-html-part)
     (general-nmap
         "M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
@@ -905,6 +911,20 @@ consider adding an Org header at the top of the file.
     :before
     (lambda (&rest r) (notmuch-search-remove-tag '("-unread")))
     '((name . "notmuch-remove-unread-on-archive")))
+
+(defun kannan/notmuch/delete-thread ()
+    "Delete the current thread by adding a tag to it."
+    (interactive)
+    (notmuch-search-add-tag '("+deleted"))
+    (notmuch-search-next-thread))
+
+(defun kannan/notmuch/view-html-part ()
+    "View the text/html part that the cursor is currently on in a browser"
+    (interactive)
+    (let ((handle (notmuch-show-current-part-handle))
+             (file-name '"/tmp/g.html"))
+        (mm-save-part-to-file handle file-name)
+        (browse-url-firefox (concat "file://" file-name))))
 
 ;; When generating a unique message ID for emails sent from Emacs, replace the ".fsf" prefix with
 ;; ".emacs".
