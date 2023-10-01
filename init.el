@@ -1159,13 +1159,6 @@ SQL queries.
     (interactive)
     (delete-indentation nil (point-min) (point-max)))
 
-;; Japanese language input using Mozc
-;; On Ubuntu: apt-get install emacs-mozc
-;; This should put mozc.el inside /usr/share/emacs/site-lisp
-;; And it should also put mozc_emacs_helper in the $PATH (maybe /usr/bin)
-;; Link to the mozc.el file which is under ~/.emacs.d/lisp:
-;;     https://github.com/google/mozc/blob/master/src/unix/emacs/mozc.el
-
 (use-package eshell-syntax-highlighting
     :after eshell-mode
     :hook (eshell-mode-hook)
