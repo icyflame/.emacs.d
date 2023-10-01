@@ -899,8 +899,10 @@ consider adding an Org header at the top of the file.
         "d" 'kannan/notmuch/delete-thread)
     (general-nmap
         :keymaps '(notmuch-show-mode-map)
-        "o" 'kannan/notmuch/view-html-part)
+        "o" 'kannan/notmuch/view-html-part
+        "a" 'notmuch-show-archive-message-then-next-or-next-thread)
     (general-nmap
+        :keymaps '(notmuch-show-mode-map)
         "M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
 (setq-default mml-secure-openpgp-sign-with-sender t)
