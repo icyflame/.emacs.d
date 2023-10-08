@@ -7,14 +7,14 @@
     (require 'doi-utils)
     (require 'org-ref-arxiv)
 
-    (setq reftex-default-bibliography '("~/personal/notes/bibliography/references.bib"))
+    (setq reftex-default-bibliography '("~/notes/bibliography/references.bib"))
     ;; Required for org-ref
-    (setq org-ref-bibliography-notes "~/personal/notes/bibliography/notes.org"
-        org-ref-default-bibliography '("~/personal/notes/bibliography/references.bib")
-        org-ref-pdf-directory "~/personal/notes/bibliography/bibtex-pdfs/")
+    (setq org-ref-bibliography-notes "~/notes/bibliography/notes.org"
+        org-ref-default-bibliography '("~/notes/bibliography/references.bib")
+        org-ref-pdf-directory "~/notes/bibliography/bibtex-pdfs/")
 
     ;; Required for helm-bibtex
-    (setq bibtex-completion-bibliography "~/personal/notes/bibliography/references.bib"
-        bibtex-completion-library-path "~/personal/notes/bibliography/bibtex-pdfs"
-        bibtex-completion-notes-path "~/personal/notes/bibliography/ivy-bibtex-notes")
+    (setq bibtex-completion-bibliography "~/notes/bibliography/references.bib"
+        bibtex-completion-library-path "~/notes/bibliography/bibtex-pdfs"
+        bibtex-completion-notes-path "~/notes/bibliography/ivy-bibtex-notes")
     )
