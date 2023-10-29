@@ -189,6 +189,8 @@ and empty out everything else around it"
         "C-a" 'org-agenda
         "C-x o c" 'org-capture
 
+        "C-x i v" 'ivy-locate-replacement-helper
+
         "M-g" 'magit-status
         "C-x g" 'magit-status
 
