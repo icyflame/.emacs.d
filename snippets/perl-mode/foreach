@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: write a simple foreach array
+# key: foreach
+# --
+foreach my $1 (@$2) {
+	$0
+}

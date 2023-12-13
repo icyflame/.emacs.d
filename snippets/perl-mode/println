@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: print with a newline at the end
+# key: println
+# --
+sub println {
+	print(@_);
+	print("\n");
+}
+
+$0
