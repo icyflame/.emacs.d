@@ -198,6 +198,7 @@ and empty out everything else around it"
         "C-x e f" 'elfeed
 
         "C-x e s" 'eshell
+        "C-x i v" 'ivy-locate-replacement-helper
 
         "C-x n m" 'notmuch
         "C-x n j" 'notmuch-jump-search
