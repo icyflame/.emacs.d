@@ -1,5 +1,10 @@
 (require 'package)
 
+;; 0. Disable audible bell and all related sounds that could come from Emacs. Turn this off
+;; immediately after Emacs starts. Even if we can't get any package, the audible bell shouldn't
+;; sound.
+(setq ring-bell-function (lambda () ()))
+
 ;; Links to useful Emacs Wiki
 ;; 1. https://www.emacswiki.org/emacs/EmacsKeyNotation
 ;; 2. Temporary files: "#*#" and "*~"; Find commands:
@@ -458,9 +463,6 @@ to migrate from :Ag to :Rg for myself."
         :keymaps '(emacs-lisp-mode-map)
         "g d" 'xref-find-definitions
         "g r" 'xref-find-references))
-
-;; 14. Disable audible bell and all related sounds that could come from Emacs
-(setq ring-bell-function (lambda () ()))
 
 ;; 18. Org mode settings
 ;;; Set the done time for a TODO item when moving it to DONE
