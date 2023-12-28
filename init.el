@@ -195,8 +195,6 @@ and empty out everything else around it"
 
         "C-c g h" 'git-link
 
-        "C-x e f" 'elfeed
-
         "C-x e s" 'eshell
         "C-x i v" 'ivy-locate-replacement-helper
 
@@ -226,22 +224,6 @@ and empty out everything else around it"
     (general-evil-define-key '(normal visual) org-agenda-mode-map
         "M-n" 'org-agenda-later
         "M-p" 'org-agenda-earlier
-        )
-
-    ;; Elfeed Search's default mappings work are for Insert mode only
-    (general-evil-define-key '(normal visual) elfeed-search-mode-map
-        "RET" 'elfeed-search-show-entry
-        "f" 'elfeed-search-set-filter
-        "M-=" 'elfeed-update
-        )
-    (general-evil-define-key '(insert) elfeed-search-mode-map
-        "RET" 'elfeed-search-show-entry
-        "f" 'elfeed-search-set-filter
-        "=" 'elfeed-update
-        )
-    (general-evil-define-key '(normal) elfeed-show-mode-map
-        "M-n" 'elfeed-show-next
-        "M-p" 'elfeed-show-prev
         )
 
     (ctrl-keybindings
@@ -764,30 +746,6 @@ Return value: t when a line was killed; nil when the function simply moved to th
 
 (require-package 'ox-hugo)
 
-;; 40. Elfeed configuration
-(require-package 'elfeed)
-(use-package elfeed
-    :config
-    (setq-default elfeed-search-filter "+unread -news")
-    ;; Somewhere in your .emacs file
-    (setq elfeed-feeds
-        '(
-             ;; News
-             ("https://feeds.feedburner.com/ndtvnews-top-stories?format=xml" news ndtv asia india)
-             ("https://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml" news nytimes asia)
-             ("https://www.vox.com/rss/index.xml" news america vox)
-             ("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" news finance blogs bloomberg)
-
-             ("https://zachholman.com/atom.xml" blogs tech)
-             ("https://kazeburo.hatenablog.com/feed" blogs tech)
-             ("https://blog.jessfraz.com/index.xml" blogs tech)
-             ("https://daniel.haxx.se/blog/feed/" blogs tech)
-             ("https://pluralistic.net/feed/" blogs tech links)
-
-             ("https://www.xypnox.com/blag/atom.xml" blogs friends)
-             ))
-    )
-
 (require-package 'ob-go)
 (org-babel-do-load-languages
     'org-babel-load-languages
@@ -931,7 +889,9 @@ consider adding an Org header at the top of the file.
     (let ((handle (notmuch-show-current-part-handle))
              (file-name '"/tmp/g.html"))
         (mm-save-part-to-file handle file-name)
-        (browse-url-firefox (concat "file://" file-name))))
+        (if (string-equal '"darwin" system-type)
+            (browse-url-default-macosx-browser (concat "file://" file-name))
+            (browse-url-firefox (concat "file://" file-name)))))
 
 ;; When generating a unique message ID for emails sent from Emacs, replace the ".fsf" prefix with
 ;; ".emacs".
@@ -1073,7 +1033,7 @@ Otherwise, return DPI (1 inch = 2.54 cm)
     ;; (find-font (font-spec :name "LiHei Pro"))
     ;; (font-family-list)
 
-    (defvar emacs-font-size-pair '(17 . 20)
+    (defvar emacs-font-size-pair '(20 . 23)
         "Default font size pair for (english . chinese)")
 
     ;; Auto adjust font-size for Hi-res screen
@@ -1269,3 +1229,6 @@ SQL queries.
 (use-package ts-fold)
 
 (require 'benchmark)
+
+(require 'clip2org)
+(setq clip2org-clippings-file "/tmp/clippings.txt")
