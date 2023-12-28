@@ -1219,8 +1219,4 @@ SQL queries.
 
 (require-package 'php-mode)
 
-
 (require 'benchmark)
-
-(require 'clip2org)
-(setq clip2org-clippings-file "/tmp/clippings.txt")
