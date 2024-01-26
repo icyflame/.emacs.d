@@ -182,6 +182,8 @@ and empty out everything else around it"
         "C-p" 'projectile-find-file
 
         "C-s" 'swiper
+        "C-g" 'projectile-ripgrep
+
         "C-a" 'org-agenda
         "C-x o c" 'org-capture
 
@@ -376,6 +378,11 @@ and empty out everything else around it"
     :config
     (copy-face 'region 'swiper-line-face))
 
+(defun kannan/use-ripgrep-instead ()
+    "Print a message that tells the user that :Ag is deprecated. This is mainly
+to migrate from :Ag to :Rg for myself."
+    (interactive)
+    (message '"ERROR: :Ag is not available anymore. Use :Rg or C-g instead."))
 
 (require-package 'projectile)
 (require-package 'ripgrep)
@@ -387,7 +394,8 @@ and empty out everything else around it"
     (setq projectile-enable-caching t)
     (setq projectile-completion-system 'ivy)
     (setq projectile-sort-order 'modification-time)
-    (evil-ex-define-cmd "Ag" 'projectile-ripgrep))
+    (evil-ex-define-cmd "Ag" 'kannan/use-ripgrep-instead)
+    (evil-ex-define-cmd "Rg" 'projectile-ripgrep))
 
 (setq-default fill-column 100)
 
