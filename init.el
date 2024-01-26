@@ -779,12 +779,6 @@ Return value: t when a line was killed; nil when the function simply moved to th
     (interactive)
     (insert-string (format-time-string '"%R:%S")))
 
-(require-package-file 'awesome-tab "~/.emacs.d/lisp/awesome-tab")
-(use-package awesome-tab
-    :ensure t
-    :config
-    (awesome-tab-mode t))
-
 ;; Elisp functions to unwrap text. Useful when to copying Org markup into text input fields on
 ;; browsers which will not be formatted before display
 (defun unwrap-all (file)
