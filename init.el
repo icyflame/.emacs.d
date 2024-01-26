@@ -369,8 +369,6 @@ and empty out everything else around it"
     :hook
     (after-init . prescient-persist-mode)
     (after-init . ivy-prescient-mode))
-;; TODO: Is there a replacement for ivy-locate? Do I want to use it?
-;; (evil-ex-define-cmd ":" 'helm-locate)
 
 (require-package 'projectile)
 (require-package 'ripgrep)
