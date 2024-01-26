@@ -358,6 +358,17 @@ and empty out everything else around it"
 (use-package ivy
     :hook
     (after-init . ivy-mode))
+;; 9.1. Use Ivy-prescient to ensure that the sorting and filtering is done based on the history of
+;; command usage.
+(require-package 'ivy-prescient)
+(use-package ivy-prescient
+    :config
+    ;; persist the weights of various functions between Emacs sessions
+    ;; the history is saved at ~/.emacs.d/var/prescient-save.el
+    (setq prescient-persist-mode t)
+    :hook
+    (after-init . prescient-persist-mode)
+    (after-init . ivy-prescient-mode))
 ;; TODO: Is there a replacement for ivy-locate? Do I want to use it?
 ;; (evil-ex-define-cmd ":" 'helm-locate)
 
