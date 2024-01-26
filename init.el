@@ -181,6 +181,7 @@ and empty out everything else around it"
         "C-b" 'projectile-switch-to-buffer
         "C-p" 'projectile-find-file
 
+        "C-s" 'swiper
         "C-a" 'org-agenda
         "C-x o c" 'org-capture
 
@@ -369,6 +370,12 @@ and empty out everything else around it"
     :hook
     (after-init . prescient-persist-mode)
     (after-init . ivy-prescient-mode))
+;; 9.2
+(require-package 'swiper)
+(use-package swiper
+    :config
+    (copy-face 'region 'swiper-line-face))
+
 
 (require-package 'projectile)
 (require-package 'ripgrep)
