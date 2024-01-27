@@ -1115,8 +1115,7 @@ Otherwise, return DPI (1 inch = 2.54 cm)
 
     (defun decrease-emacs-font-size ()
         "Increase emacs's font-size acording emacs-font-size-pair-list."
-        (interactive) (emacs-step-font-size -1))
-    )
+        (interactive) (emacs-step-font-size -1)))
 
 (defun kannan/convert-region-to-ascii (beg end &optional arg)
     "Convert the highlighted region to ASCII through transliteration offered by iconv.
