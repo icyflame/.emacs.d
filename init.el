@@ -11,6 +11,8 @@
 ;; Scratch buffer usage: Evaluate expression (C-x C-e)
 ;; The result of the expression is printed to the minibuffer
 
+;; car is the first element of a cons cell, and cdr is the second element
+
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                             ("melpa" . "https://melpa.org/packages/")))
 (add-to-list 'package-archives '( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
@@ -1170,6 +1172,21 @@ SQL queries.
 (require 'mozc)
 (setq default-input-method "japanese-mozc")
 
+(defun kannan/get-strings-without-text-properties (input)
+    "From the given list variable `input', get every element which is a string without text properties.
+
+This function is particularly useful when used with the variable where the `ivy-read' stores its history."
+  (seq-filter
+   (lambda (element)
+	 (eq (text-properties-at 0 element) nil))
+   input))
+
+(defun kannan/get-strings-matching-pattern (pattern lst)
+    "From the given list `lst', return a list containing all strings which contain `pattern'"
+  (seq-filter
+   (lambda (elt) (string-match pattern elt))
+   lst))
+
 ;; Inspired by git-grep integration with counsel:
 ;;   https://oremacs.com/2015/04/19/git-grep-ivy/
 (defun make-command-from-reg-comp (comp)
@@ -1177,14 +1194,20 @@ SQL queries.
 
 (defun ivy-locate-replacement-helper-function (string &optional _pred &rest _u)
     "Grep in the current git repository for STRING."
+    ;; string = 'A B' => rg-part = '/usr/local/bin/rg --ignore-case "A" | /usr/local/bin/rg --ignore-case "B"'
     (let ((rg-part (string-join (mapcar #'make-command-from-reg-comp (split-string string " ")) " | ")))
-        (split-string
-            (shell-command-to-string
-                (format
-                    "cat ~/.locate-simple-replacement-index | %s | head"
-                    rg-part))
-            "\n"
-            t)))
+        (append (seq-reduce (lambda (sum elt)
+                                (kannan/get-strings-matching-pattern elt sum))
+                    (split-string string '" " t)
+                    (kannan/get-strings-without-text-properties ivy-locate-replacement-helper-history))
+
+            (split-string
+                (shell-command-to-string
+                    (format
+                        "cat ~/.locate-simple-replacement-index | %s | head"
+                        rg-part))
+                "\n"
+                t))))
 
 (defun ivy-locate-replacement-helper ()
     "Grep for a string in the current git repository."
