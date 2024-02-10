@@ -1189,13 +1189,15 @@ SQL queries.
 (defun ivy-locate-replacement-helper ()
     "Grep for a string in the current git repository."
     (interactive)
-    (let ((default-directory (locate-dominating-file
-                                 default-directory ".git"))
-             (val (ivy-read "pattern: " 'ivy-locate-replacement-helper-function
-                      :dynamic-collection t
-                      )))
-        (find-file val)
-        (goto-char (point-min))))
+    (if (not (file-exists-p '"~/.locate-simple-replacement-index"))
+        (message "Index does not exist. Run 01_create_index.sh script before running this.")
+        (let ((default-directory (locate-dominating-file
+                                     default-directory ".git"))
+                 (val (ivy-read "pattern: " 'ivy-locate-replacement-helper-function
+                          :dynamic-collection t
+                          )))
+            (find-file val)
+            (goto-char (point-min)))))
 
 ;; *Problems:*
 ;;
