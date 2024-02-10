@@ -1195,6 +1195,7 @@ SQL queries.
                                      default-directory ".git"))
                  (val (ivy-read "pattern: " 'ivy-locate-replacement-helper-function
                           :dynamic-collection t
+                          :history 'ivy-locate-replacement-helper-history
                           )))
             (find-file val)
             (goto-char (point-min)))))
