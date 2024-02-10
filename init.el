@@ -439,8 +439,8 @@ to migrate from :Ag to :Rg for myself."
         :keymaps '(go-mode-map)
         "g t" 'lsp-goto-type-definition
         "g d" 'lsp-find-definition
-        "g i" 'lsp-treemacs-implementations
-        "g r" 'lsp-treemacs-references
+        "g i" 'lsp-find-implementation
+        "g r" 'lsp-find-references
         "C-]" 'lsp-find-definition
         )
     (lsp-register-custom-settings
