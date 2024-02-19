@@ -1197,6 +1197,8 @@ This function is particularly useful when used with the variable where the `ivy-
 (defun make-command-from-reg-comp (comp)
     (format "%s --ignore-case \"%s\"" (executable-find '"rg") comp))
 
+(setq-default ivy-locate-replacement-helper-history '())
+
 (defun ivy-locate-replacement-helper-function (string &optional _pred &rest _u)
     "Grep in the current git repository for STRING."
     ;; string = 'A B' => rg-part = '/usr/local/bin/rg --ignore-case "A" | /usr/local/bin/rg --ignore-case "B"'
