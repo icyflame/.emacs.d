@@ -920,17 +920,23 @@ consider adding an Org header at the top of the file.
             (browse-url-firefox (concat "file://" file-name)))))
 
 (defun kannan/notmuch/show-save-all-attachments-to-tmp ()
-    "Very rough version of a elisp function which will save all attachments from the current e-mail
-to the /tmp directory."
+    "Save all attachments of the currently open e-mail to the ~/Downloads directory
+
+Ask the user for an optional prefix for all the filenames."
     (interactive)
+
     (with-current-notmuch-show-message
-        (let ((mm-handle (mm-dissect-buffer)))
+        (let ((mm-handle (mm-dissect-buffer))
+                 (save-directory
+                     (if (boundp 'local/email/downloads-directory) local/email/downloads-directory '"/tmp"))
+                 (filename-prefix
+                     (read-string '"Enter a prefix for the attachment files: (default: empty) " "" nil "")))
             (notmuch-foreach-mime-part
                 (lambda (p)
-                    (let ((filename (or (mail-content-type-get (mm-handle-disposition p) 'filename)
-                                        (mail-content-type-get (mm-handle-disposition p) 'name))))
-                        (and (not (eq nil filename))
-                            (mm-save-part-to-file p (concat '"/tmp/" filename)))))
+                    (let ((filename (mm-handle-filename p)))
+                        ;; filename is nil when the part is not an attachment
+                        (if (not (eq filename nil))
+                            (mm-save-part-to-file p (expand-file-name (concat filename-prefix filename) save-directory)))))
                 mm-handle))))
 
 ;; When generating a unique message ID for emails sent from Emacs, replace the ".fsf" prefix with

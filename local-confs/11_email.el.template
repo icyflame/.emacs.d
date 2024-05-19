@@ -3,6 +3,7 @@
 (setq user-mail-adress "TODO-your-email")
 (setq mail-user-agent 'message-user-agent)
 (setq mail-specify-envelope-from t)
+(setq local/email/downloads-directory "/home/username/Downloads")
 (let ((msmtp-location (executable-find '"msmtp")))
     (setq sendmail-program msmtp-location
         mail-specify-envelope-from t
