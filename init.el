@@ -1291,3 +1291,8 @@ This function is particularly useful when used with the variable where the `ivy-
 (require-package 'php-mode)
 
 (require 'benchmark)
+
+(require-package 'lua-mode)
+(use-package lua-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)))
