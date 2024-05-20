@@ -229,6 +229,10 @@ and empty out everything else around it"
         )
 
     (ctrl-keybindings
+        :keymaps '(markdown-mode-map)
+        "C-c C-x C-v" 'markdown-toggle-inline-images)
+
+    (ctrl-keybindings
         :keymaps '(magit-mode-map)
         "M-=" 'magit-refresh-all
         )
