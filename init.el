@@ -893,6 +893,9 @@ consider adding an Org header at the top of the file.
         "o" 'kannan/notmuch/view-html-part
         "d" 'notmuch-show-delete-message-then-next-or-next-thread
         "a" 'notmuch-show-archive-message-then-next-or-next-thread)
+    (general-imap
+        :keymaps '(notmuch-show-mode-map)
+        ". a" 'kannan/notmuch/show-save-all-attachments-to-tmp)
     (general-nmap
         :keymaps '(notmuch-show-mode-map)
         "M-d" 'notmuch-show-delete-message-then-next-or-next-thread
