@@ -194,7 +194,8 @@ and empty out everything else around it"
         "C-a" 'org-agenda
         "C-x o c" 'org-capture
 
-        "C-x i v" 'ivy-locate-replacement-helper
+        "C-x s c" 'flyspell-buffer
+        "C-x n e" 'flyspell-goto-next-error
 
         "M-g" 'magit-status
         "C-x g" 'magit-status
