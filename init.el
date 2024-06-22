@@ -622,6 +622,7 @@ to migrate from :Ag to :Rg for myself."
     (add-hook 'go-mode-hook #'yas-minor-mode)
     (add-hook 'org-mode-hook #'yas-minor-mode)
     (add-hook 'perl-mode-hook #'yas-minor-mode)
+    (add-hook 'c++-mode-hook #'yas-minor-mode)
     (yas-reload-all))
 
 ;; 36. Org capture templates
