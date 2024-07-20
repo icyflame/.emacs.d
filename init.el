@@ -953,9 +953,6 @@ Ask the user for an optional prefix for all the filenames."
 (defun kannan/message-unique-id (original-return-val)
     (string-replace ".fsf" ".emacs" original-return-val))
 
-(require-package 'atomic-chrome)
-(atomic-chrome-start-server)
-
 (require-package 'org-journal)
 (use-package org-journal
     :init
