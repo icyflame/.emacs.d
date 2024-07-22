@@ -545,8 +545,6 @@ to migrate from :Ag to :Rg for myself."
                                                         (powerline-current-separator)
                                                         (cdr powerline-default-separator-dir))))
                            (lhs (list (powerline-raw "%*" face0 'l)
-                                    (when powerline-display-buffer-size
-                                        (powerline-buffer-size face0 'l))
                                     (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
                                     (powerline-raw " " face0)
                                     (funcall separator-left face0 face1)
