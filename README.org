@@ -25,3 +25,29 @@ The Ivy package actually has 3 components: Ivy (list completion for commands tha
 already), Counsel (list completion for everything, including enhanced completion for commands that
 don't provide lists or have dynamic list generating functinos), Swiper (an ivy-powered interactive
 search inside a single buffer). Counsel includes both Swiper and Ivy.
+
+* Awesome Tab (Removed)
+
+https://github.com/manateelazycat/awesome-tab
+
+I used Awesome Tab for several months. However, I never switched between tabs or even noticed that
+they were being displayed. So, I decided to remove this package.
+
+* Emacs Application Framework (Removed)
+
+https://github.com/emacs-eaf/emacs-application-framework
+
+EAF attempts to bring modern GUI applications into Emacs. I tried its browser for opening HTML
+emails; this would have been a great use-case, if it worked. But it did not work very well. The
+browser's performance for pages such as ~github.com~ was poor. I was able to login to GitHub, but
+after that, moving anywhere on the page was not possible becasue the cursor and everything seemed to
+be stuck.
+
+The PDF viewer was also similar; it took a long time to load a simple PDF with a white background
+and minimal text. Even when the PDF was loaded, the text was rendered in a strange font with a hatch
+pattern on top of the text, as if there was a filter of some sort. ~DocView~ is not good but it is
+better than this.
+
+The system monitor application did not work at all. The other applications such as camera and video
+player are not very useful to me anyway. So, I decided to trial it for a period of time and then
+removed it.
