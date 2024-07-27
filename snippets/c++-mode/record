@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: record a particular competitive coding problem and how long it took to solve it
+# key: record
+# --
+// status: solved|unsolved|abandoned; date: ${1:year}-${2:month}-${3:day}; time_taken: ;
+
+$0

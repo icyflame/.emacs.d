@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: base
+# key: base
+# --
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+$0
+
+int main()
+{
+}
