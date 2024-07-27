@@ -934,8 +934,11 @@ Ask the user for an optional prefix for all the filenames."
 
     (with-current-notmuch-show-message
         (let ((mm-handle (mm-dissect-buffer))
-                 (save-directory
-                     (if (boundp 'local/email/downloads-directory) local/email/downloads-directory '"/tmp"))
+                 ;; save-directory can be defined by the user or we will use /tmp
+                 (save-directory (if (boundp 'local/email/downloads-directory)
+                                     local/email/downloads-directory
+                                     (if (boundp 'local/email/temporary-directory)
+                                         local/email/temporary-directory '"/tmp")))
                  (filename-prefix
                      (read-string '"Enter a prefix for the attachment files: (default: empty) " "" nil "")))
             (notmuch-foreach-mime-part
