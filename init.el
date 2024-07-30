@@ -486,8 +486,9 @@ to migrate from :Ag to :Rg for myself."
                                 "~/personal/notes/Current.org"))
     (setq org-agenda-files '(
                                 ;; files at work
-                                "~/work/notes/TODO.org"
-                                "~/work/notes/Current.org")))
+                                "~/work/notes"
+                                "~/work/notes/org-roam"
+                                "~/work/notes/journal")))
 
 
 (add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx")))
