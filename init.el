@@ -883,6 +883,15 @@ consider adding an Org header at the top of the file.
 
 (require-package 'web-mode)
 
+(defun kannan/notmuch-show-delete-message-then-next-or-next-thread ()
+    "Add the deleted tag to the current message and move to the next message.
+
+Useful when triaging e-mails for later passes of actually reading the e-mails"
+    (interactive)
+    (notmuch-show-add-tag '("+deleted"))
+    (unless (notmuch-show-next-open-message)
+        (notmuch-show-next-thread t)))
+
 (require-package 'notmuch)
 (use-package notmuch
     :config
@@ -892,14 +901,14 @@ consider adding an Org header at the top of the file.
     (general-nmap
         :keymaps '(notmuch-show-mode-map)
         "o" 'kannan/notmuch/view-html-part
-        "d" 'notmuch-show-delete-message-then-next-or-next-thread
+        "d" 'kannan/notmuch-show-delete-message-then-next-or-next-thread
         "a" 'notmuch-show-archive-message-then-next-or-next-thread)
     (general-imap
         :keymaps '(notmuch-show-mode-map)
         ". a" 'kannan/notmuch/show-save-all-attachments-to-tmp)
     (general-nmap
         :keymaps '(notmuch-show-mode-map)
-        "M-d" 'notmuch-show-delete-message-then-next-or-next-thread
+        "M-d" 'kannan/notmuch-show-delete-message-then-next-or-next-thread
         "M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
 (setq-default mml-secure-openpgp-sign-with-sender t)
