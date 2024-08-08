@@ -892,6 +892,14 @@ Useful when triaging e-mails for later passes of actually reading the e-mails"
     (unless (notmuch-show-next-open-message)
         (notmuch-show-next-thread t)))
 
+(defun kannan/notmuch-tree-delete-message-then-next-or-next-thread ()
+    "Delete the current message highlighted in the thread view
+
+Useful when viewing a thread with drafts in it which are not duplicates of sent messages"
+    (interactive)
+    (notmuch-tree-add-tag '("+deleted"))
+    (notmuch-tree-next-message))
+
 (require-package 'notmuch)
 (use-package notmuch
     :config
@@ -909,6 +917,12 @@ Useful when triaging e-mails for later passes of actually reading the e-mails"
     (general-nmap
         :keymaps '(notmuch-show-mode-map)
         "M-d" 'kannan/notmuch-show-delete-message-then-next-or-next-thread
+    (general-imap
+        :keymaps '(notmuch-tree-mode-map)
+        "d" 'kannan/notmuch-tree-delete-message-then-next-or-next-thread)
+    (general-nmap
+        :keymaps '(notmuch-tree-mode-map)
+        "M-d" 'kannan/notmuch-tree-delete-message-then-next-or-next-thread)
         "M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
 (setq-default mml-secure-openpgp-sign-with-sender t)
