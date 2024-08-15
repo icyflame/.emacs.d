@@ -989,6 +989,7 @@ Ask the user for an optional prefix for all the filenames."
     (setq org-journal-dir (notes-directory-file "journal/")
         org-journal-date-format "%A, %d %B %Y"))
 
+;; TODO: Remove this. Reading ePub within Emacs does not work very well.
 (require-package 'nov)
 (use-package nov
     :config
@@ -1327,3 +1328,5 @@ This function is particularly useful when used with the variable where the `ivy-
 (use-package lua-mode
     :config
     (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)))
+
+(require 'jinja2-mode)
