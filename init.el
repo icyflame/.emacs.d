@@ -238,10 +238,9 @@ and empty out everything else around it"
         "M-=" 'magit-refresh-all
         )
 
-    (general-evil-define-key '(normal visual) org-agenda-mode-map
+    (general-evil-define-key '(normal visual insert) org-agenda-mode-map
         "M-n" 'org-agenda-later
-        "M-p" 'org-agenda-earlier
-        )
+        "M-p" 'org-agenda-earlier)
 
     (ctrl-keybindings
         :keymaps '(biblio-selection-mode-map)
@@ -1330,3 +1329,14 @@ This function is particularly useful when used with the variable where the `ivy-
     (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)))
 
 (require 'jinja2-mode)
+
+;; Show a list of TODO headlines which don't have a schedule or a deadline
+;; https://emacs.stackexchange.com/a/16561/31572
+(setq org-agenda-custom-commands
+      '(("u" . "Unscheduled TODO")
+        ("ut" "Unscheduled TODOs"
+         ((todo ""
+                ((org-agenda-overriding-header "\nUnscheduled TODO")
+                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
+         nil
+         nil)))
