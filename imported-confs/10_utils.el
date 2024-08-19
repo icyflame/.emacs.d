@@ -1,3 +1,5 @@
+;; Source:
+;; https://github.com/hanabokuro/dot-files/blob/bbd131e7fbf684279496aa9634b958b0f641452f/emacs/dot.emacs.d/conf/10_utils.el#L4
 (defalias 'insert-string 'insert)
 
 ;; URL escape/unescape
