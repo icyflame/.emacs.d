@@ -160,7 +160,6 @@ and empty out everything else around it"
     (general-evil-setup)
     (general-nmap
         "DEL" 'evil-ex-nohighlight
-        "f c p" 'copy-buffer
         "f y" 'copy-buffer
         )
 
@@ -339,7 +338,7 @@ and empty out everything else around it"
         "d c" 'cperl-perldoc-at-point)
     )
 
-;; 5.2 Set the color scheme to Tomorrow Night - Bright (trial)
+;; 5.2 Set the color scheme to Tomorrow Night - Bright
 (require 'color-theme-tomorrow)
 (color-theme-tomorrow--define-theme night)
 (color-theme-tomorrow--define-theme night-bright)
