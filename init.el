@@ -78,7 +78,7 @@ re-downloaded in order to locate PACKAGE."
 (init-loader-load "~/.emacs.d/separated-confs")
 
 ;; 10. Install use-package
-(require-package 'use-package)
+(require 'use-package)
 
 ;; 1. Don't show splash screen at start-up
 (setq inhibit-splash-screen t)
