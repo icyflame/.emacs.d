@@ -7,6 +7,10 @@
     (org-roam-directory (notes-directory-file '"org-roam/"))
     :config
 
+    ;; This works only with Emacs 29+
+    ;; "Native SQLite Support" -- https://www.masteringemacs.org/article/whats-new-in-emacs-29-1
+    (setq org-roam-database-connector 'sqlite-builtin)
+
     (setq org-roam-db-location (notes-directory-file '"org-roam/org-roam.db"))
 
     (org-roam-setup)
