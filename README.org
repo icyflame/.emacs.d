@@ -1,8 +1,32 @@
 #+TITLE: @icyflame's Emacs Configuration
 
+*Supported Emacs version:* 29.4
+
+This configuration assumes that ~use-package~ and ~sqlite~ are built-in with Emacs. These features
+are present in Emacs 29+.
+
+* Non-existent PGP public keys for ELPA archives
+
+On Emacs 28.2, the nongnu archive's GPG key is not present. The key can be found on the [[http://keyserver.ubuntu.com/][Ubuntu
+keyserver]]. The error message looks like this:
+
+#+begin_src text
+  Failed to verify signature archive-contents.sig:
+	  No public key for 474F05837FBDEF9B created at 2014-09-29T07:20:03-0700 using DSA
+#+end_src
+
+Simply running ~gpg --import~ will not work. ELPA maintains its own GPG database and the key must be
+imported inside that database:
+
+#+begin_src sh
+  gpg --homedir ~/.emacs.d/elpa/gnupg --import < ~/Downloads/....asc
+#+end_src
+
+*Source:* https://metaredux.com/posts/2019/12/09/dealing-with-expired-elpa-gpg-keys.html
+
 * Deleting a package
 
-`M-x package-delete RET package-name TAB RET`
+~M-x package-delete RET package-name TAB RET~
 
 Packages have to be deleted manually, it seems. I was unable to find any command
 that would cross reference the `init.el` file and check which packages are not
