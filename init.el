@@ -307,8 +307,13 @@ and empty out everything else around it"
 
         "s h" 'magit-show-commit
 
+        ;; stash the unstaged changes only
         "s w" 'magit-stash-worktree
+        ;; stash the staged changes only
+        "s i" 'magit-stash-index
+        ;; stash both staged and unstaged changes
         "s b" 'magit-stash-both
+
         "s p" 'magit-stash-pop
         "s a" 'magit-stash-apply
         "s d" 'magit-stash-drop)
