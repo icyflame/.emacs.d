@@ -712,20 +712,17 @@ func main() {
 
 (add-to-list 'org-capture-templates
     '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
-         "* TODO %?\n  %i\n  %a"))
+         "* TODO %?\n  %i\n  "))
 
 (add-to-list 'org-capture-templates
-    '("w" "Wordle" entry (file "~/work/notes/org-roam/2022-01-21-wordle_turn_history.org")
-         "* %<%Y-%m-%d>
-
-%x
-
-"
-         :prepend t
-         :no-save t
-         :jump-to-captured t
+    '("i" "Clock-in to work" plain
+         (file+olp+datetree "~/time-maintenance.org")
+         ""
+         :empty-lines-before 1
+         :tree-type week
+         :clock-in t
+         :clock-keep t
          :unnarrowed t))
-
 
 ;; 37. Function to kill all comments
 (defun line-length ()
