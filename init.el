@@ -1334,3 +1334,8 @@ This function is particularly useful when used with the variable where the `ivy-
                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
          nil
          nil)))
+
+;; Default Org export options
+(setq org-export-with-author 'nil)
+(setq org-export-with-toc 'nil)
+(setq org-export-with-sub-superscripts 'nil)
