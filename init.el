@@ -714,15 +714,16 @@ func main() {
     '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
          "* TODO %?\n  %i\n  "))
 
-(add-to-list 'org-capture-templates
-    '("i" "Clock-in to work" plain
-         (file+olp+datetree "~/time-maintenance.org")
-         ""
-         :empty-lines-before 1
-         :tree-type week
-         :clock-in t
-         :clock-keep t
-         :unnarrowed t))
+(if (boundp 'local-time-maintenance-file)
+    (add-to-list 'org-capture-templates
+        '("i" "Clock-in to work" plain
+             (file+datetree (lambda () (notes-directory-file local-time-maintenance-file)))
+             ""
+             :empty-lines-before 1
+             :tree-type week
+             :clock-in t
+             :clock-keep t
+             :unnarrowed t)))
 
 ;; 37. Function to kill all comments
 (defun line-length ()
