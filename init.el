@@ -1339,3 +1339,8 @@ This function is particularly useful when used with the variable where the `ivy-
 (setq org-export-with-author 'nil)
 (setq org-export-with-toc 'nil)
 (setq org-export-with-sub-superscripts 'nil)
+
+(when (treesit-available-p)
+    (require-package 'yaml-pro)
+    (use-package yaml-pro
+        :ensure t))
