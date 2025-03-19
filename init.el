@@ -1343,4 +1343,15 @@ This function is particularly useful when used with the variable where the `ivy-
 (when (treesit-available-p)
     (require-package 'yaml-pro)
     (use-package yaml-pro
-        :ensure t))
+        :ensure t
+        :hook (yaml-mode . yaml-pro-ts-mode)
+        :config
+        ;; Keybindings chosen by Yaml-Pro conflict with those in Org-mode.
+        ;; I don't think the default keybindings are too useful anyway, so I will just delete the
+        ;; map wholesale from the minor mode map list
+        ;;
+        ;; https://emacsredux.com/blog/2013/09/25/removing-key-bindings-from-minor-mode-keymaps/
+        ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Controlling-Active-Maps.html#Definition-of-minor_002dmode_002dmap_002dalist
+        ;;
+        (setq minor-mode-alist
+            (assq-delete-all 'yaml-pro-ts-mode minor-mode-map-alist))))
