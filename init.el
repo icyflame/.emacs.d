@@ -407,6 +407,13 @@ and empty out everything else around it"
     (setq projectile-enable-caching t)
     (setq projectile-completion-system 'ivy)
     (setq projectile-sort-order 'modification-time)
+    ;; This workaround is required if fd's version is below 8.3.0
+    ;; This is because the option "--strip-cwd-prefix" is used by projectile.
+    ;; See comment from the author of projectile:
+    ;; https://github.com/bbatsov/projectile/issues/1788#issuecomment-1484024829
+    ;; Related work-around which I tried earlier:
+    ;; https://github.com/juergenhoetzel/projectile/commit/383b3bf47d34ca60c24cd73ea9c335936d0b70be
+    (setq projectile-git-use-fd nil))
 
 (setq-default fill-column 100)
 
