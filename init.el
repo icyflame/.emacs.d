@@ -397,12 +397,6 @@ and empty out everything else around it"
     :config
     (copy-face 'region 'swiper-line-face))
 
-(defun kannan/use-ripgrep-instead ()
-    "Print a message that tells the user that :Ag is deprecated. This is mainly
-to migrate from :Ag to :Rg for myself."
-    (interactive)
-    (message '"ERROR: :Ag is not available anymore. Use :Rg or C-g instead."))
-
 (require-package 'projectile)
 (require-package 'ripgrep)
 (require-package 'rg)
@@ -413,8 +407,6 @@ to migrate from :Ag to :Rg for myself."
     (setq projectile-enable-caching t)
     (setq projectile-completion-system 'ivy)
     (setq projectile-sort-order 'modification-time)
-    (evil-ex-define-cmd "Ag" 'kannan/use-ripgrep-instead)
-    (evil-ex-define-cmd "Rg" 'projectile-ripgrep))
 
 (setq-default fill-column 100)
 
