@@ -991,15 +991,6 @@ Ask the user for an optional prefix for all the filenames."
     (setq org-journal-dir (notes-directory-file "journal/")
         org-journal-date-format "%A, %d %B %Y"))
 
-;; TODO: Remove this. Reading ePub within Emacs does not work very well.
-(require-package 'nov)
-(use-package nov
-    :config
-    (add-hook 'nov-mode-hook 'visual-line-mode)
-    (add-hook 'nov-mode-hook 'visual-fill-column-mode)
-    (setq nov-text-width 80)
-    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
-
 (defun kannan/golang-download-dependncies ()
     "This function will download dependencies using gomods"
     (interactive)
