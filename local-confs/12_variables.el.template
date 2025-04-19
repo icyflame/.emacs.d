@@ -1,2 +1,3 @@
 (setq local-competitive-programming-note-file '"TODO-path to competitive programming file inside notes")
 (setq local-clippings-file '"TODO-path to clippings file inside notes")
+(setq org-agenda-files '("path-to-org-file" "path-to-folder-containing-org-files"))

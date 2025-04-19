@@ -480,18 +480,9 @@ to migrate from :Ag to :Rg for myself."
 
 (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'org-mode-hook #'flyspell-mode)
-(if (not (is-work-computer))
-    (setq org-agenda-files '(
-                                ;; files at home
-                                "~/personal/notes/TODO.org"
-                                "~/personal/notes/Current.org"
-                                "~/personal/notes/Current.org"))
-    (setq org-agenda-files '(
-                                ;; files at work
-                                "~/work/notes"
-                                "~/work/notes/org-roam"
-                                "~/work/notes/journal")))
 
+(if (not (boundp 'org-agenda-files))
+    (message '"ERROR: Variable org-agenda-files is not available. Bind it in local-confs/10_local.el"))
 
 (add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx")))
 
