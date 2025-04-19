@@ -152,6 +152,9 @@ and empty out everything else around it"
     (interactive)
     (switch-to-buffer "*scratch*"))
 
+;; Don't use C-M-s for anything other than "OS-level search"
+(unbind-key '"C-M-s")
+
 ;; 12. Install general package
 (require-package 'general)
 (use-package general
