@@ -397,10 +397,10 @@ and empty out everything else around it"
     :config
     (copy-face 'region 'swiper-line-face))
 
-(require-package 'projectile)
 (require-package 'ripgrep)
 (require-package 'rg)
 (use-package projectile
+    :ensure t
     :hook
     (after-init . projectile-mode)
     :config
