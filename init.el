@@ -983,12 +983,9 @@ Ask the user for an optional prefix for all the filenames."
 
 (require-package 'org-journal)
 (use-package org-journal
-    :init
-    ;; Change default prefix key; needs to be set before loading org-journal
-    (setq org-journal-prefix-key "C-c j ")
     :config
     (setq org-journal-dir (notes-directory-file "journal/")
-        org-journal-date-format "%A, %d %B %Y"))
+        org-journal-date-format "%F (%a)"))
 
 (defun kannan/golang-download-dependncies ()
     "This function will download dependencies using gomods"
