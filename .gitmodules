@@ -1,0 +1,3 @@
+[submodule "lisp/git-link"]
+	path = lisp/git-link
+	url = git@gitlab.com:siddharthkannan/git-link.git

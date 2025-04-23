@@ -505,7 +505,7 @@ and empty out everything else around it"
 (setq-default tab-width 4)
 
 ;; 22. Install git-link and bind OGF ex command to the main function
-(require-package 'git-link)
+(require-package-file '"git-link" '"~/.emacs.d/lisp/git-link/git-link.el")
 (use-package git-link
     :config
     (evil-ex-define-cmd "OGF" 'git-link))
