@@ -298,6 +298,7 @@ and empty out everything else around it"
         "m u" 'kannan/magit/merge-upstream-into-current
 
         "p p" 'kannan/magit/push-safe-to-current
+        "p r" 'magit-process-buffer
 
         "r b" 'magit-rebase
         "r p" 'kannan/magit/rebase-previous-branch
