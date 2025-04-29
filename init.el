@@ -791,7 +791,7 @@ Return value: t when a line was killed; nil when the function simply moved to th
     (interactive)
     (insert-string (format-time-string '"%F %H:%M:%S %Z")))
 
-(defun insert-date ()
+(defun insert-current-date ()
     "Insert the current date string into the active buffer at point"
     (interactive)
     (insert-string (format-time-string '"%F")))
