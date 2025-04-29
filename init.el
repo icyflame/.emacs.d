@@ -107,11 +107,21 @@ re-downloaded in order to locate PACKAGE."
 (defun kannan/magit/delete-branch (branch)
     (magit-run-git "branch" "-d" branch))
 
+(defvar protected-branches
+    '("master" "main")
+    "Pushing to any of these branches will require an additional confirmation.")
+
+(defun is-protected-branch (current-branch)
+    "Return nil or t depending on whether the given branch is a `protected' branch.
+
+Usually, branches such as `master' and `main' are considered protected branches."
+    (if (null (member current-branch protected-branches)) nil t))
+
 (defun kannan/magit/delete-all-merged-branches ()
     "Delete all branches that have been merged into the current branch"
     (interactive)
     (let ((current-branch (magit-get-current-branch)))
-        (if (or (string-equal "master" current-branch)
+        (if (or (is-protected-branch current-branch)
                 (eq t (kannan/ask-user-approval "Delete merged branches, even though we are not on master?")))
             (let ((branches-to-delete (delete current-branch (magit-list-merged-branches))))
                 (mapc #'kannan/magit/delete-branch branches-to-delete)
@@ -120,9 +130,10 @@ re-downloaded in order to locate PACKAGE."
 (defun kannan/magit/push-safe-to-current ()
     "Push safely to the upstream branch of the current branch. Ask user before pushing to master"
     (interactive)
-    (if (or (not (string-equal "master" (magit-get-current-branch)))
-            (eq t (kannan/ask-user-approval "Push to upstream on master?")))
-        (call-interactively #'magit-push-current-to-pushremote)))
+    (let ((current-branch (magit-get-current-branch)))
+        (if (or (not (is-protected-branch current-branch))
+                (eq t (kannan/ask-user-approval (format "Push to upstream on protected branch `%s'?" current-branch))))
+            (call-interactively #'magit-push-current-to-pushremote))))
 
 (defun kannan/magit/checkout-previous-branch ()
     "Checkout the previous branch"
