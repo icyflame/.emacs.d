@@ -208,7 +208,7 @@ and empty out everything else around it"
         "M-d" 'preview-plantuml-now
         "C-c n f" 'org-roam-node-find
 
-        "C-c g h" 'git-link
+        "C-c g l" 'git-link
 
         "C-x e s" 'eshell
         "C-x i v" 'ivy-locate-replacement-helper
@@ -506,9 +506,7 @@ and empty out everything else around it"
 
 ;; 22. Install git-link and bind OGF ex command to the main function
 (require-package-file '"git-link" '"~/.emacs.d/lisp/git-link/git-link.el")
-(use-package git-link
-    :config
-    (evil-ex-define-cmd "OGF" 'git-link))
+(use-package git-link)
 
 ;; 25. Yaml Mode
 (require-package 'yaml-mode)
