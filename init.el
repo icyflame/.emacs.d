@@ -498,8 +498,11 @@ and empty out everything else around it"
 (setq-default tab-width 4)
 
 ;; 22. Use vendored git-link
-(require-package-file '"git-link" '"~/.emacs.d/lisp/git-link/git-link.el")
-(use-package git-link)
+(let ((library-location-git-link '"~/.emacs.d/lisp/git-link/"))
+    (if (not (file-directory-p library-location-git-link))
+        (message '"ERROR: Vendored library `git-link` does not exist. Run `git submodule init` and `git submodule update --recursive` to get it.")
+        (add-to-list 'load-path library-location-git-link)
+        (use-package git-link)))
 
 ;; 25. Yaml Mode
 (require-package 'yaml-mode)
