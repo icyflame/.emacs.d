@@ -39,13 +39,6 @@ re-downloaded in order to locate PACKAGE."
                 (package-refresh-contents)
                 (require-package package min-version t)))))
 
-;;; similar to require-package but using package-install-file instead
-(defun require-package-file (package file)
-    "Install a package from the given location"
-    (if (package-installed-p package)
-        t
-        (package-install-file file)))
-
 (package-initialize)
 
 (require-package 'init-loader)
