@@ -504,7 +504,7 @@ and empty out everything else around it"
 ;; 20. Set the default width of a tab character
 (setq-default tab-width 4)
 
-;; 22. Install git-link and bind OGF ex command to the main function
+;; 22. Use vendored git-link
 (require-package-file '"git-link" '"~/.emacs.d/lisp/git-link/git-link.el")
 (use-package git-link)
 
