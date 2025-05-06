@@ -65,13 +65,6 @@ re-downloaded in order to locate PACKAGE."
     (let ((home-computers '("home-dell" "home-thinkpad-2")))
         (seq-contains-p home-computers (system-name))))
 
-(defun is-work-computer ()
-    "Return t or nil depending on whether this is a work computer or not"
-    (not (is-personal-computer)))
-
-(defun personal-computer-notes-directory ()
-  '"~/notes/")
-
 (defun notes-directory-file (filename)
     "Return the path to filename when placed inside the notes-directory"
     (concat notes-directory filename))
