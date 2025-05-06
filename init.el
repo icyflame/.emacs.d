@@ -51,6 +51,15 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'init-loader)
 (require-package 'async)
 
+;; https://github.com/hanabokuro/dot-files
+(setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
+(init-loader-load "~/.emacs.d/imported-confs")
+(init-loader-load "~/.emacs.d/local-confs")
+(init-loader-load "~/.emacs.d/separated-confs")
+
+(when (null (string-suffix-p '"/" notes-directory))
+    (setq notes-directory (format '"%s/" notes-directory)))
+
 (defun is-personal-computer ()
     "Return t or nil depending on whether this is a personal computer or not"
     (let ((home-computers '("home-dell" "home-thinkpad-2")))
@@ -63,19 +72,12 @@ re-downloaded in order to locate PACKAGE."
 (defun personal-computer-notes-directory ()
   '"~/notes/")
 
-(setq notes-directory (if (is-work-computer) '"~/work/notes/" (personal-computer-notes-directory)))
 (defun notes-directory-file (filename)
     "Return the path to filename when placed inside the notes-directory"
     (concat notes-directory filename))
 
 (setq org-capture-templates '())
 (setq default-todo-file-for-computer (notes-directory-file '"TODO.org"))
-
-;; https://github.com/hanabokuro/dot-files
-(setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
-(init-loader-load "~/.emacs.d/imported-confs")
-(init-loader-load "~/.emacs.d/local-confs")
-(init-loader-load "~/.emacs.d/separated-confs")
 
 ;; 10. Install use-package
 (require 'use-package)
@@ -646,14 +648,9 @@ and empty out everything else around it"
                               (format-time-string "%Y-%m-%d") name) "~/code/blog/posts-org")))
 
 (load '"~/.emacs.d/machine-specific/org-roam.el")
-(if (not (is-work-computer))
-    ((lambda ()
-         (load '"~/.emacs.d/machine-specific/org-ref.el"))))
-
-(when (window-system)
-    (if (and
-            (is-work-computer)
-            (x-list-fonts "Menlo 14")) (set-frame-font "Menlo 14" nil t)))
+(when (and (boundp 'load-org-ref)
+          (not (null load-org-ref)))
+    (load '"~/.emacs.d/machine-specific/org-ref.el"))
 
 ;; Documentation: https://orgmode.org/manual/Capture-templates.html
 (add-to-list 'org-capture-templates
