@@ -12,6 +12,13 @@
 ;; find ~ -iname "*~"
 ;; 3. Evil EX commands list: Display a list of ex commands with the mapped functions
 ;; M-x describe-variable evil-ex-commands RET
+;; 4. Org table cell references: https://orgmode.org/manual/References.html
+;;    @ROW$COLUMN
+;;    @1..2$3 OR @1$1..@2$4
+;;    @1..>$4 => Column 4, rows 1 to the last row
+;;    @>$2=vsum(@-II..@-1$2) => Column 2 of last row is the sum of all the rows from
+;;                              the first row under previous HLINE to the last but one
+;;                              row
 
 ;; Scratch buffer usage: Evaluate expression (C-x C-e)
 ;; The result of the expression is printed to the minibuffer
