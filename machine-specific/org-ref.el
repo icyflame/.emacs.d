@@ -1,7 +1,9 @@
-(require-package 'ivy-bibtex)
-(require-package 'pdf-tools)
-(require-package 'org-ref)
+(use-package ivy-bibtex
+    :ensure t)
+(use-package pdf-tools
+    :ensure t)
 (use-package org-ref
+    :ensure t
     :config
     ;; Enable downloading PDFs / getting bibtex entries using DOI
     (require 'doi-utils)
