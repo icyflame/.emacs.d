@@ -140,8 +140,8 @@ re-downloaded in order to locate PACKAGE."
     (magit-rebase-branch (magit-get-previous-branch) ()))
 
 (defun kannan/buffer/switch-to-scratch-buffer ()
-    "Switch to scratch buffer in the current buffer. Usefule when trying to focus on a single buffer
-and empty out everything else around it"
+    "Switch to scratch buffer in the current buffer. Useful when I want to focus on a single buffer
+and remove everything else from the screen"
     (interactive)
     (switch-to-buffer "*scratch*"))
 
@@ -156,16 +156,14 @@ and empty out everything else around it"
     (general-evil-setup)
     (general-nmap
         "DEL" 'evil-ex-nohighlight
-        "f y" 'copy-buffer
-        )
+        "f y" 'copy-buffer)
 
     ;; 16. Control text size using Ctrl-Shift-+ and Ctrl-Shift-- like in other
     ;; applications
     ;; We use the characters that are typically on top of the actual characters of
     ;; these keys to force the usage of shift
     (general-create-definer ctrl-keybindings
-        :states '(normal visual insert)
-        )
+        :states '(normal visual insert))
 
     (ctrl-keybindings
         "C-h" 'evil-window-left
@@ -221,8 +219,7 @@ and empty out everything else around it"
         "C-c l d" 'afs/delete-link-at-point
         "C-c l s" 'kannan/org/show-link
         "C-c n i" 'org-roam-node-insert
-        "C-c n l" 'org-roam-buffer-toggle
-        )
+        "C-c n l" 'org-roam-buffer-toggle)
 
     (ctrl-keybindings
         :keymaps '(markdown-mode-map)
@@ -230,8 +227,7 @@ and empty out everything else around it"
 
     (ctrl-keybindings
         :keymaps '(magit-mode-map)
-        "M-=" 'magit-refresh-all
-        )
+        "M-=" 'magit-refresh-all)
 
     (general-evil-define-key '(normal visual insert) org-agenda-mode-map
         "M-n" 'org-agenda-later
@@ -239,25 +235,21 @@ and empty out everything else around it"
 
     (ctrl-keybindings
         :keymaps '(biblio-selection-mode-map)
-        "RET" 'biblio--selection-insert-quit
-        )
+        "RET" 'biblio--selection-insert-quit)
 
     ;; 24. Keybindings that use the leader key functionality in normal and visual mode
     (general-create-definer leader-def-mode
-        :prefix ","
-        )
+        :prefix ",")
 
     (leader-def-mode
         :states '(normal)
-        "c SPC" 'comment-line
-        )
+        "c SPC" 'comment-line)
 
     (leader-def-mode
         :states '(visual)
         "c SPC" 'comment-or-uncomment-region
         "c s" 'comment-or-uncomment-region
-        "a s" 'kannan/convert-region-to-ascii
-        )
+        "a s" 'kannan/convert-region-to-ascii)
 
     (leader-def-mode
         :states '(normal visual)
@@ -317,28 +309,24 @@ and empty out everything else around it"
         :keymaps '(go-mode-map)
         "g t" 'go-test-current-test
         "g f" 'go-test-current-file
-        "g p" 'go-test-current-project
-        )
+        "g p" 'go-test-current-project)
 
     (leader-def-mode
         :states '(normal visual)
         :keymaps '(magit-mode-map)
-        "g p" 'go-test-current-project
-        )
+        "g p" 'go-test-current-project)
 
     ;; 23. SQL format highlighted region
     (leader-def-mode
         :states '(normal visual)
         :keymaps '(sql-mode-map)
         "g q" 'kannan/sql-pretty-print
-        "g s" 'kannan/sql-single-line
-        )
+        "g s" 'kannan/sql-single-line)
 
     (leader-def-mode
         :states '(normal visual)
         :keymaps '(perl-mode-map)
-        "d c" 'cperl-perldoc-at-point)
-    )
+        "d c" 'cperl-perldoc-at-point))
 
 ;; 5.2 Set the color scheme to Tomorrow Night - Bright
 (require 'color-theme-tomorrow)
