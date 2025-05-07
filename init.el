@@ -60,10 +60,8 @@ re-downloaded in order to locate PACKAGE."
 (when (null (string-suffix-p '"/" notes-directory))
     (setq notes-directory (format '"%s/" notes-directory)))
 
-(defun is-personal-computer ()
-    "Return t or nil depending on whether this is a personal computer or not"
-    (let ((home-computers '("home-dell" "home-thinkpad-2")))
-        (seq-contains-p home-computers (system-name))))
+(when (null (string-suffix-p '"/" blog-location))
+    (setq blog-location (format '"%s/" blog-location)))
 
 (defun notes-directory-file (filename)
     "Return the path to filename when placed inside the notes-directory"
@@ -636,9 +634,11 @@ and empty out everything else around it"
 (defun create-blog-file ()
     "Create an org file in ~/blog/."
     (interactive)
-    (let ((name (read-string "Filename: ")))
-        (expand-file-name (format "%s-%s.org"
-                              (format-time-string "%Y-%m-%d") name) "~/code/blog/posts-org")))
+    (let ((name (read-string "Filename: "))
+             (blog-directory (concat blog-location '"posts-org")))
+             (expand-file-name (format "%s-%s.org"
+                                   (format-time-string "%Y-%m-%d") name)
+                 blog-directory)))
 
 (load '"~/.emacs.d/machine-specific/org-roam.el")
 (when (and (boundp 'load-org-ref)
@@ -682,10 +682,13 @@ func main() {
 %?"
              :jump-to-captured t)))
 
-(if (is-personal-computer)
+(if (and (boundp 'local/load-blog-capture-template)
+        (boundp 'blog-location)
+        local/load-blog-capture-template)
     (add-to-list 'org-capture-templates
         '("b" "Blog post" plain
              (file create-blog-file)
+             ;; I could not move this into a variable despite trying various things.
              (file "~/code/blog/posts-org/template.org")
              :prepend t
              :jump-to-captured t
