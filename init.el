@@ -57,11 +57,13 @@ re-downloaded in order to locate PACKAGE."
 (init-loader-load "~/.emacs.d/local-confs")
 (init-loader-load "~/.emacs.d/separated-confs")
 
-(when (null (string-suffix-p '"/" notes-directory))
-    (setq notes-directory (format '"%s/" notes-directory)))
+(if (boundp 'notes-directory)
+  (when (null (string-suffix-p '"/" notes-directory))
+    (setq notes-directory (format '"%s/" notes-directory))))
 
-(when (null (string-suffix-p '"/" blog-location))
-    (setq blog-location (format '"%s/" blog-location)))
+(if (boundp 'blog-location)
+  (when (null (string-suffix-p '"/" blog-location))
+    (setq blog-location (format '"%s/" blog-location))))
 
 (defun notes-directory-file (filename)
     "Return the path to filename when placed inside the notes-directory"
