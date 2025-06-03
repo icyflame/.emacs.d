@@ -297,6 +297,7 @@ and remove everything else from the screen"
 
         "p p" 'kannan/magit/push-safe-to-current
         "p r" 'magit-process-buffer
+        "p l" 'magit-pull-from-upstream
 
         "r b" 'magit-rebase
         "r p" 'kannan/magit/rebase-previous-branch
