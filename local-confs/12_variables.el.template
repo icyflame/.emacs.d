@@ -5,3 +5,4 @@
 (setq load-org-ref nil)
 (setq local/load-blog-capture-template nil)
 (setq blog-location '"TODO-path to blog directory")
+(setq local-time-maintenance-file '"TODO-path to time maintenance file inside the notes directory")
