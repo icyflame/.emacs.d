@@ -245,7 +245,9 @@ and remove everything else from the screen"
 
     (general-evil-define-key '(normal visual insert) org-agenda-mode-map
         "M-n" 'org-agenda-later
-        "M-p" 'org-agenda-earlier)
+        "M-p" 'org-agenda-earlier
+        "M-." 'kannan/org-agenda/schedule-today
+        "M-+" 'kannan/org-agenda/schedule-tomorrow)
 
     (ctrl-keybindings
         :keymaps '(biblio-selection-mode-map)
@@ -1350,3 +1352,24 @@ This function is particularly useful when used with the variable where the `ivy-
         ;;
         (setq minor-mode-alist
             (assq-delete-all 'yaml-pro-ts-mode minor-mode-map-alist))))
+
+(defun kannan/org-agenda/schedule-offset (offset)
+    "Schedule the Org TODO item at point `offset' days from today. Offset is an integer."
+    (let ((now (current-time)))
+        (org-agenda-schedule
+            (point)
+            (format-time-string '"%F" (time-add now (days-to-time offset))))))
+
+(defun kannan/org-agenda/schedule-today ()
+    "Schedule the Org TODO item at point to today.
+
+This is an interactive function which will be bound to a keybinding, and will be called when the keybinding is used."
+    (interactive)
+    (kannan/org-agenda/schedule-offset 0))
+
+(defun kannan/org-agenda/schedule-tomorrow ()
+    "Schedule the Org TODO item at point to tomorrow.
+
+This is an interactive function which will be bound to a keybinding, and will be called when the keybinding is used."
+    (interactive)
+    (kannan/org-agenda/schedule-offset 1))
