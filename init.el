@@ -51,6 +51,8 @@ re-downloaded in order to locate PACKAGE."
 (require-package 'init-loader)
 (require-package 'async)
 
+(setq org-capture-templates '())
+
 ;; https://github.com/hanabokuro/dot-files
 (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
 (init-loader-load "~/.emacs.d/imported-confs")
@@ -69,7 +71,6 @@ re-downloaded in order to locate PACKAGE."
     "Return the path to filename when placed inside the notes-directory"
     (concat notes-directory filename))
 
-(setq org-capture-templates '())
 (setq default-todo-file-for-computer (notes-directory-file '"TODO.org"))
 
 ;; 10. Install use-package
