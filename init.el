@@ -143,10 +143,17 @@ Usually, branches such as `master' and `main' are considered protected branches.
     (interactive)
     (magit-checkout (magit-get-previous-branch)))
 
+(defun kannan/magit/first-protected-branch ()
+    "Return the first branch in the protected-branches list that exists in this repository.
+
+This is to support both older repositories that use `master' as the default branch, and newer ones that use `main' as the default branch"
+    (seq-find #'magit-local-branch-p protected-branches))
+
 (defun kannan/magit/checkout-default-branch ()
     "Checkout the default branch"
     (interactive)
-    (magit-checkout '"master"))
+    (let ((default-branch (kannan/magit/first-protected-branch)))
+        (magit-checkout default-branch)))
 
 (defun kannan/magit/rebase-previous-branch ()
     "Rebase current branch on the previous branch"
