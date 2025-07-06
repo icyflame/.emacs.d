@@ -636,13 +636,7 @@ and remove everything else from the screen"
     (yas-reload-all))
 
 ;; 36. Org capture templates
-(defun create-notes-file ()
-    "Create an org file in ~/notes/."
-    (interactive)
-    (let ((name (read-string "Filename: ")))
-        (expand-file-name (format "%s-%s.org"
-                              (format-time-string "%Y-%m-%d") name) "~/personal/notes/japanese")))
-
+;; Documentation: https://orgmode.org/manual/Capture-templates.html
 (defun create-blog-file ()
     "Create an org file in ~/blog/."
     (interactive)
@@ -656,14 +650,6 @@ and remove everything else from the screen"
 (when (and (boundp 'load-org-ref)
           (not (null load-org-ref)))
     (load '"~/.emacs.d/machine-specific/org-ref.el"))
-
-;; Documentation: https://orgmode.org/manual/Capture-templates.html
-(add-to-list 'org-capture-templates
-    '("j" "Explaining a Japanese news article" plain
-         (file create-notes-file)
-         (file "~/personal/notes/japanese/template.org")
-         :jump-to-captured t
-         :unnarrowed t))
 
 (if (not (boundp 'local-competitive-programming-note-file))
     (message '"ERROR: Variable local-competitive-programming-note-file is not available. Bind it in local-confs/10_local.el")
