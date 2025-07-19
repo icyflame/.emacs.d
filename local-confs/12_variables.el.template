@@ -2,6 +2,7 @@
 (setq notes-directory '"TODO-path to notes directory")
 
 ;;; OPTIONAL ;;;
+(setq enable-treesitter nil)
 (setq local-competitive-programming-note-file '"TODO-path to competitive programming file inside notes")
 (setq local-clippings-file '"TODO-path to clippings file inside notes")
 (setq org-agenda-files '("TODO-path-to-org-file" "TODO-path-to-folder-containing-org-files"))

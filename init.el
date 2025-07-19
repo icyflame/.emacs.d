@@ -1317,7 +1317,11 @@ This function is particularly useful when used with the variable where the `ivy-
 (setq org-export-with-toc 'nil)
 (setq org-export-with-sub-superscripts 'nil)
 
-(when (treesit-available-p)
+(unless (boundp 'enable-treesitter)
+    (message '"INFO: enable-treesitter is not set. Treesitter will be disabled.")
+    (setq enable-treesitter nil))
+
+(when (and enable-treesitter (treesit-available-p))
     (require-package 'yaml-pro)
     (use-package yaml-pro
         :ensure t
