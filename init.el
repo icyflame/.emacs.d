@@ -195,7 +195,7 @@ and remove everything else from the screen"
         "C-+" 'increase-emacs-font-size
         "C-_" 'decrease-emacs-font-size
 
-        "M-k" 'kill-this-buffer
+        "M-k" 'kill-current-buffer
         "M-e" 'kannan/buffer/switch-to-scratch-buffer
 
         "M-b" 'switch-to-buffer
