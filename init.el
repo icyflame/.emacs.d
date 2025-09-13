@@ -1371,3 +1371,7 @@ This requires ripgrep to be installed."
             (setq org-agenda-files (split-string (shell-command-to-string (format '"%s -w '(TODO|WAITING|DONE|CANCELED)' -l %s" grep-path org-roam-directory)) '"\n"))
             (setq agenda-files-length-after (list-length org-agenda-files))
             (message '"INFO: Condensed `org-agenda-files'. Length change: %d => %d" agenda-files-length-before agenda-files-length-after))))
+
+(advice-add #'org-agenda-list
+    :before
+    #'kannan/org-roam/condense-agenda-files)
