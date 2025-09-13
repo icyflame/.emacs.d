@@ -1357,3 +1357,17 @@ This is an interactive function which will be bound to a keybinding, and will be
 This is an interactive function which will be bound to a keybinding, and will be called when the keybinding is used."
     (interactive)
     (kannan/org-agenda/schedule-offset 1))
+
+(defun kannan/org-roam/condense-agenda-files ()
+    "Reduce the org-agenda-files list to a list of only those files that contain TODO items.
+
+This requires ripgrep to be installed."
+    (interactive)
+    (let ((grep-path (executable-find '"rg"))
+             (agenda-files-length-before (list-length org-agenda-files))
+             (agenda-files-length-after 0))
+        (if (or (null grep-path) (null org-roam-directory))
+            (message '"ERROR: Prerequisites not met. Ripgrep must be installed in order to condense the `org-agenda-files' list. `org-roam-directory' must not be `nil'")
+            (setq org-agenda-files (split-string (shell-command-to-string (format '"%s -w '(TODO|WAITING|DONE|CANCELED)' -l %s" grep-path org-roam-directory)) '"\n"))
+            (setq agenda-files-length-after (list-length org-agenda-files))
+            (message '"INFO: Condensed `org-agenda-files'. Length change: %d => %d" agenda-files-length-before agenda-files-length-after))))
