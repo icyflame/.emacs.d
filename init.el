@@ -517,7 +517,7 @@ and remove everything else from the screen"
         (message '"ERROR: Vendored library `git-link` does not exist. Run `git submodule init` and `git submodule update --recursive` to get it.")
         (add-to-list 'load-path library-location-git-link)
         (use-package git-link
-    :defer t
+            :defer t
             :ensure t)))
 
 ;; 25. Yaml Mode
@@ -616,10 +616,6 @@ and remove everything else from the screen"
         "s" 'magit-stage
         "u" 'magit-unstage))
 
-;; Language server protocol client
-(use-package lsp-mode
-    :defer t
-    :ensure t)
 ;; 33. Comp(lete) any(thing)
 ;; Company mode is a standard completion package that works well with lsp-mode.
 (use-package company
