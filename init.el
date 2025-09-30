@@ -30,6 +30,9 @@
                             ( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/")
                             ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
+;; TODO: Replace .emacs.d with the variable `user-emacs-directory'. This will make it possible to
+;; start emacs using emacs --init-directory in order to test a new configuration
+;; https://emacsredux.com/blog/2024/02/23/changing-the-emacs-configuration-directory/
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 (use-package init-loader
