@@ -83,8 +83,8 @@ re-downloaded in order to locate PACKAGE."
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; 3. Evil mode across most of Emacs
-(require-package 'evil)
 (use-package evil
+    :ensure t
     :init
     (setq evil-search-module 'evil-search
         evil-want-C-u-scroll t
@@ -170,8 +170,8 @@ and remove everything else from the screen"
 (unbind-key '"C-M-s")
 
 ;; 12. Install general package
-(require-package 'general)
 (use-package general
+    :ensure t
     :config
     ;; 13. Add key mappings for common actions using general
     (general-evil-setup)
@@ -366,6 +366,8 @@ and remove everything else from the screen"
 ;; 7. Go mode settings
 ;; (defun evil-set-jump-args (&rest ns) (evil-set-jump))
 (require-package 'go-mode)
+(use-package go-mode
+    :ensure t)
 
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
@@ -377,7 +379,8 @@ and remove everything else from the screen"
     :config
     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
 
-(require-package 'gotest)
+(use-package gotest
+    :ensure t)
 
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
@@ -408,8 +411,10 @@ and remove everything else from the screen"
     :config
     (copy-face 'region 'swiper-line-face))
 
-(require-package 'ripgrep)
-(require-package 'rg)
+(use-package ripgrep
+    :ensure t)
+(use-package rg
+    :ensure t)
 (use-package projectile
     :ensure t
     :hook
@@ -599,7 +604,8 @@ and remove everything else from the screen"
     (powerline-theme-personal))
 
 ;; 29. JSON mode
-(require-package 'json-mode)
+(use-package json-mode
+    :ensure t)
 
 ;; 32. Magit
 (require-package 'magit)
@@ -611,7 +617,8 @@ and remove everything else from the screen"
         "u" 'magit-unstage))
 
 ;; Language server protocol client
-(require-package 'lsp-mode)
+(use-package lsp-mode
+    :ensure t)
 ;; 33. Comp(lete) any(thing)
 (require-package 'company)
 ;; Company mode is a standard completion package that works well with lsp-mode.
@@ -622,7 +629,8 @@ and remove everything else from the screen"
     (setq company-minimum-prefix-length 3))
 
 ;; 34. Protobuf mode
-(require-package 'protobuf-mode)
+(use-package protobuf-mode
+    :ensure t)
 
 ;; 35. Yasnippets
 (require-package 'yasnippet)
@@ -761,9 +769,11 @@ Return value: t when a line was killed; nil when the function simply moved to th
     (kill-new (filter-buffer-substring (point-min) (point-max)))
     nil)
 
-(require-package 'ox-hugo)
+(use-package ox-hugo
+    :ensure t)
 
-(require-package 'ob-go)
+(use-package ob-go
+    :ensure t)
 (org-babel-do-load-languages
     'org-babel-load-languages
     '((go . t)))
@@ -863,7 +873,8 @@ consider adding an Org header at the top of the file.
     (interactive)
     (unwrap-all (buffer-file-name)))
 
-(require-package 'web-mode)
+(use-package web-mode
+    :ensure t)
 
 (defun kannan/notmuch-show-delete-message-then-next-or-next-thread ()
     "Add the deleted tag to the current message and move to the next message.
@@ -1151,7 +1162,8 @@ causes the function to throw an error when this function is executed from visual
     (shell-command-on-region beg end '"iconv --to ascii//translit" nil t)
     (message "where I %d you %d" end beg))
 
-(require-package 'olivetti)
+(use-package olivetti
+    :ensure t)
 
 (defun kannan/sql-pretty-print ()
     "Pretty print the SQL query in the current buffer
@@ -1290,7 +1302,8 @@ This function is particularly useful when used with the variable where the `ivy-
                                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
                                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
-(require-package 'php-mode)
+(use-package php-mode
+    :ensure t)
 
 (require 'benchmark)
 
