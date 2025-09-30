@@ -25,31 +25,18 @@
 
 ;; car is the first element of a cons cell, and cdr is the second element
 
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                            ("melpa" . "https://melpa.org/packages/")))
-(add-to-list 'package-archives '( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
-(with-eval-after-load 'package
-  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+;; (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+;;                             ("melpa" . "https://melpa.org/packages/")))
+;; (add-to-list 'package-archives '( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
+;; (with-eval-after-load 'package
+;;   (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-;;; from purcell/emacs.d
-(defun require-package (package &optional min-version no-refresh)
-    "Install given PACKAGE, optionally requiring MIN-VERSION.
-If NO-REFRESH is non-nil, the available package lists will not be
-re-downloaded in order to locate PACKAGE."
-    (if (package-installed-p package min-version)
-        t
-        (if (or (assoc package package-archive-contents) no-refresh)
-            (package-install package)
-            (progn
-                (package-refresh-contents)
-                (require-package package min-version t)))))
-
-(package-initialize)
-
-(require-package 'init-loader)
-(require-package 'async)
+(use-package init-loader
+    :ensure t)
+(use-package async
+    :ensure t)
 
 (setq org-capture-templates '())
 
@@ -365,7 +352,6 @@ and remove everything else from the screen"
 
 ;; 7. Go mode settings
 ;; (defun evil-set-jump-args (&rest ns) (evil-set-jump))
-(require-package 'go-mode)
 (use-package go-mode
     :ensure t)
 
@@ -386,14 +372,14 @@ and remove everything else from the screen"
 (blink-cursor-mode 0)
 
 ;; 9. Use Ivy instead of helm because it is fast
-(require-package 'ivy)
 (use-package ivy
+    :ensure t
     :hook
     (after-init . ivy-mode))
 ;; 9.1. Use Ivy-prescient to ensure that the sorting and filtering is done based on the history of
 ;; command usage.
-(require-package 'ivy-prescient)
 (use-package ivy-prescient
+    :ensure t
     :config
     ;; persist the weights of various functions between Emacs sessions
     ;; the history is saved at ~/.emacs.d/var/prescient-save.el
@@ -406,8 +392,8 @@ and remove everything else from the screen"
     (after-init . prescient-persist-mode)
     (after-init . ivy-prescient-mode))
 ;; 9.2
-(require-package 'swiper)
 (use-package swiper
+    :ensure t
     :config
     (copy-face 'region 'swiper-line-face))
 
@@ -434,8 +420,8 @@ and remove everything else from the screen"
 (setq-default fill-column 100)
 
 ;; 11. Install markdown mode
-(require-package 'markdown-mode)
 (use-package markdown-mode
+    :ensure t
     :mode
     (("README\\.md\\'" . gfm-mode)
         ("\\.md\\'" . gfm-mode)
@@ -446,12 +432,12 @@ and remove everything else from the screen"
     (setq markdown-command "multimarkdown")
     (setq markdown-open-command "firefox"))
 
-(require-package 'lsp-ui)
 (use-package lsp-ui)
+:ensure t
 
 ;; https://github.com/leoliu/ggtags
-(require-package 'ggtags)
 (use-package ggtags
+    :ensure t
     :config
     (general-nmap
         :keymaps '(c-mode-map)
@@ -462,8 +448,8 @@ and remove everything else from the screen"
             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
               (ggtags-mode 1)))))
 
-(require-package 'lsp-mode)
 (use-package lsp-mode
+    :ensure t
     :ensure t
     :commands (lsp lsp-deferred)
     :hook (go-mode . lsp-deferred)
@@ -507,7 +493,6 @@ and remove everything else from the screen"
 (add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx")))
 
 ;; 19. Install editorconfig
-(require-package 'editorconfig)
 (use-package editorconfig
     :ensure t
     :config
@@ -521,11 +506,12 @@ and remove everything else from the screen"
     (if (not (file-directory-p library-location-git-link))
         (message '"ERROR: Vendored library `git-link` does not exist. Run `git submodule init` and `git submodule update --recursive` to get it.")
         (add-to-list 'load-path library-location-git-link)
-        (use-package git-link)))
+        (use-package git-link
+            :ensure t)))
 
 ;; 25. Yaml Mode
-(require-package 'yaml-mode)
 (use-package yaml-mode
+    :ensure t
     :mode
     ("\\.yml\\'" . yaml-mode)
     ("\\.yaml\\'" . yaml-mode)
@@ -592,8 +578,8 @@ and remove everything else from the screen"
                          (powerline-fill face1 (powerline-width rhs))
                          (powerline-render rhs)))))))
 
-(require-package 'powerline)
 (use-package powerline
+    :ensure t
     :config
 
     ;; 27. Include powerline
@@ -608,8 +594,8 @@ and remove everything else from the screen"
     :ensure t)
 
 ;; 32. Magit
-(require-package 'magit)
 (use-package magit
+    :ensure t
     :config
     (general-nmap
         :keymaps '(magit-mode-map)
@@ -620,9 +606,9 @@ and remove everything else from the screen"
 (use-package lsp-mode
     :ensure t)
 ;; 33. Comp(lete) any(thing)
-(require-package 'company)
 ;; Company mode is a standard completion package that works well with lsp-mode.
 (use-package company
+    :ensure t
     :ensure t
     :hook ((go-mode emacs-lisp-mode) . company-mode)
     :config
@@ -633,8 +619,8 @@ and remove everything else from the screen"
     :ensure t)
 
 ;; 35. Yasnippets
-(require-package 'yasnippet)
 (use-package yasnippet
+    :ensure t
     ;; :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
     :config
     (add-hook 'go-mode-hook #'yas-minor-mode)
@@ -893,8 +879,8 @@ Useful when viewing a thread with drafts in it which are not duplicates of sent 
     (notmuch-tree-add-tag '("+deleted"))
     (notmuch-tree-next-message))
 
-(require-package 'notmuch)
 (use-package notmuch
+    :ensure t
     :config
     (general-imap
         :keymaps '(notmuch-search-mode-map)
@@ -973,8 +959,8 @@ Ask the user for an optional prefix for all the filenames."
 (defun kannan/message-unique-id (original-return-val)
     (string-replace ".fsf" ".emacs" original-return-val))
 
-(require-package 'org-journal)
 (use-package org-journal
+    :ensure t
     :config
     (setq org-journal-dir (notes-directory-file "journal/")
         org-journal-date-format "%F (%a)"))
@@ -1307,8 +1293,8 @@ This function is particularly useful when used with the variable where the `ivy-
 
 (require 'benchmark)
 
-(require-package 'lua-mode)
 (use-package lua-mode
+    :ensure t
     :config
     (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)))
 
@@ -1335,7 +1321,6 @@ This function is particularly useful when used with the variable where the `ivy-
     (setq enable-treesitter nil))
 
 (when (and enable-treesitter (treesit-available-p))
-    (require-package 'yaml-pro)
     (use-package yaml-pro
         :ensure t
         :hook (yaml-mode . yaml-pro-ts-mode)

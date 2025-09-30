@@ -1,6 +1,6 @@
 ;; 34. Org Roam
-(require-package 'org-roam)
 (use-package org-roam
+    :ensure t
     :hook
     (after-init . org-roam-db-autosync-mode)
     :custom
@@ -39,4 +39,4 @@
 ;; To move to v2, first install the latest version of org-roam. And then, run the "org-roam-migrate-wizard" function, which rewrites everything.
 ;; More about v2: https://github.com/org-roam/org-roam/wiki/Hitchhiker's-Rough-Guide-to-Org-roam-V2
 
-(require-package 'org-roam-ui)
+(use-package org-roam-ui)
