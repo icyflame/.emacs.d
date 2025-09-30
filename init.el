@@ -75,7 +75,6 @@
 ;; 3. Evil mode across most of Emacs
 (use-package evil
     :ensure t
-    :defer t
     :init
     (setq evil-search-module 'evil-search
         evil-want-C-u-scroll t
@@ -377,14 +376,12 @@ and remove everything else from the screen"
 ;; 9. Use Ivy instead of helm because it is fast
 (use-package ivy
     :ensure t
-    :defer t
     :hook
     (after-init . ivy-mode))
 ;; 9.1. Use Ivy-prescient to ensure that the sorting and filtering is done based on the history of
 ;; command usage.
 (use-package ivy-prescient
     :ensure t
-    :defer t
     :config
     ;; persist the weights of various functions between Emacs sessions
     ;; the history is saved at ~/.emacs.d/var/prescient-save.el
@@ -399,7 +396,6 @@ and remove everything else from the screen"
 ;; 9.2
 (use-package swiper
     :ensure t
-    :defer t
     :config
     (copy-face 'region 'swiper-line-face))
 
@@ -595,7 +591,6 @@ and remove everything else from the screen"
                          (powerline-render rhs)))))))
 
 (use-package powerline
-    :defer t
     :ensure t
     :config
 
