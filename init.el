@@ -494,6 +494,8 @@ and remove everything else from the screen"
 (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'org-mode-hook #'flyspell-mode)
 
+(setq org-directory notes-directory)
+
 (if (not (boundp 'org-agenda-files))
     (message '"ERROR: Variable org-agenda-files is not available. Bind it in local-confs/10_local.el"))
 
@@ -527,14 +529,12 @@ and remove everything else from the screen"
 (defun kannan/show-word-count-in-modeline ()
     "An interactive function which shows the word count of the current buffer in the modeline."
     (interactive)
-    (setq powerline-display-word-count 't)
-    )
+    (setq powerline-display-word-count 't))
 
 (defun kannan/hide-word-count-in-modeline ()
     "An interactive function which hides the word count of the current buffer from the modeline."
     (interactive)
-    (setq powerline-display-word-count 'nil)
-    )
+    (setq powerline-display-word-count 'nil))
 
 (defun powerline-theme-personal ()
     "Setup a mode-line with major, evil, and minor modes centered."
