@@ -42,6 +42,7 @@
     (init-loader-load "~/.emacs.d/separated-confs"))
 
 (use-package async
+    :defer t
     :ensure t)
 
 (setq org-capture-templates '())
@@ -74,6 +75,7 @@
 ;; 3. Evil mode across most of Emacs
 (use-package evil
     :ensure t
+    :defer t
     :init
     (setq evil-search-module 'evil-search
         evil-want-C-u-scroll t
@@ -353,22 +355,21 @@ and remove everything else from the screen"
 (load custom-file)
 
 ;; 7. Go mode settings
-;; (defun evil-set-jump-args (&rest ns) (evil-set-jump))
 (use-package go-mode
-    :ensure t)
-
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
-
-(use-package go-mode
+    :ensure t
+    :defer t
     :config
+    ;; Set up before-save hooks to format buffer and add/delete imports.
+    ;; Make sure you don't have other gofmt/goimports hooks enabled.
+    (defun lsp-go-install-save-hooks ()
+        (add-hook 'before-save-hook #'lsp-format-buffer t t)
+        (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
 
 (use-package gotest
-    :ensure t)
+    :ensure t
+    :defer t)
 
 ;; 8. Don't blink cursor
 (blink-cursor-mode 0)
@@ -376,12 +377,14 @@ and remove everything else from the screen"
 ;; 9. Use Ivy instead of helm because it is fast
 (use-package ivy
     :ensure t
+    :defer t
     :hook
     (after-init . ivy-mode))
 ;; 9.1. Use Ivy-prescient to ensure that the sorting and filtering is done based on the history of
 ;; command usage.
 (use-package ivy-prescient
     :ensure t
+    :defer t
     :config
     ;; persist the weights of various functions between Emacs sessions
     ;; the history is saved at ~/.emacs.d/var/prescient-save.el
@@ -396,14 +399,18 @@ and remove everything else from the screen"
 ;; 9.2
 (use-package swiper
     :ensure t
+    :defer t
     :config
     (copy-face 'region 'swiper-line-face))
 
 (use-package ripgrep
+    :defer t
     :ensure t)
 (use-package rg
+    :defer t
     :ensure t)
 (use-package projectile
+    :defer t
     :ensure t
     :hook
     (after-init . projectile-mode)
@@ -423,6 +430,7 @@ and remove everything else from the screen"
 
 ;; 11. Install markdown mode
 (use-package markdown-mode
+    :defer t
     :ensure t
     :mode
     (("README\\.md\\'" . gfm-mode)
@@ -434,11 +442,13 @@ and remove everything else from the screen"
     (setq markdown-command "multimarkdown")
     (setq markdown-open-command "firefox"))
 
-(use-package lsp-ui)
-:ensure t
+(use-package lsp-ui
+    :defer t
+    :ensure t)
 
 ;; https://github.com/leoliu/ggtags
 (use-package ggtags
+    :defer t
     :ensure t
     :config
     (general-nmap
@@ -451,7 +461,7 @@ and remove everything else from the screen"
               (ggtags-mode 1)))))
 
 (use-package lsp-mode
-    :ensure t
+    :defer t
     :ensure t
     :commands (lsp lsp-deferred)
     :hook (go-mode . lsp-deferred)
@@ -471,6 +481,7 @@ and remove everything else from the screen"
     )
 
 (use-package xref
+    :defer t
     :config
     (general-nmap
         :keymaps '(emacs-lisp-mode-map)
@@ -496,6 +507,7 @@ and remove everything else from the screen"
 
 ;; 19. Install editorconfig
 (use-package editorconfig
+    :defer t
     :ensure t
     :config
     (editorconfig-mode 1))
@@ -509,10 +521,12 @@ and remove everything else from the screen"
         (message '"ERROR: Vendored library `git-link` does not exist. Run `git submodule init` and `git submodule update --recursive` to get it.")
         (add-to-list 'load-path library-location-git-link)
         (use-package git-link
+    :defer t
             :ensure t)))
 
 ;; 25. Yaml Mode
 (use-package yaml-mode
+    :defer t
     :ensure t
     :mode
     ("\\.yml\\'" . yaml-mode)
@@ -581,6 +595,7 @@ and remove everything else from the screen"
                          (powerline-render rhs)))))))
 
 (use-package powerline
+    :defer t
     :ensure t
     :config
 
@@ -593,10 +608,12 @@ and remove everything else from the screen"
 
 ;; 29. JSON mode
 (use-package json-mode
+    :defer t
     :ensure t)
 
 ;; 32. Magit
 (use-package magit
+    :defer t
     :ensure t
     :config
     (general-nmap
@@ -606,11 +623,12 @@ and remove everything else from the screen"
 
 ;; Language server protocol client
 (use-package lsp-mode
+    :defer t
     :ensure t)
 ;; 33. Comp(lete) any(thing)
 ;; Company mode is a standard completion package that works well with lsp-mode.
 (use-package company
-    :ensure t
+    :defer t
     :ensure t
     :hook ((go-mode emacs-lisp-mode) . company-mode)
     :config
@@ -618,10 +636,12 @@ and remove everything else from the screen"
 
 ;; 34. Protobuf mode
 (use-package protobuf-mode
+    :defer t
     :ensure t)
 
 ;; 35. Yasnippets
 (use-package yasnippet
+    :defer t
     :ensure t
     ;; :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
     :config
@@ -758,9 +778,11 @@ Return value: t when a line was killed; nil when the function simply moved to th
     nil)
 
 (use-package ox-hugo
+    :defer t
     :ensure t)
 
 (use-package ob-go
+    :defer t
     :ensure t)
 (org-babel-do-load-languages
     'org-babel-load-languages
@@ -862,6 +884,7 @@ consider adding an Org header at the top of the file.
     (unwrap-all (buffer-file-name)))
 
 (use-package web-mode
+    :defer t
     :ensure t)
 
 (defun kannan/notmuch-show-delete-message-then-next-or-next-thread ()
@@ -882,6 +905,7 @@ Useful when viewing a thread with drafts in it which are not duplicates of sent 
     (notmuch-tree-next-message))
 
 (use-package notmuch
+    :defer t
     :ensure t
     :config
     (general-imap
@@ -962,6 +986,7 @@ Ask the user for an optional prefix for all the filenames."
     (string-replace ".fsf" ".emacs" original-return-val))
 
 (use-package org-journal
+    :defer t
     :ensure t
     :config
     (setq org-journal-dir (notes-directory-file "journal/")
@@ -1151,6 +1176,7 @@ causes the function to throw an error when this function is executed from visual
     (message "where I %d you %d" end beg))
 
 (use-package olivetti
+    :defer t
     :ensure t)
 
 (defun kannan/sql-pretty-print ()
@@ -1172,6 +1198,7 @@ SQL queries.
     (delete-indentation nil (point-min) (point-max)))
 
 (use-package eshell-syntax-highlighting
+    :defer t
     :after eshell-mode
     :hook (eshell-mode-hook)
     :ensure t ;; Install if not already installed.
@@ -1291,11 +1318,13 @@ This function is particularly useful when used with the variable where the `ivy-
                                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (use-package php-mode
+    :defer t
     :ensure t)
 
 (require 'benchmark)
 
 (use-package lua-mode
+    :defer t
     :ensure t
     :config
     (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)))
@@ -1324,6 +1353,7 @@ This function is particularly useful when used with the variable where the `ivy-
 
 (when (and enable-treesitter (treesit-available-p))
     (use-package yaml-pro
+        :defer t
         :ensure t
         :hook (yaml-mode . yaml-pro-ts-mode)
         :config
