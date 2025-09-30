@@ -25,11 +25,10 @@
 
 ;; car is the first element of a cons cell, and cdr is the second element
 
-;; (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-;;                             ("melpa" . "https://melpa.org/packages/")))
-;; (add-to-list 'package-archives '( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
-;; (with-eval-after-load 'package
-;;   (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                            ("melpa" . "https://melpa.org/packages/")
+                            ( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/")
+                            ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
