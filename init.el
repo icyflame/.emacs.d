@@ -33,17 +33,18 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 (use-package init-loader
-    :ensure t)
+    :ensure t
+    :config
+    ;; https://github.com/hanabokuro/dot-files
+    (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
+    (init-loader-load "~/.emacs.d/imported-confs")
+    (init-loader-load "~/.emacs.d/local-confs")
+    (init-loader-load "~/.emacs.d/separated-confs"))
+
 (use-package async
     :ensure t)
 
 (setq org-capture-templates '())
-
-;; https://github.com/hanabokuro/dot-files
-(setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
-(init-loader-load "~/.emacs.d/imported-confs")
-(init-loader-load "~/.emacs.d/local-confs")
-(init-loader-load "~/.emacs.d/separated-confs")
 
 (if (boundp 'notes-directory)
   (when (null (string-suffix-p '"/" notes-directory))
@@ -62,11 +63,13 @@
 ;; 10. Install use-package
 (require 'use-package)
 
-;; 1. Don't show splash screen at start-up
-(setq inhibit-splash-screen t)
+(use-package emacs
+    :config
+    ;; 1. Don't show splash screen at start-up
+    (setq inhibit-splash-screen t)
 
-;; 26. Remove trailing whitespace characters from all files
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+    ;; 26. Remove trailing whitespace characters from all files
+    (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;; 3. Evil mode across most of Emacs
 (use-package evil
