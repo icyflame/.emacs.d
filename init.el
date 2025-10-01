@@ -1335,7 +1335,11 @@ This function is particularly useful when used with the variable where the `ivy-
         ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Controlling-Active-Maps.html#Definition-of-minor_002dmode_002dmap_002dalist
         ;;
         (setq minor-mode-alist
-            (assq-delete-all 'yaml-pro-ts-mode minor-mode-map-alist))))
+            (assq-delete-all 'yaml-pro-ts-mode minor-mode-map-alist)))
+
+    (use-package treesit-fold
+        :if (file-directory-p "~/.emacs.d/lisp/treesit-fold/")
+        :load-path "~/.emacs.d/lisp/treesit-fold/"))
 
 (defun kannan/org-agenda/schedule-offset (offset)
     "Schedule the Org TODO item at point `offset' days from today. Offset is an integer."

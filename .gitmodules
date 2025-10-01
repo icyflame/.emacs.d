@@ -1,3 +1,6 @@
 [submodule "lisp/git-link"]
 	path = lisp/git-link
 	url = https://gitlab.com/siddharthkannan/git-link.git
+[submodule "lisp/treesit-fold"]
+	path = lisp/treesit-fold
+	url = https://github.com/emacs-tree-sitter/treesit-fold.git
