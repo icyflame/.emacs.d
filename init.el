@@ -1395,3 +1395,6 @@ This requires ripgrep to be installed."
     ;; @option{ledger-font-highlight-face}.
     (copy-face 'region 'ledger-font-xact-highlight-face)
     (setq ledger-highlight-xact-under-point t))
+
+(use-package jsonnet-mode
+    :ensure t)
