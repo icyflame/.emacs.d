@@ -1299,7 +1299,11 @@ This function is particularly useful when used with the variable where the `ivy-
     :config
     (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)))
 
-(require 'jinja2-mode)
+;; Jinja2 mode inside the Lisp/ directory
+;; https://github.com/paradoxxxzero/jinja2-mode
+(use-package jinja2-mode
+    :if (file-exists-p "~/.emacs.d/lisp/jinja2-mode.el")
+    :load-path "~/.emacs.d/lisp/jinja2-mode.el")
 
 ;; Show a list of TODO headlines which don't have a schedule or a deadline
 ;; https://emacs.stackexchange.com/a/16561/31572
