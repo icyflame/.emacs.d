@@ -1326,6 +1326,16 @@ This function is particularly useful when used with the variable where the `ivy-
     (setq enable-treesitter nil))
 
 (when (and enable-treesitter (treesit-available-p))
+    ;; treesit.el is included in Emacs. Language grammars have to be installed separately for each
+    ;; of the languages where we want to use tree-sitter support.
+    ;; https://arnesonium.com/2023/08/configuring-emacs-29-1-for-golang
+    ;; https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
+    ;; Run `treesit-install-language-grammar' after initial start-up of Emacs
+    (setq treesit-language-source-alist
+        '((go "https://github.com/tree-sitter/tree-sitter-go")
+             (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
+             (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
     (require-package 'yaml-pro)
     (use-package yaml-pro
         :ensure t

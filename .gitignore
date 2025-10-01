@@ -14,3 +14,6 @@ url
 .lsp-session-*
 .cask/
 session.*
+
+# Tree-sitter language grammars are shared libraries (.so) files. They should be ignored.
+tree-sitter
