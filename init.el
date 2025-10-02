@@ -1372,9 +1372,10 @@ This requires ripgrep to be installed."
             (setq agenda-files-length-after (list-length org-agenda-files))
             (message '"INFO: Condensed `org-agenda-files'. Length change: %d => %d" agenda-files-length-before agenda-files-length-after))))
 
-(advice-add #'org-agenda-list
-    :before
-    #'kannan/org-roam/condense-agenda-files)
+;; TODO: Reduction of `org-agenda-files' does not work properly yet
+;; (advice-add #'org-agenda-list
+;;     :before
+;;     #'kannan/org-roam/condense-agenda-files)
 
 (use-package ledger-mode
     :defer t
