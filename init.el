@@ -1075,7 +1075,7 @@ Otherwise, return DPI (1 inch = 2.54 cm)
             )))
 
 (when (window-system)
-    (defvar emacs-english-font "DejaVu Sans Mono" "The font name of English.")
+    (defvar emacs-english-font "Noto Sans Mono" "The font name of English.")
     (defvar emacs-cjk-font "Noto Sans CJK JP" "The font name for CJK.")
   ;;; for test
     ;; (find-font (font-spec :name "LiHei Pro"))
