@@ -1375,3 +1375,14 @@ This requires ripgrep to be installed."
 (advice-add #'org-agenda-list
     :before
     #'kannan/org-roam/condense-agenda-files)
+
+(use-package ledger-mode
+    :defer t
+    :ensure t
+    :config
+    ;; From the documentation: https://github.com/ledger/ledger-mode/blob/master/doc/ledger-mode.texi#L984C1-L986C37
+    ;; @item ledger-highlight-xact-under-point
+    ;; If non-nil, highlight transaction under point using
+    ;; @option{ledger-font-highlight-face}.
+    (copy-face 'region 'ledger-font-xact-highlight-face)
+    (setq ledger-highlight-xact-under-point t))
