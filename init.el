@@ -38,6 +38,15 @@
 ;; 1. Install use-package
 (require 'use-package)
 
+(use-package init-loader
+    :ensure t
+    :config
+    ;; https://github.com/hanabokuro/dot-files
+    (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
+    (init-loader-load "~/.emacs.d/imported-confs")
+    (init-loader-load "~/.emacs.d/local-confs")
+    (init-loader-load "~/.emacs.d/separated-confs"))
+
 (use-package emacs
     :config
     ;; 1. Don't show splash screen at start-up
@@ -75,15 +84,6 @@ and remove everything else from the screen"
         "A function to ask the user for approval"
         (setq answer (read-char (concat prompt " " "(y/n): ")))
         (string-equal "y" (string answer))))
-
-(use-package init-loader
-    :ensure t
-    :config
-    ;; https://github.com/hanabokuro/dot-files
-    (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
-    (init-loader-load "~/.emacs.d/imported-confs")
-    (init-loader-load "~/.emacs.d/local-confs")
-    (init-loader-load "~/.emacs.d/separated-confs"))
 
 (use-package async
     :defer t
@@ -323,6 +323,7 @@ and remove everything else from the screen"
     :ensure t
     :hook
     (after-init . ivy-mode))
+
 ;; 9.1. Use Ivy-prescient to ensure that the sorting and filtering is done based on the history of
 ;; command usage.
 (use-package ivy-prescient
