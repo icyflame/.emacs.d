@@ -35,6 +35,47 @@
 ;; https://emacsredux.com/blog/2024/02/23/changing-the-emacs-configuration-directory/
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+;; 1. Install use-package
+(require 'use-package)
+
+(use-package emacs
+    :config
+    ;; 1. Don't show splash screen at start-up
+    (setq inhibit-splash-screen t)
+
+    ;; 26. Remove trailing whitespace characters from all files
+    (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+    (setq org-capture-templates '())
+
+    (if (boundp 'notes-directory)
+        (when (null (string-suffix-p '"/" notes-directory))
+            (setq notes-directory (format '"%s/" notes-directory))))
+
+    (if (boundp 'blog-location)
+        (when (null (string-suffix-p '"/" blog-location))
+            (setq blog-location (format '"%s/" blog-location))))
+
+    (defun notes-directory-file (filename)
+        "Return the path to filename when placed inside the notes-directory"
+        (concat notes-directory filename))
+
+    (setq default-todo-file-for-computer (notes-directory-file '"TODO.org"))
+
+    (defun kannan/buffer/switch-to-scratch-buffer ()
+        "Switch to scratch buffer in the current buffer. Useful when I want to focus on a single buffer
+and remove everything else from the screen"
+        (interactive)
+        (switch-to-buffer "*scratch*"))
+
+    ;; Don't use C-M-s for anything other than "OS-level search"
+    (unbind-key '"C-M-s")
+
+    (defun kannan/ask-user-approval (prompt)
+        "A function to ask the user for approval"
+        (setq answer (read-char (concat prompt " " "(y/n): ")))
+        (string-equal "y" (string answer))))
+
 (use-package init-loader
     :ensure t
     :config
@@ -47,33 +88,6 @@
 (use-package async
     :defer t
     :ensure t)
-
-(setq org-capture-templates '())
-
-(if (boundp 'notes-directory)
-  (when (null (string-suffix-p '"/" notes-directory))
-    (setq notes-directory (format '"%s/" notes-directory))))
-
-(if (boundp 'blog-location)
-  (when (null (string-suffix-p '"/" blog-location))
-    (setq blog-location (format '"%s/" blog-location))))
-
-(defun notes-directory-file (filename)
-    "Return the path to filename when placed inside the notes-directory"
-    (concat notes-directory filename))
-
-(setq default-todo-file-for-computer (notes-directory-file '"TODO.org"))
-
-;; 10. Install use-package
-(require 'use-package)
-
-(use-package emacs
-    :config
-    ;; 1. Don't show splash screen at start-up
-    (setq inhibit-splash-screen t)
-
-    ;; 26. Remove trailing whitespace characters from all files
-    (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;; 3. Evil mode across most of Emacs
 (use-package evil
@@ -89,11 +103,6 @@
     :config
     (evil-mode)
     (evil-ex-define-cmd "q" 'kill-current-buffer))
-
-(defun kannan/ask-user-approval (prompt)
-    "A function to ask the user for approval"
-    (setq answer (read-char (concat prompt " " "(y/n): ")))
-    (string-equal "y" (string answer)))
 
 (defun kannan/magit/merge-upstream-into-current ()
     "Merge the upstream for this branch into this branch"
@@ -152,15 +161,6 @@ This is to support both older repositories that use `master' as the default bran
     "Rebase current branch on the previous branch"
     (interactive)
     (magit-rebase-branch (magit-get-previous-branch) ()))
-
-(defun kannan/buffer/switch-to-scratch-buffer ()
-    "Switch to scratch buffer in the current buffer. Useful when I want to focus on a single buffer
-and remove everything else from the screen"
-    (interactive)
-    (switch-to-buffer "*scratch*"))
-
-;; Don't use C-M-s for anything other than "OS-level search"
-(unbind-key '"C-M-s")
 
 ;; 12. Install general package
 (use-package general
