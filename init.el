@@ -104,64 +104,6 @@ and remove everything else from the screen"
     (evil-mode)
     (evil-ex-define-cmd "q" 'kill-current-buffer))
 
-(defun kannan/magit/merge-upstream-into-current ()
-    "Merge the upstream for this branch into this branch"
-    (interactive)
-    (magit-merge-plain (magit-get-upstream-branch)))
-
-(defun kannan/magit/delete-branch (branch)
-    (magit-run-git "branch" "-d" branch))
-
-(defvar protected-branches
-    '("master" "main")
-    "Pushing to any of these branches will require an additional confirmation.")
-
-(defun is-protected-branch (current-branch)
-    "Return nil or t depending on whether the given branch is a `protected' branch.
-
-Usually, branches such as `master' and `main' are considered protected branches."
-    (if (null (member current-branch protected-branches)) nil t))
-
-(defun kannan/magit/delete-all-merged-branches ()
-    "Delete all branches that have been merged into the current branch"
-    (interactive)
-    (let ((current-branch (magit-get-current-branch)))
-        (if (or (is-protected-branch current-branch)
-                (eq t (kannan/ask-user-approval "Delete merged branches, even though we are not on master?")))
-            (let ((branches-to-delete (delete current-branch (magit-list-merged-branches))))
-                (mapc #'kannan/magit/delete-branch branches-to-delete)
-                (message "Deleted all branches: %s" (string-join branches-to-delete ", "))))))
-
-(defun kannan/magit/push-safe-to-current ()
-    "Push safely to the upstream branch of the current branch. Ask user before pushing to master"
-    (interactive)
-    (let ((current-branch (magit-get-current-branch)))
-        (if (or (not (is-protected-branch current-branch))
-                (eq t (kannan/ask-user-approval (format "Push to upstream on protected branch `%s'?" current-branch))))
-            (call-interactively #'magit-push-current-to-pushremote))))
-
-(defun kannan/magit/checkout-previous-branch ()
-    "Checkout the previous branch"
-    (interactive)
-    (magit-checkout (magit-get-previous-branch)))
-
-(defun kannan/magit/first-protected-branch ()
-    "Return the first branch in the protected-branches list that exists in this repository.
-
-This is to support both older repositories that use `master' as the default branch, and newer ones that use `main' as the default branch"
-    (seq-find #'magit-local-branch-p protected-branches))
-
-(defun kannan/magit/checkout-default-branch ()
-    "Checkout the default branch"
-    (interactive)
-    (let ((default-branch (kannan/magit/first-protected-branch)))
-        (magit-checkout default-branch)))
-
-(defun kannan/magit/rebase-previous-branch ()
-    "Rebase current branch on the previous branch"
-    (interactive)
-    (magit-rebase-branch (magit-get-previous-branch) ()))
-
 ;; 12. Install general package
 (use-package general
     :ensure t
@@ -617,7 +559,65 @@ This is to support both older repositories that use `master' as the default bran
     (general-nmap
         :keymaps '(magit-mode-map)
         "s" 'magit-stage
-        "u" 'magit-unstage))
+        "u" 'magit-unstage)
+
+    (defun kannan/magit/merge-upstream-into-current ()
+        "Merge the upstream for this branch into this branch"
+        (interactive)
+        (magit-merge-plain (magit-get-upstream-branch)))
+
+    (defun kannan/magit/delete-branch (branch)
+        (magit-run-git "branch" "-d" branch))
+
+    (defvar protected-branches
+        '("master" "main")
+        "Pushing to any of these branches will require an additional confirmation.")
+
+    (defun kannan/magit/is-protected-branch (current-branch)
+        "Return nil or t depending on whether the given branch is a `protected' branch.
+
+Usually, branches such as `master' and `main' are considered protected branches."
+        (if (null (member current-branch protected-branches)) nil t))
+
+    (defun kannan/magit/delete-all-merged-branches ()
+        "Delete all branches that have been merged into the current branch"
+        (interactive)
+        (let ((current-branch (magit-get-current-branch)))
+            (if (or (kannan/magit/is-protected-branch current-branch)
+                    (eq t (kannan/ask-user-approval "Delete merged branches, even though we are not on master?")))
+                (let ((branches-to-delete (delete current-branch (magit-list-merged-branches))))
+                    (mapc #'kannan/magit/delete-branch branches-to-delete)
+                    (message "Deleted all branches: %s" (string-join branches-to-delete ", "))))))
+
+    (defun kannan/magit/push-safe-to-current ()
+        "Push safely to the upstream branch of the current branch. Ask user before pushing to master"
+        (interactive)
+        (let ((current-branch (magit-get-current-branch)))
+            (if (or (not (kannan/magit/is-protected-branch current-branch))
+                    (eq t (kannan/ask-user-approval (format "Push to upstream on protected branch `%s'?" current-branch))))
+                (call-interactively #'magit-push-current-to-pushremote))))
+
+    (defun kannan/magit/checkout-previous-branch ()
+        "Checkout the previous branch"
+        (interactive)
+        (magit-checkout (magit-get-previous-branch)))
+
+    (defun kannan/magit/first-protected-branch ()
+        "Return the first branch in the protected-branches list that exists in this repository.
+
+This is to support both older repositories that use `master' as the default branch, and newer ones that use `main' as the default branch"
+        (seq-find #'magit-local-branch-p protected-branches))
+
+    (defun kannan/magit/checkout-default-branch ()
+        "Checkout the default branch"
+        (interactive)
+        (let ((default-branch (kannan/magit/first-protected-branch)))
+            (magit-checkout default-branch)))
+
+    (defun kannan/magit/rebase-previous-branch ()
+        "Rebase current branch on the previous branch"
+        (interactive)
+        (magit-rebase-branch (magit-get-previous-branch) ())))
 
 ;; 33. Comp(lete) any(thing)
 ;; Company mode is a standard completion package that works well with lsp-mode.
