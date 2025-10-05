@@ -438,20 +438,22 @@ and remove everything else from the screen"
 
 ;; 18. Org mode settings
 ;;; Set the done time for a TODO item when moving it to DONE
-(setq org-log-done 'time)
+(use-package org
+  :config
+  (setq org-log-done 'time)
 
-(setq org-todo-keywords
-    '((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+  (setq org-todo-keywords
+		'((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
 
-(add-hook 'org-mode-hook #'auto-fill-mode)
-(add-hook 'org-mode-hook #'flyspell-mode)
+  (add-hook 'org-mode-hook #'auto-fill-mode)
+  (add-hook 'org-mode-hook #'flyspell-mode)
 
-(setq org-directory notes-directory)
+  (setq org-directory notes-directory)
 
-(if (not (boundp 'org-agenda-files))
-    (message '"ERROR: Variable org-agenda-files is not available. Bind it in local-confs/10_local.el"))
+  (if (not (boundp 'org-agenda-files))
+      (message '"ERROR: Variable org-agenda-files is not available. Bind it in local-confs/10_local.el"))
 
-(add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx")))
+  (add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx"))))
 
 ;; 19. Install editorconfig
 (use-package editorconfig
