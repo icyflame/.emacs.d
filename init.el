@@ -1,5 +1,3 @@
-(require 'package)
-
 ;; 0. Disable audible bell and all related sounds that could come from Emacs. Turn this off
 ;; immediately after Emacs starts. Even if we can't get any package, the audible bell shouldn't
 ;; sound.
@@ -25,6 +23,7 @@
 
 ;; car is the first element of a cons cell, and cdr is the second element
 
+(require 'package)
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                             ("melpa" . "https://melpa.org/packages/")
                             ( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/")
@@ -33,9 +32,8 @@
 ;; TODO: Replace .emacs.d with the variable `user-emacs-directory'. This will make it possible to
 ;; start emacs using emacs --init-directory in order to test a new configuration
 ;; https://emacsredux.com/blog/2024/02/23/changing-the-emacs-configuration-directory/
-(add-to-list 'load-path "~/.emacs.d/lisp/")
 
-;; 1. Install use-package
+;; 1. Install use-package using package.el. This should be the only package which does not use use-package.
 (require 'use-package)
 
 (use-package init-loader
@@ -288,11 +286,13 @@ and remove everything else from the screen"
         "d c" 'cperl-perldoc-at-point))
 
 ;; 5.2 Set the color scheme to Tomorrow Night - Bright
-(require 'color-theme-tomorrow)
-(color-theme-tomorrow--define-theme night)
-(color-theme-tomorrow--define-theme night-bright)
-(color-theme-tomorrow--define-theme day)
-(enable-theme 'tomorrow-night-bright)
+(use-package color-theme-tomorrow
+  :load-path "lisp/"
+  :config
+  (color-theme-tomorrow--define-theme night)
+  (color-theme-tomorrow--define-theme night-bright)
+  (color-theme-tomorrow--define-theme day)
+  (enable-theme 'tomorrow-night-bright))
 
 ;; 6. Move everything defined for the customize system to a separate file
 (setq custom-file "~/.emacs.d/custom.el")
@@ -458,13 +458,15 @@ and remove everything else from the screen"
 (setq-default tab-width 4)
 
 ;; 22. Use vendored git-link
-(let ((library-location-git-link '"~/.emacs.d/lisp/git-link/"))
-    (if (not (file-directory-p library-location-git-link))
-        (message '"ERROR: Vendored library `git-link` does not exist. Run `git submodule init` and `git submodule update --recursive` to get it.")
-        (add-to-list 'load-path library-location-git-link)
-        (use-package git-link
-            :defer t
-            :ensure t)))
+(use-package git-link
+  :init
+  (if (not (file-directory-p "~/.emacs.d/lisp/git-link/"))
+	  (message '"ERROR: Vendored library `git-link` does not exist. Run `git submodule init` and `git submodule update --recursive` to get it."))
+
+  :if (file-directory-p '"~/.emacs.d/lisp/git-link/")
+  :load-path "lisp/git-link/"
+
+  :defer t)
 
 ;; 25. Yaml Mode
 (use-package yaml-mode
@@ -1009,7 +1011,9 @@ Source function name: afs/org-replace-link-by-link-description
                 (insert description)
                 (message '"Removed link and inserted title instead")))))
 
-(require 'simpleclip)
+(use-package simpleclip
+  :load-path "lisp/")
+
 (defun kannan/org/replace-link-from-clipboard ()
     "Replace an Org link with the same description and the link from the clipboard
 
@@ -1218,8 +1222,10 @@ SQL queries.
 ;;
 ;; Switch input methods using C-\. When in the "Insert" mode, Japanese can be added to the
 ;; buffer. When in other modes, Emacs keybindings will continue to work as usual.
-(require 'mozc)
-(setq default-input-method "japanese-mozc")
+(use-package mozc
+  :load-path "lisp/"
+  :config
+  (setq default-input-method "japanese-mozc"))
 
 (defun kannan/get-strings-without-text-properties (input)
     "From the given list variable `input', get every element which is a string without text properties.
@@ -1324,7 +1330,8 @@ This function is particularly useful when used with the variable where the `ivy-
     :config
     (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)))
 
-(require 'jinja2-mode)
+(use-package jinja2-mode
+  :load-path "lisp/")
 
 ;; Show a list of TODO headlines which don't have a schedule or a deadline
 ;; https://emacs.stackexchange.com/a/16561/31572
