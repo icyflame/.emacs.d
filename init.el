@@ -78,6 +78,15 @@ and remove everything else from the screen"
     ;; Don't use C-M-s for anything other than "OS-level search"
     (unbind-key '"C-M-s")
 
+	(setq-default fill-column 100)
+
+	;; 8. Don't blink cursor
+	(blink-cursor-mode 0)
+
+	;; 20. Set the default width of a tab character
+	(setq-default tab-width 4)
+
+
     (defun kannan/ask-user-approval (prompt)
         "A function to ask the user for approval"
         (setq answer (read-char (concat prompt " " "(y/n): ")))
@@ -315,9 +324,6 @@ and remove everything else from the screen"
     :ensure t
     :defer t)
 
-;; 8. Don't blink cursor
-(blink-cursor-mode 0)
-
 ;; 9. Use Ivy instead of helm because it is fast
 (use-package ivy
     :ensure t
@@ -339,6 +345,7 @@ and remove everything else from the screen"
     :hook
     (after-init . prescient-persist-mode)
     (after-init . ivy-prescient-mode))
+
 ;; 9.2
 (use-package swiper
     :ensure t
@@ -348,9 +355,11 @@ and remove everything else from the screen"
 (use-package ripgrep
     :defer t
     :ensure t)
+
 (use-package rg
     :defer t
     :ensure t)
+
 (use-package projectile
     :defer t
     :ensure t
@@ -367,8 +376,6 @@ and remove everything else from the screen"
     ;; Related work-around which I tried earlier:
     ;; https://github.com/juergenhoetzel/projectile/commit/383b3bf47d34ca60c24cd73ea9c335936d0b70be
     (setq projectile-git-use-fd nil))
-
-(setq-default fill-column 100)
 
 ;; 11. Install markdown mode
 (use-package markdown-mode
@@ -419,8 +426,7 @@ and remove everything else from the screen"
         )
     (lsp-register-custom-settings
         '(("gopls.completeUnimported" t t)
-             ("gopls.staticcheck" t t)))
-    )
+             ("gopls.staticcheck" t t))))
 
 (use-package xref
     :defer t
@@ -454,9 +460,6 @@ and remove everything else from the screen"
     :config
     (editorconfig-mode 1))
 
-;; 20. Set the default width of a tab character
-(setq-default tab-width 4)
-
 ;; 22. Use vendored git-link
 (use-package git-link
   :init
@@ -487,64 +490,64 @@ and remove everything else from the screen"
     (interactive)
     (setq powerline-display-word-count 'nil))
 
-(defun powerline-theme-personal ()
-    "Setup a mode-line with major, evil, and minor modes centered."
-    (interactive)
-    (setq-default mode-line-format
-        '("%e"
-             (:eval
-                 (let* ((active (powerline-selected-window-active))
-                           (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
-                           (mode-line (if active 'mode-line 'mode-line-inactive))
-                           (face0 (if active 'powerline-active0 'powerline-inactive0))
-                           (face1 (if active 'powerline-active1 'powerline-inactive1))
-                           (face2 (if active 'powerline-active2 'powerline-inactive2))
-                           (separator-left (intern (format "powerline-%s-%s"
-                                                       (powerline-current-separator)
-                                                       (car powerline-default-separator-dir))))
-                           (separator-right (intern (format "powerline-%s-%s"
-                                                        (powerline-current-separator)
-                                                        (cdr powerline-default-separator-dir))))
-                           (lhs (list (powerline-raw "%*" face0 'l)
-                                    (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
-                                    (powerline-raw " " face0)
-                                    (funcall separator-left face0 face1)
-                                    (powerline-narrow face1 'l)
-
-                                    (powerline-raw global-mode-string face1 'r)
-                                    (powerline-raw "%4l" face1 'r)
-                                    (powerline-raw ":" face1)
-                                    (powerline-raw "%3c" face1 'r)
-                                    (funcall separator-right face1 face0)
-                                    (powerline-raw " " face0)
-                                    (powerline-raw "%6p" face0 'r)
-
-                                    (powerline-vc face1)))
-                           (rhs (list ()))
-                           (center (append (list (powerline-major-mode face2 'l)
-                                               (powerline-process face2)
-                                               (powerline-raw " " face2))
-                                       (if evil-mode
-                                           (list (funcall separator-right face2 face1)
-                                               (powerline-raw evil-mode-line-tag face1 'l)
-                                               (powerline-raw " " face1)))
-                                       (if powerline-display-word-count
-                                           (list (powerline-wc face1)))
-                                       )))
-
-                     (concat (powerline-render lhs)
-                         (powerline-fill-center face1 (/ (powerline-width center) 2.0))
-                         (powerline-render center)
-                         (powerline-fill face1 (powerline-width rhs))
-                         (powerline-render rhs)))))))
-
 (use-package powerline
     :ensure t
     :config
 
+	(defun powerline-theme-personal ()
+	  "Setup a mode-line with major, evil, and minor modes centered."
+	  (interactive)
+	  (setq-default mode-line-format
+					'("%e"
+					  (:eval
+					   (let* ((active (powerline-selected-window-active))
+							  (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
+							  (mode-line (if active 'mode-line 'mode-line-inactive))
+							  (face0 (if active 'powerline-active0 'powerline-inactive0))
+							  (face1 (if active 'powerline-active1 'powerline-inactive1))
+							  (face2 (if active 'powerline-active2 'powerline-inactive2))
+							  (separator-left (intern (format "powerline-%s-%s"
+															  (powerline-current-separator)
+															  (car powerline-default-separator-dir))))
+							  (separator-right (intern (format "powerline-%s-%s"
+															   (powerline-current-separator)
+															   (cdr powerline-default-separator-dir))))
+							  (lhs (list (powerline-raw "%*" face0 'l)
+										 (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
+										 (powerline-raw " " face0)
+										 (funcall separator-left face0 face1)
+										 (powerline-narrow face1 'l)
+
+										 (powerline-raw global-mode-string face1 'r)
+										 (powerline-raw "%4l" face1 'r)
+										 (powerline-raw ":" face1)
+										 (powerline-raw "%3c" face1 'r)
+										 (funcall separator-right face1 face0)
+										 (powerline-raw " " face0)
+										 (powerline-raw "%6p" face0 'r)
+
+										 (powerline-vc face1)))
+							  (rhs (list ()))
+							  (center (append (list (powerline-major-mode face2 'l)
+													(powerline-process face2)
+													(powerline-raw " " face2))
+											  (if evil-mode
+												  (list (funcall separator-right face2 face1)
+														(powerline-raw evil-mode-line-tag face1 'l)
+														(powerline-raw " " face1)))
+											  (if powerline-display-word-count
+												  (list (powerline-wc face1)))
+											  )))
+
+						 (concat (powerline-render lhs)
+								 (powerline-fill-center face1 (/ (powerline-width center) 2.0))
+								 (powerline-render center)
+								 (powerline-fill face1 (powerline-width rhs))
+								 (powerline-render rhs)))))))
+
     ;; 27. Include powerline
     (defpowerline powerline-wc
-        (format " %d words" (count-words (point-min) (point-max))))
+				  (format " %d words" (count-words (point-min) (point-max))))
     (setq-default powerline-display-word-count 'nil)
 
     (powerline-theme-personal))
