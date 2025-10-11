@@ -743,33 +743,87 @@ This is to support both older repositories that use `master' as the default bran
      'org-babel-load-languages
      '((perl . t))))
 
-;; TODO: Everything before this is using use-package.
-
 (use-package web-mode
     :defer t
     :ensure t)
-
-(defun kannan/notmuch-show-delete-message-then-next-or-next-thread ()
-    "Add the deleted tag to the current message and move to the next message.
-
-Useful when triaging e-mails for later passes of actually reading the e-mails"
-    (interactive)
-    (notmuch-show-add-tag '("+deleted"))
-    (unless (notmuch-show-next-open-message)
-        (notmuch-show-next-thread t)))
-
-(defun kannan/notmuch-tree-delete-message-then-next-or-next-thread ()
-    "Delete the current message highlighted in the thread view
-
-Useful when viewing a thread with drafts in it which are not duplicates of sent messages"
-    (interactive)
-    (notmuch-tree-add-tag '("+deleted"))
-    (notmuch-tree-next-message))
 
 (use-package notmuch
     :defer t
     :ensure t
     :config
+	(defun kannan/notmuch-show-delete-message-then-next-or-next-thread ()
+		"Add the deleted tag to the current message and move to the next message.
+
+	Useful when triaging e-mails for later passes of actually reading the e-mails"
+		(interactive)
+		(notmuch-show-add-tag '("+deleted"))
+		(unless (notmuch-show-next-open-message)
+			(notmuch-show-next-thread t)))
+
+	(defun kannan/notmuch-tree-delete-message-then-next-or-next-thread ()
+		"Delete the current message highlighted in the thread view
+
+	Useful when viewing a thread with drafts in it which are not duplicates of sent messages"
+		(interactive)
+		(notmuch-tree-add-tag '("+deleted"))
+		(notmuch-tree-next-message))
+
+	(setq-default mml-secure-openpgp-sign-with-sender t)
+
+	;; When archiving a thread, remove both inbox and unread tags.
+	(advice-add
+		'notmuch-search-archive-thread
+		:before
+		(lambda (&rest r) (notmuch-search-remove-tag '("-unread")))
+		'((name . "notmuch-remove-unread-on-archive")))
+
+	(defun kannan/notmuch/delete-thread ()
+		"Delete the current thread by adding a tag to it."
+		(interactive)
+		(notmuch-search-add-tag '("+deleted"))
+		(notmuch-search-next-thread))
+
+	(defun kannan/notmuch/view-html-part ()
+		"View the text/html part that the cursor is currently on in a browser"
+		(interactive)
+		(let ((handle (notmuch-show-current-part-handle))
+				(file-name '"/tmp/g.html"))
+			(mm-save-part-to-file handle file-name)
+			(if (string-equal '"darwin" system-type)
+				(browse-url-default-macosx-browser (concat "file://" file-name))
+				(browse-url-firefox (concat "file://" file-name)))))
+
+	(defun kannan/notmuch/show-save-all-attachments-to-tmp ()
+		"Save all attachments of the currently open e-mail to the ~/Downloads directory
+
+	Ask the user for an optional prefix for all the filenames."
+		(interactive)
+
+		(with-current-notmuch-show-message
+			(let ((mm-handle (mm-dissect-buffer))
+					;; save-directory can be defined by the user or we will use /tmp
+					(save-directory (if (boundp 'local/email/downloads-directory)
+										local/email/downloads-directory
+										(if (boundp 'local/email/temporary-directory)
+											local/email/temporary-directory '"/tmp")))
+					(filename-prefix
+						(read-string '"Enter a prefix for the attachment files: (default: empty) " "" nil "")))
+				(notmuch-foreach-mime-part
+					(lambda (p)
+						(let ((filename (mm-handle-filename p)))
+							;; filename is nil when the part is not an attachment
+							(if (not (eq filename nil))
+								(mm-save-part-to-file p (expand-file-name (concat filename-prefix filename) save-directory)))))
+					mm-handle))))
+
+	;; When generating a unique message ID for emails sent from Emacs, replace the ".fsf" prefix with
+	;; ".emacs".
+	;; :filter-return is cleaner. Guide: https://emacs.stackexchange.com/a/26556
+	(advice-add 'message-unique-id :filter-return #'kannan/message-unique-id)
+	(defun kannan/message-unique-id (original-return-val)
+		(string-replace ".fsf" ".emacs" original-return-val))
+
+
     (general-imap
         :keymaps '(notmuch-search-mode-map)
         "d" 'kannan/notmuch/delete-thread)
@@ -790,67 +844,14 @@ Useful when viewing a thread with drafts in it which are not duplicates of sent 
         "M-d" 'kannan/notmuch-tree-delete-message-then-next-or-next-thread
         "M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
-(setq-default mml-secure-openpgp-sign-with-sender t)
-
-;; When archiving a thread, remove both inbox and unread tags.
-(advice-add
-    'notmuch-search-archive-thread
-    :before
-    (lambda (&rest r) (notmuch-search-remove-tag '("-unread")))
-    '((name . "notmuch-remove-unread-on-archive")))
-
-(defun kannan/notmuch/delete-thread ()
-    "Delete the current thread by adding a tag to it."
-    (interactive)
-    (notmuch-search-add-tag '("+deleted"))
-    (notmuch-search-next-thread))
-
-(defun kannan/notmuch/view-html-part ()
-    "View the text/html part that the cursor is currently on in a browser"
-    (interactive)
-    (let ((handle (notmuch-show-current-part-handle))
-             (file-name '"/tmp/g.html"))
-        (mm-save-part-to-file handle file-name)
-        (if (string-equal '"darwin" system-type)
-            (browse-url-default-macosx-browser (concat "file://" file-name))
-            (browse-url-firefox (concat "file://" file-name)))))
-
-(defun kannan/notmuch/show-save-all-attachments-to-tmp ()
-    "Save all attachments of the currently open e-mail to the ~/Downloads directory
-
-Ask the user for an optional prefix for all the filenames."
-    (interactive)
-
-    (with-current-notmuch-show-message
-        (let ((mm-handle (mm-dissect-buffer))
-                 ;; save-directory can be defined by the user or we will use /tmp
-                 (save-directory (if (boundp 'local/email/downloads-directory)
-                                     local/email/downloads-directory
-                                     (if (boundp 'local/email/temporary-directory)
-                                         local/email/temporary-directory '"/tmp")))
-                 (filename-prefix
-                     (read-string '"Enter a prefix for the attachment files: (default: empty) " "" nil "")))
-            (notmuch-foreach-mime-part
-                (lambda (p)
-                    (let ((filename (mm-handle-filename p)))
-                        ;; filename is nil when the part is not an attachment
-                        (if (not (eq filename nil))
-                            (mm-save-part-to-file p (expand-file-name (concat filename-prefix filename) save-directory)))))
-                mm-handle))))
-
-;; When generating a unique message ID for emails sent from Emacs, replace the ".fsf" prefix with
-;; ".emacs".
-;; :filter-return is cleaner. Guide: https://emacs.stackexchange.com/a/26556
-(advice-add 'message-unique-id :filter-return #'kannan/message-unique-id)
-(defun kannan/message-unique-id (original-return-val)
-    (string-replace ".fsf" ".emacs" original-return-val))
-
 (use-package org-journal
     :defer t
     :ensure t
     :config
     (setq org-journal-dir (notes-directory-file "journal/")
         org-journal-date-format "%F (%a)"))
+
+;; TODO: Everything before this is using use-package.
 
 (defun kannan/golang-download-dependncies ()
     "This function will download dependencies using gomods"
