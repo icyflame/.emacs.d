@@ -1,5 +1,3 @@
-(require 'package)
-
 ;; 0. Disable audible bell and all related sounds that could come from Emacs. Turn this off
 ;; immediately after Emacs starts. Even if we can't get any package, the audible bell shouldn't
 ;; sound.
@@ -25,66 +23,86 @@
 
 ;; car is the first element of a cons cell, and cdr is the second element
 
+(require 'package)
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                            ("melpa" . "https://melpa.org/packages/")))
-(add-to-list 'package-archives '( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
-(with-eval-after-load 'package
-  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+                            ("melpa" . "https://melpa.org/packages/")
+                            ( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/")
+                            ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
+;; TODO: Replace .emacs.d with the variable `user-emacs-directory'. This will make it possible to
+;; start emacs using emacs --init-directory in order to test a new configuration
+;; https://emacsredux.com/blog/2024/02/23/changing-the-emacs-configuration-directory/
 
-;;; from purcell/emacs.d
-(defun require-package (package &optional min-version no-refresh)
-    "Install given PACKAGE, optionally requiring MIN-VERSION.
-If NO-REFRESH is non-nil, the available package lists will not be
-re-downloaded in order to locate PACKAGE."
-    (if (package-installed-p package min-version)
-        t
-        (if (or (assoc package package-archive-contents) no-refresh)
-            (package-install package)
-            (progn
-                (package-refresh-contents)
-                (require-package package min-version t)))))
-
-(package-initialize)
-
-(require-package 'init-loader)
-(require-package 'async)
-
-(setq org-capture-templates '())
-
-;; https://github.com/hanabokuro/dot-files
-(setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
-(init-loader-load "~/.emacs.d/imported-confs")
-(init-loader-load "~/.emacs.d/local-confs")
-(init-loader-load "~/.emacs.d/separated-confs")
-
-(if (boundp 'notes-directory)
-  (when (null (string-suffix-p '"/" notes-directory))
-    (setq notes-directory (format '"%s/" notes-directory))))
-
-(if (boundp 'blog-location)
-  (when (null (string-suffix-p '"/" blog-location))
-    (setq blog-location (format '"%s/" blog-location))))
-
-(defun notes-directory-file (filename)
-    "Return the path to filename when placed inside the notes-directory"
-    (concat notes-directory filename))
-
-(setq default-todo-file-for-computer (notes-directory-file '"TODO.org"))
-
-;; 10. Install use-package
+;; 1. Install use-package using package.el. This should be the only package which does not use use-package.
 (require 'use-package)
 
-;; 1. Don't show splash screen at start-up
-(setq inhibit-splash-screen t)
+(use-package init-loader
+    :ensure t
+    :config
+    ;; https://github.com/hanabokuro/dot-files
+    (setq init-loader-default-regexp "\\(?:^[[:digit:]]\\{1\\}\\).*\\.el\$") ;; default だと *.el~ も対象になってしまう。
+    (init-loader-load "~/.emacs.d/imported-confs")
+    (init-loader-load "~/.emacs.d/local-confs")
+    (init-loader-load "~/.emacs.d/separated-confs"))
 
-;; 26. Remove trailing whitespace characters from all files
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(use-package emacs
+    :config
+    ;; 1. Don't show splash screen at start-up
+    (setq inhibit-splash-screen t)
+
+	;; 6. Move everything defined for the customize system to a separate file
+	;; TODO: What use does the customize system provide? Should I even be using it?
+	(setq custom-file "~/.emacs.d/custom.el")
+	(load custom-file)
+
+    ;; 26. Remove trailing whitespace characters from all files
+    (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+    (setq org-capture-templates '())
+
+    (if (boundp 'notes-directory)
+        (when (null (string-suffix-p '"/" notes-directory))
+            (setq notes-directory (format '"%s/" notes-directory))))
+
+    (if (boundp 'blog-location)
+        (when (null (string-suffix-p '"/" blog-location))
+            (setq blog-location (format '"%s/" blog-location))))
+
+    (defun notes-directory-file (filename)
+        "Return the path to filename when placed inside the notes-directory"
+        (concat notes-directory filename))
+
+    (setq default-todo-file-for-computer (notes-directory-file '"TODO.org"))
+
+    (defun kannan/buffer/switch-to-scratch-buffer ()
+        "Switch to scratch buffer in the current buffer. Useful when I want to focus on a single buffer
+and remove everything else from the screen"
+        (interactive)
+        (switch-to-buffer "*scratch*"))
+
+    ;; Don't use C-M-s for anything other than "OS-level search"
+    (unbind-key '"C-M-s")
+
+	(setq-default fill-column 100)
+
+	;; 8. Don't blink cursor
+	(blink-cursor-mode 0)
+
+	;; 20. Set the default width of a tab character
+	(setq-default tab-width 4)
+
+    (defun kannan/ask-user-approval (prompt)
+        "A function to ask the user for approval"
+        (setq answer (read-char (concat prompt " " "(y/n): ")))
+        (string-equal "y" (string answer))))
+
+(use-package async
+    :defer t
+    :ensure t)
 
 ;; 3. Evil mode across most of Emacs
-(require-package 'evil)
 (use-package evil
+    :ensure t
     :init
     (setq evil-search-module 'evil-search
         evil-want-C-u-scroll t
@@ -97,81 +115,9 @@ re-downloaded in order to locate PACKAGE."
     (evil-mode)
     (evil-ex-define-cmd "q" 'kill-current-buffer))
 
-(defun kannan/ask-user-approval (prompt)
-    "A function to ask the user for approval"
-    (setq answer (read-char (concat prompt " " "(y/n): ")))
-    (string-equal "y" (string answer)))
-
-(defun kannan/magit/merge-upstream-into-current ()
-    "Merge the upstream for this branch into this branch"
-    (interactive)
-    (magit-merge-plain (magit-get-upstream-branch)))
-
-(defun kannan/magit/delete-branch (branch)
-    (magit-run-git "branch" "-d" branch))
-
-(defvar protected-branches
-    '("master" "main")
-    "Pushing to any of these branches will require an additional confirmation.")
-
-(defun is-protected-branch (current-branch)
-    "Return nil or t depending on whether the given branch is a `protected' branch.
-
-Usually, branches such as `master' and `main' are considered protected branches."
-    (if (null (member current-branch protected-branches)) nil t))
-
-(defun kannan/magit/delete-all-merged-branches ()
-    "Delete all branches that have been merged into the current branch"
-    (interactive)
-    (let ((current-branch (magit-get-current-branch)))
-        (if (or (is-protected-branch current-branch)
-                (eq t (kannan/ask-user-approval "Delete merged branches, even though we are not on master?")))
-            (let ((branches-to-delete (delete current-branch (magit-list-merged-branches))))
-                (mapc #'kannan/magit/delete-branch branches-to-delete)
-                (message "Deleted all branches: %s" (string-join branches-to-delete ", "))))))
-
-(defun kannan/magit/push-safe-to-current ()
-    "Push safely to the upstream branch of the current branch. Ask user before pushing to master"
-    (interactive)
-    (let ((current-branch (magit-get-current-branch)))
-        (if (or (not (is-protected-branch current-branch))
-                (eq t (kannan/ask-user-approval (format "Push to upstream on protected branch `%s'?" current-branch))))
-            (call-interactively #'magit-push-current-to-pushremote))))
-
-(defun kannan/magit/checkout-previous-branch ()
-    "Checkout the previous branch"
-    (interactive)
-    (magit-checkout (magit-get-previous-branch)))
-
-(defun kannan/magit/first-protected-branch ()
-    "Return the first branch in the protected-branches list that exists in this repository.
-
-This is to support both older repositories that use `master' as the default branch, and newer ones that use `main' as the default branch"
-    (seq-find #'magit-local-branch-p protected-branches))
-
-(defun kannan/magit/checkout-default-branch ()
-    "Checkout the default branch"
-    (interactive)
-    (let ((default-branch (kannan/magit/first-protected-branch)))
-        (magit-checkout default-branch)))
-
-(defun kannan/magit/rebase-previous-branch ()
-    "Rebase current branch on the previous branch"
-    (interactive)
-    (magit-rebase-branch (magit-get-previous-branch) ()))
-
-(defun kannan/buffer/switch-to-scratch-buffer ()
-    "Switch to scratch buffer in the current buffer. Useful when I want to focus on a single buffer
-and remove everything else from the screen"
-    (interactive)
-    (switch-to-buffer "*scratch*"))
-
-;; Don't use C-M-s for anything other than "OS-level search"
-(unbind-key '"C-M-s")
-
 ;; 12. Install general package
-(require-package 'general)
 (use-package general
+    :ensure t
     :config
     ;; 13. Add key mappings for common actions using general
     (general-evil-setup)
@@ -353,44 +299,41 @@ and remove everything else from the screen"
         "d c" 'cperl-perldoc-at-point))
 
 ;; 5.2 Set the color scheme to Tomorrow Night - Bright
-(require 'color-theme-tomorrow)
-(color-theme-tomorrow--define-theme night)
-(color-theme-tomorrow--define-theme night-bright)
-(color-theme-tomorrow--define-theme day)
-(enable-theme 'tomorrow-night-bright)
-
-;; 6. Move everything defined for the customize system to a separate file
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+(use-package color-theme-tomorrow
+  :load-path "lisp/"
+  :config
+  (color-theme-tomorrow--define-theme night)
+  (color-theme-tomorrow--define-theme night-bright)
+  (color-theme-tomorrow--define-theme day)
+  (enable-theme 'tomorrow-night-bright))
 
 ;; 7. Go mode settings
-;; (defun evil-set-jump-args (&rest ns) (evil-set-jump))
-(require-package 'go-mode)
-
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
-
 (use-package go-mode
+    :ensure t
+    :defer t
     :config
+    ;; Set up before-save hooks to format buffer and add/delete imports.
+    ;; Make sure you don't have other gofmt/goimports hooks enabled.
+    (defun lsp-go-install-save-hooks ()
+        (add-hook 'before-save-hook #'lsp-format-buffer t t)
+        (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
     (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
 
-(require-package 'gotest)
-
-;; 8. Don't blink cursor
-(blink-cursor-mode 0)
+(use-package gotest
+    :ensure t
+    :defer t)
 
 ;; 9. Use Ivy instead of helm because it is fast
-(require-package 'ivy)
 (use-package ivy
+    :ensure t
     :hook
     (after-init . ivy-mode))
+
 ;; 9.1. Use Ivy-prescient to ensure that the sorting and filtering is done based on the history of
 ;; command usage.
-(require-package 'ivy-prescient)
 (use-package ivy-prescient
+    :ensure t
     :config
     ;; persist the weights of various functions between Emacs sessions
     ;; the history is saved at ~/.emacs.d/var/prescient-save.el
@@ -402,15 +345,23 @@ and remove everything else from the screen"
     :hook
     (after-init . prescient-persist-mode)
     (after-init . ivy-prescient-mode))
+
 ;; 9.2
-(require-package 'swiper)
 (use-package swiper
+    :ensure t
     :config
     (copy-face 'region 'swiper-line-face))
 
-(require-package 'ripgrep)
-(require-package 'rg)
+(use-package ripgrep
+    :defer t
+    :ensure t)
+
+(use-package rg
+    :defer t
+    :ensure t)
+
 (use-package projectile
+    :defer t
     :ensure t
     :hook
     (after-init . projectile-mode)
@@ -426,11 +377,10 @@ and remove everything else from the screen"
     ;; https://github.com/juergenhoetzel/projectile/commit/383b3bf47d34ca60c24cd73ea9c335936d0b70be
     (setq projectile-git-use-fd nil))
 
-(setq-default fill-column 100)
-
 ;; 11. Install markdown mode
-(require-package 'markdown-mode)
 (use-package markdown-mode
+    :defer t
+    :ensure t
     :mode
     (("README\\.md\\'" . gfm-mode)
         ("\\.md\\'" . gfm-mode)
@@ -441,12 +391,14 @@ and remove everything else from the screen"
     (setq markdown-command "multimarkdown")
     (setq markdown-open-command "firefox"))
 
-(require-package 'lsp-ui)
-(use-package lsp-ui)
+(use-package lsp-ui
+    :defer t
+    :ensure t)
 
 ;; https://github.com/leoliu/ggtags
-(require-package 'ggtags)
 (use-package ggtags
+    :defer t
+    :ensure t
     :config
     (general-nmap
         :keymaps '(c-mode-map)
@@ -457,8 +409,8 @@ and remove everything else from the screen"
             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
               (ggtags-mode 1)))))
 
-(require-package 'lsp-mode)
 (use-package lsp-mode
+    :defer t
     :ensure t
     :commands (lsp lsp-deferred)
     :hook (go-mode . lsp-deferred)
@@ -474,10 +426,10 @@ and remove everything else from the screen"
         )
     (lsp-register-custom-settings
         '(("gopls.completeUnimported" t t)
-             ("gopls.staticcheck" t t)))
-    )
+             ("gopls.staticcheck" t t))))
 
 (use-package xref
+    :defer t
     :config
     (general-nmap
         :keymaps '(emacs-lisp-mode-map)
@@ -486,147 +438,363 @@ and remove everything else from the screen"
 
 ;; 18. Org mode settings
 ;;; Set the done time for a TODO item when moving it to DONE
-(setq org-log-done 'time)
+(use-package org
+  :config
+  (setq org-log-done 'time)
 
-(setq org-todo-keywords
-    '((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+  (setq org-todo-keywords
+		'((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
 
-(add-hook 'org-mode-hook #'auto-fill-mode)
-(add-hook 'org-mode-hook #'flyspell-mode)
+  (add-hook 'org-mode-hook #'auto-fill-mode)
+  (add-hook 'org-mode-hook #'flyspell-mode)
 
-(if (not (boundp 'org-agenda-files))
-    (message '"ERROR: Variable org-agenda-files is not available. Bind it in local-confs/10_local.el"))
+  (setq org-directory notes-directory)
 
-(add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx")))
+  (if (not (boundp 'org-agenda-files))
+      (message '"ERROR: Variable org-agenda-files is not available. Bind it in local-confs/10_local.el"))
+
+  (add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx")))
+
+  ;; Load org-roam and org-ref
+  (load '"~/.emacs.d/machine-specific/org-roam.el")
+  (when (and (boundp 'load-org-ref)
+			 (not (null load-org-ref)))
+	(load '"~/.emacs.d/machine-specific/org-ref.el"))
+
+  ;; 36. Org capture templates
+  ;; Documentation: https://orgmode.org/manual/Capture-templates.html
+  (if (not (boundp 'local-competitive-programming-note-file))
+      (message '"ERROR: Variable local-competitive-programming-note-file is not available. Bind it in local-confs/10_local.el")
+    (add-to-list 'org-capture-templates
+				 '("l" "Captures related to competitive programming problem solving"))
+    (add-to-list 'org-capture-templates
+				 '("lc" "Org entry for solving a new programming problem" entry
+				   (file (lambda () (notes-directory-file local-competitive-programming-note-file)))
+				   "* [%^{Level|UNKNOWN|EASY|MEDIUM|HARD}] %^{Link to Competitive Programming Problem}"
+				   :clock-in t
+				   :jump-to-captured t
+				   :unnarrowed t))
+
+    (defun create-competitive-programming-file ()
+      "A function which will read the link to a programming problem and return a stub"
+      (let ((link (read-string "Link to programming problem: ")))
+        (expand-file-name (format "%s.go" (car (last (split-string (string-trim-right link "/") "/"))))
+						  "~/go_workspace/src/github.com/icyflame/leetcode/")))
+
+    (add-to-list 'org-capture-templates
+				 '("lg" "Go code for solving a programming problem" plain
+				   (file create-competitive-programming-file)
+				   "package main
+
+func main() {
+}
+
+%?"
+				   :jump-to-captured t)))
+
+  (defun create-blog-file ()
+    "Create an org file in ~/blog/."
+    (interactive)
+    (let ((name (read-string "Filename: "))
+          (blog-directory (concat blog-location '"posts-org")))
+      (expand-file-name (format "%s-%s.org"
+                                (format-time-string "%Y-%m-%d") name)
+						blog-directory)))
+
+  (if (and (boundp 'local/load-blog-capture-template)
+           (boundp 'blog-location)
+           local/load-blog-capture-template)
+      (add-to-list 'org-capture-templates
+				   '("b" "Blog post" plain
+					 (file create-blog-file)
+					 ;; I could not move this into a variable despite trying various things.
+					 (file "~/code/blog/posts-org/template.org")
+					 :prepend t
+					 :jump-to-captured t
+					 :unnarrowed t)))
+
+  (add-to-list 'org-capture-templates
+			   '("r" "Add a recommendation to the recommendations list" checkitem
+				 (file (lambda () (notes-directory-file '"RecommendationsList.org")))
+				 "- [ ] %^{Title}
+- *Date added to this list:* %T
+- *Source:* %^{Source}
+- *Author:* %^{Author (if known)}
+- *Link:* %^{Link (if known)}
+- *Tags:* %^{Tags (if required)}
+- *Note:* %?"))
+
+  (add-to-list 'org-capture-templates
+			   '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
+				 "* TODO %?\n  %i\n  %a"))
+
+
+	(defun afs/delete-link-at-point ()
+		"Replace an org link by its description or if empty its address
+
+	Source function name: afs/org-replace-link-by-link-description
+	"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((remove (list (match-beginning 0) (match-end 0)))
+						(description
+							(if (match-end 2)
+								(org-match-string-no-properties 2)
+								(org-match-string-no-properties 1))))
+					(apply 'delete-region remove)
+					(insert description)
+					(message '"Removed link and inserted title instead")))))
+
+	(defun kannan/org/replace-link-from-clipboard ()
+		"Replace an Org link with the same description and the link from the clipboard
+
+	Adapted from afs/org-replace-link-by-link-description"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((remove (list (match-beginning 0) (match-end 0)))
+						(description
+							(if (match-end 2)
+								(org-match-string-no-properties 2)
+								(org-match-string-no-properties 1))))
+					(apply 'delete-region remove)
+					(let
+						((new-link (simpleclip-get-contents)))
+						(org-insert-link nil new-link description)
+						(message new-link))))))
+
+	(defun kannan/org/copy-link-to-clipboard ()
+		"Replace an Org link with the same description and the link from the clipboard
+
+	Adapted from afs/org-replace-link-by-link-description"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((link (org-match-string-no-properties 1)))
+					(simpleclip-set-contents link)
+					(message '"Copied: %s" link)))))
+
+	(defun kannan/org/copy-description-to-clipboard ()
+		"Replace an Org link with the same description and the link from the clipboard
+
+	Adapted from afs/org-replace-link-by-link-description"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((description (org-match-string-no-properties 2)))
+					(simpleclip-set-contents description)
+					(message '"Copied: %s" description)))))
+
+	(defun kannan/org/show-link ()
+		"Replace an Org link with the same description and the link from the clipboard
+
+	Adapted from afs/org-replace-link-by-link-description"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((link (org-match-string-no-properties 1)))
+					(message link)))))
+
+	(defun kannan/org/paste-as-quote ()
+		"Paste the content that is the system clipboard as a quote block in Org mode."
+		(interactive)
+		(org-insert-structure-template '"quote")
+		(insert '"\n")
+		(previous-line)
+		(insert (simpleclip-get-contents))))
 
 ;; 19. Install editorconfig
-(require-package 'editorconfig)
 (use-package editorconfig
+    :defer t
     :ensure t
     :config
     (editorconfig-mode 1))
 
-;; 20. Set the default width of a tab character
-(setq-default tab-width 4)
-
 ;; 22. Use vendored git-link
-(let ((library-location-git-link '"~/.emacs.d/lisp/git-link/"))
-    (if (not (file-directory-p library-location-git-link))
-        (message '"ERROR: Vendored library `git-link` does not exist. Run `git submodule init` and `git submodule update --recursive` to get it.")
-        (add-to-list 'load-path library-location-git-link)
-        (use-package git-link)))
+(use-package git-link
+  :init
+  (if (not (file-directory-p "~/.emacs.d/lisp/git-link/"))
+	  (message '"ERROR: Vendored library `git-link` does not exist. Run `git submodule init` and `git submodule update --recursive` to get it."))
+
+  :if (file-directory-p '"~/.emacs.d/lisp/git-link/")
+  :load-path "lisp/git-link/"
+
+  :defer t)
 
 ;; 25. Yaml Mode
-(require-package 'yaml-mode)
 (use-package yaml-mode
+    :defer t
+    :ensure t
     :mode
     ("\\.yml\\'" . yaml-mode)
     ("\\.yaml\\'" . yaml-mode)
     ("\\.gotmpl\\'" . yaml-mode))
 
-(defun kannan/show-word-count-in-modeline ()
-    "An interactive function which shows the word count of the current buffer in the modeline."
-    (interactive)
-    (setq powerline-display-word-count 't)
-    )
-
-(defun kannan/hide-word-count-in-modeline ()
-    "An interactive function which hides the word count of the current buffer from the modeline."
-    (interactive)
-    (setq powerline-display-word-count 'nil)
-    )
-
-(defun powerline-theme-personal ()
-    "Setup a mode-line with major, evil, and minor modes centered."
-    (interactive)
-    (setq-default mode-line-format
-        '("%e"
-             (:eval
-                 (let* ((active (powerline-selected-window-active))
-                           (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
-                           (mode-line (if active 'mode-line 'mode-line-inactive))
-                           (face0 (if active 'powerline-active0 'powerline-inactive0))
-                           (face1 (if active 'powerline-active1 'powerline-inactive1))
-                           (face2 (if active 'powerline-active2 'powerline-inactive2))
-                           (separator-left (intern (format "powerline-%s-%s"
-                                                       (powerline-current-separator)
-                                                       (car powerline-default-separator-dir))))
-                           (separator-right (intern (format "powerline-%s-%s"
-                                                        (powerline-current-separator)
-                                                        (cdr powerline-default-separator-dir))))
-                           (lhs (list (powerline-raw "%*" face0 'l)
-                                    (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
-                                    (powerline-raw " " face0)
-                                    (funcall separator-left face0 face1)
-                                    (powerline-narrow face1 'l)
-
-                                    (powerline-raw global-mode-string face1 'r)
-                                    (powerline-raw "%4l" face1 'r)
-                                    (powerline-raw ":" face1)
-                                    (powerline-raw "%3c" face1 'r)
-                                    (funcall separator-right face1 face0)
-                                    (powerline-raw " " face0)
-                                    (powerline-raw "%6p" face0 'r)
-
-                                    (powerline-vc face1)))
-                           (rhs (list ()))
-                           (center (append (list (powerline-major-mode face2 'l)
-                                               (powerline-process face2)
-                                               (powerline-raw " " face2))
-                                       (if evil-mode
-                                           (list (funcall separator-right face2 face1)
-                                               (powerline-raw evil-mode-line-tag face1 'l)
-                                               (powerline-raw " " face1)))
-                                       (if powerline-display-word-count
-                                           (list (powerline-wc face1)))
-                                       )))
-
-                     (concat (powerline-render lhs)
-                         (powerline-fill-center face1 (/ (powerline-width center) 2.0))
-                         (powerline-render center)
-                         (powerline-fill face1 (powerline-width rhs))
-                         (powerline-render rhs)))))))
-
-(require-package 'powerline)
 (use-package powerline
+    :ensure t
     :config
+
+	(defun kannan/show-word-count-in-modeline ()
+	  "An interactive function which shows the word count of the current buffer in the modeline."
+	  (interactive)
+	  (setq powerline-display-word-count 't))
+
+	(defun kannan/hide-word-count-in-modeline ()
+      "An interactive function which hides the word count of the current buffer from the modeline."
+      (interactive)
+      (setq powerline-display-word-count 'nil))
+
+
+	(defun powerline-theme-personal ()
+	  "Setup a mode-line with major, evil, and minor modes centered."
+	  (interactive)
+	  (setq-default mode-line-format
+					'("%e"
+					  (:eval
+					   (let* ((active (powerline-selected-window-active))
+							  (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
+							  (mode-line (if active 'mode-line 'mode-line-inactive))
+							  (face0 (if active 'powerline-active0 'powerline-inactive0))
+							  (face1 (if active 'powerline-active1 'powerline-inactive1))
+							  (face2 (if active 'powerline-active2 'powerline-inactive2))
+							  (separator-left (intern (format "powerline-%s-%s"
+															  (powerline-current-separator)
+															  (car powerline-default-separator-dir))))
+							  (separator-right (intern (format "powerline-%s-%s"
+															   (powerline-current-separator)
+															   (cdr powerline-default-separator-dir))))
+							  (lhs (list (powerline-raw "%*" face0 'l)
+										 (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
+										 (powerline-raw " " face0)
+										 (funcall separator-left face0 face1)
+										 (powerline-narrow face1 'l)
+
+										 (powerline-raw global-mode-string face1 'r)
+										 (powerline-raw "%4l" face1 'r)
+										 (powerline-raw ":" face1)
+										 (powerline-raw "%3c" face1 'r)
+										 (funcall separator-right face1 face0)
+										 (powerline-raw " " face0)
+										 (powerline-raw "%6p" face0 'r)
+
+										 (powerline-vc face1)))
+							  (rhs (list ()))
+							  (center (append (list (powerline-major-mode face2 'l)
+													(powerline-process face2)
+													(powerline-raw " " face2))
+											  (if evil-mode
+												  (list (funcall separator-right face2 face1)
+														(powerline-raw evil-mode-line-tag face1 'l)
+														(powerline-raw " " face1)))
+											  (if powerline-display-word-count
+												  (list (powerline-wc face1)))
+											  )))
+
+						 (concat (powerline-render lhs)
+								 (powerline-fill-center face1 (/ (powerline-width center) 2.0))
+								 (powerline-render center)
+								 (powerline-fill face1 (powerline-width rhs))
+								 (powerline-render rhs)))))))
 
     ;; 27. Include powerline
     (defpowerline powerline-wc
-        (format " %d words" (count-words (point-min) (point-max))))
+				  (format " %d words" (count-words (point-min) (point-max))))
     (setq-default powerline-display-word-count 'nil)
 
     (powerline-theme-personal))
 
 ;; 29. JSON mode
-(require-package 'json-mode)
+(use-package json-mode
+    :defer t
+    :ensure t)
 
 ;; 32. Magit
-(require-package 'magit)
 (use-package magit
+    :defer t
+    :ensure t
     :config
     (general-nmap
         :keymaps '(magit-mode-map)
         "s" 'magit-stage
-        "u" 'magit-unstage))
+        "u" 'magit-unstage)
 
-;; Language server protocol client
-(require-package 'lsp-mode)
+    (defun kannan/magit/merge-upstream-into-current ()
+        "Merge the upstream for this branch into this branch"
+        (interactive)
+        (magit-merge-plain (magit-get-upstream-branch)))
+
+    (defun kannan/magit/delete-branch (branch)
+        (magit-run-git "branch" "-d" branch))
+
+    (defvar protected-branches
+        '("master" "main")
+        "Pushing to any of these branches will require an additional confirmation.")
+
+    (defun kannan/magit/is-protected-branch (current-branch)
+        "Return nil or t depending on whether the given branch is a `protected' branch.
+
+Usually, branches such as `master' and `main' are considered protected branches."
+        (if (null (member current-branch protected-branches)) nil t))
+
+    (defun kannan/magit/delete-all-merged-branches ()
+        "Delete all branches that have been merged into the current branch"
+        (interactive)
+        (let ((current-branch (magit-get-current-branch)))
+            (if (or (kannan/magit/is-protected-branch current-branch)
+                    (eq t (kannan/ask-user-approval "Delete merged branches, even though we are not on master?")))
+                (let ((branches-to-delete (delete current-branch (magit-list-merged-branches))))
+                    (mapc #'kannan/magit/delete-branch branches-to-delete)
+                    (message "Deleted all branches: %s" (string-join branches-to-delete ", "))))))
+
+    (defun kannan/magit/push-safe-to-current ()
+        "Push safely to the upstream branch of the current branch. Ask user before pushing to master"
+        (interactive)
+        (let ((current-branch (magit-get-current-branch)))
+            (if (or (not (kannan/magit/is-protected-branch current-branch))
+                    (eq t (kannan/ask-user-approval (format "Push to upstream on protected branch `%s'?" current-branch))))
+                (call-interactively #'magit-push-current-to-pushremote))))
+
+    (defun kannan/magit/checkout-previous-branch ()
+        "Checkout the previous branch"
+        (interactive)
+        (magit-checkout (magit-get-previous-branch)))
+
+    (defun kannan/magit/first-protected-branch ()
+        "Return the first branch in the protected-branches list that exists in this repository.
+
+This is to support both older repositories that use `master' as the default branch, and newer ones that use `main' as the default branch"
+        (seq-find #'magit-local-branch-p protected-branches))
+
+    (defun kannan/magit/checkout-default-branch ()
+        "Checkout the default branch"
+        (interactive)
+        (let ((default-branch (kannan/magit/first-protected-branch)))
+            (magit-checkout default-branch)))
+
+    (defun kannan/magit/rebase-previous-branch ()
+        "Rebase current branch on the previous branch"
+        (interactive)
+        (magit-rebase-branch (magit-get-previous-branch) ())))
+
 ;; 33. Comp(lete) any(thing)
-(require-package 'company)
 ;; Company mode is a standard completion package that works well with lsp-mode.
 (use-package company
+    :defer t
     :ensure t
     :hook ((go-mode emacs-lisp-mode) . company-mode)
     :config
     (setq company-minimum-prefix-length 3))
 
 ;; 34. Protobuf mode
-(require-package 'protobuf-mode)
+(use-package protobuf-mode
+    :defer t
+    :ensure t)
 
 ;; 35. Yasnippets
-(require-package 'yasnippet)
 (use-package yasnippet
+    :defer t
+    :ensure t
     ;; :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
     :config
     (add-hook 'go-mode-hook #'yas-minor-mode)
@@ -635,256 +803,103 @@ and remove everything else from the screen"
     (add-hook 'c++-mode-hook #'yas-minor-mode)
     (yas-reload-all))
 
-;; 36. Org capture templates
-;; Documentation: https://orgmode.org/manual/Capture-templates.html
-(defun create-blog-file ()
-    "Create an org file in ~/blog/."
-    (interactive)
-    (let ((name (read-string "Filename: "))
-             (blog-directory (concat blog-location '"posts-org")))
-             (expand-file-name (format "%s-%s.org"
-                                   (format-time-string "%Y-%m-%d") name)
-                 blog-directory)))
+(use-package ox-hugo
+    :defer t
+    :ensure t)
 
-(load '"~/.emacs.d/machine-specific/org-roam.el")
-(when (and (boundp 'load-org-ref)
-          (not (null load-org-ref)))
-    (load '"~/.emacs.d/machine-specific/org-ref.el"))
-
-(if (not (boundp 'local-competitive-programming-note-file))
-    (message '"ERROR: Variable local-competitive-programming-note-file is not available. Bind it in local-confs/10_local.el")
-    (add-to-list 'org-capture-templates
-        '("l" "Captures related to competitive programming problem solving"))
-    (add-to-list 'org-capture-templates
-        '("lc" "Org entry for solving a new programming problem" entry
-             (file (lambda () (notes-directory-file local-competitive-programming-note-file)))
-             "* [%^{Level|UNKNOWN|EASY|MEDIUM|HARD}] %^{Link to Competitive Programming Problem}"
-             :clock-in t
-             :jump-to-captured t
-             :unnarrowed t))
-
-    (defun create-competitive-programming-file ()
-        "A function which will read the link to a programming problem and return a stub"
-        (let ((link (read-string "Link to programming problem: ")))
-            (expand-file-name (format "%s.go" (car (last (split-string (string-trim-right link "/") "/"))))
-                "~/go_workspace/src/github.com/icyflame/leetcode/")))
-
-    (add-to-list 'org-capture-templates
-        '("lg" "Go code for solving a programming problem" plain
-             (file create-competitive-programming-file)
-             "package main
-
-func main() {
-}
-
-%?"
-             :jump-to-captured t)))
-
-(if (and (boundp 'local/load-blog-capture-template)
-        (boundp 'blog-location)
-        local/load-blog-capture-template)
-    (add-to-list 'org-capture-templates
-        '("b" "Blog post" plain
-             (file create-blog-file)
-             ;; I could not move this into a variable despite trying various things.
-             (file "~/code/blog/posts-org/template.org")
-             :prepend t
-             :jump-to-captured t
-             :unnarrowed t)))
-
-(add-to-list 'org-capture-templates
-    '("r" "Add a recommendation to the recommendations list" checkitem
-         (file (lambda () (notes-directory-file '"RecommendationsList.org")))
-         "- [ ] %^{Title}
-- *Date added to this list:* %T
-- *Source:* %^{Source}
-- *Author:* %^{Author (if known)}
-- *Link:* %^{Link (if known)}
-- *Tags:* %^{Tags (if required)}
-- *Note:* %?"))
-
-(add-to-list 'org-capture-templates
-    '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
-         "* TODO %?\n  %i\n  %a"))
-
-;; 37. Function to kill all comments
-(defun line-length ()
-    "Get the length of the current line"
-    (- (line-end-position) (line-beginning-position)))
-
-(defun kill-comment-and-line ()
-    "Remove the first comment on this line;
-If this line is now empty, delete the line;
-Move to the next line;
-Return value: t when a line was killed; nil when the function simply moved to the next line"
-    (interactive)
-    ;; Get line length before deletion
-    (setq line-length-before (line-length))
-    ;; Kill first comment and move to next line
-    (kill-comment 1)
-    ;; Move to the original line
-    (forward-line -1)
-    ;; Get line length after deletion
-    (setq line-length-after (line-length))
-    (defun kill-and-return ()
-        (kill-whole-line)
-        t)
-    (defun forward-and-return ()
-        (forward-line)
-        nil)
-    (if (and (equal line-length-after 0) (not (equal line-length-before 0)))
-        (kill-and-return)
-        (forward-and-return)
-        )
-    )
-
-(defun kill-all-comments ()
-    "Remove all comments from the active buffer"
-    (interactive)
-    (end-of-buffer)
-    (setq last-line (line-number-at-pos))
-    (beginning-of-buffer)
-    (setq counter 0)
-    (while (and (not (equal (line-number-at-pos) last-line)) (eq t (< counter 100)))
-        (when (eq t (kill-comment-and-line))
-            (setq last-line (1- last-line)))
-        (1+ counter)
-        )
-    ;; while loop ends when buffer is on last line; if last line is a comment, we need to delete it
-    ;; too
-    (kill-comment-and-line))
-
-;; 38. Function to copy the entire buffer
-(defun copy-buffer ()
-    "Copy the complete buffer to the system clipboard"
-    (interactive)
-    (kill-new (filter-buffer-substring (point-min) (point-max)))
-    nil)
-
-(require-package 'ox-hugo)
-
-(require-package 'ob-go)
-(org-babel-do-load-languages
-    'org-babel-load-languages
-    '((go . t)))
-
-(org-babel-do-load-languages
-    'org-babel-load-languages
-    '((perl . t)))
-
-(defun insert-current-time ()
-    "Insert the current time string into the active buffer at point"
-    (interactive)
-    (insert-string (format-time-string '"%F %H:%M:%S %Z")))
-
-(defun insert-current-date ()
-    "Insert the current date string into the active buffer at point"
-    (interactive)
-    (insert-string (format-time-string '"%F")))
-
-(defun insert-time ()
-    "Insert the current time string into the active buffer at point"
-    (interactive)
-    (insert-string (format-time-string '"%R:%S")))
-
-;; Elisp functions to unwrap text. Useful when to copying Org markup into text input fields on
-;; browsers which will not be formatted before display
-(defun unwrap-all (file)
-    "Unwrap all the paragraphs in the given file and write to (basename).unwrapped.(extension|).
-
-This function will leave the buffer with the unwrapped text open. The user can switch to that buffer
-after the function runs if they want to look at the contents.
-
-E.g. 1. /.../test-file.ext => /.../test-file.unwrapped.ext
-E.g. 2. /.../test-file => /.../test-file.unwrapped
-
-This function will handle list items properly (i.e. separate list items will not be unwrapped into
-each other). Works well when the file has Org markup with plain paragraphs and nested lists, with
-titles.
-
-Note: This will not unwrap text which is not inside an Org subtree. If you have such a file, then
-consider adding an Org header at the top of the file.
-"
-    (setq output-file-name (concat file ".unwrapped"))
-    (unless (eq nil (string-match "\\." file))
-        (setq comps (reverse (split-string file "\\.")))
-        (setq extension (pop comps))
-        (setq comps (reverse comps))
-        (setq output-file-name (concat (string-join comps ".") ".unwrapped" "." extension)))
-
-    (message output-file-name)
-
-    ;; Open the requested file in a buffer
-    (setq old-buffer (find-file-noselect file))
-    ;; Split and prepare new buffer
-    (setq new-buffer (find-file-noselect output-file-name))
-    ;; Insert old buffer into new buffer and edit the new buffer
-    (with-current-buffer new-buffer
-        (erase-buffer)
-        (insert-buffer old-buffer)
-        ;; Prepare tracker variable to keep track if previous line allows indentation or not
-        (setq does-previous-line-allow-indentation nil)
-        ;; Iterate over the complete buffer, starting at the beginning
-        (while (not (eq (point-at-eol) (point-max)))
-            (beginning-of-line)
-            (setq is-line-empty (looking-at "^$"))
-
-            (setq start-char (char-after))
-            (setq is-header-line (eq start-char (string-to-char '"*")))
-            (setq is-list-start-line (org-list-at-regexp-after-bullet-p '""))
-            (setq is-property-definition (looking-at "^#\\+"))
-            (setq is-block-end (looking-at "^#\\+end"))
-            (setq is-block-begin (looking-at "^#\\+begin"))
-
-            (if is-line-empty
-                (setq does-previous-line-allow-indentation nil)
-                (if (and
-                        (org-in-subtree-not-table-p)
-                        (not (org-in-src-block-p))
-                        (not is-property-definition)
-                        (not is-block-end)
-                        (not is-header-line)
-                        (not is-list-start-line)
-                        (not is-line-empty)
-                        (eq does-previous-line-allow-indentation t))
-                    (delete-indentation))
-
-                ;; Allow indentation on next line if this line is neither a header and nor a block begin
-                (setq does-previous-line-allow-indentation (and (not is-block-begin) (not is-header-line))))
-
-            (forward-line 1))
-        ;; Write to the output file and leave the buffer open for the user
-        (write-file output-file-name))
-
-    (message "Unwrapped and written to %s" output-file-name))
-
-(defun unwrap-current ()
-    "Unwrap all paragraphs in the current file and write to (basename).unwrapped.(extension)"
-    (interactive)
-    (unwrap-all (buffer-file-name)))
-
-(require-package 'web-mode)
-
-(defun kannan/notmuch-show-delete-message-then-next-or-next-thread ()
-    "Add the deleted tag to the current message and move to the next message.
-
-Useful when triaging e-mails for later passes of actually reading the e-mails"
-    (interactive)
-    (notmuch-show-add-tag '("+deleted"))
-    (unless (notmuch-show-next-open-message)
-        (notmuch-show-next-thread t)))
-
-(defun kannan/notmuch-tree-delete-message-then-next-or-next-thread ()
-    "Delete the current message highlighted in the thread view
-
-Useful when viewing a thread with drafts in it which are not duplicates of sent messages"
-    (interactive)
-    (notmuch-tree-add-tag '("+deleted"))
-    (notmuch-tree-next-message))
-
-(require-package 'notmuch)
-(use-package notmuch
+(use-package ob-go
+    :defer t
+    :ensure t
     :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((go . t)))
+
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((perl . t))))
+
+(use-package web-mode
+    :defer t
+    :ensure t)
+
+(use-package notmuch
+    :defer t
+    :ensure t
+    :config
+	(defun kannan/notmuch-show-delete-message-then-next-or-next-thread ()
+		"Add the deleted tag to the current message and move to the next message.
+
+	Useful when triaging e-mails for later passes of actually reading the e-mails"
+		(interactive)
+		(notmuch-show-add-tag '("+deleted"))
+		(unless (notmuch-show-next-open-message)
+			(notmuch-show-next-thread t)))
+
+	(defun kannan/notmuch-tree-delete-message-then-next-or-next-thread ()
+		"Delete the current message highlighted in the thread view
+
+	Useful when viewing a thread with drafts in it which are not duplicates of sent messages"
+		(interactive)
+		(notmuch-tree-add-tag '("+deleted"))
+		(notmuch-tree-next-message))
+
+	(setq-default mml-secure-openpgp-sign-with-sender t)
+
+	;; When archiving a thread, remove both inbox and unread tags.
+	(advice-add
+		'notmuch-search-archive-thread
+		:before
+		(lambda (&rest r) (notmuch-search-remove-tag '("-unread")))
+		'((name . "notmuch-remove-unread-on-archive")))
+
+	(defun kannan/notmuch/delete-thread ()
+		"Delete the current thread by adding a tag to it."
+		(interactive)
+		(notmuch-search-add-tag '("+deleted"))
+		(notmuch-search-next-thread))
+
+	(defun kannan/notmuch/view-html-part ()
+		"View the text/html part that the cursor is currently on in a browser"
+		(interactive)
+		(let ((handle (notmuch-show-current-part-handle))
+				(file-name '"/tmp/g.html"))
+			(mm-save-part-to-file handle file-name)
+			(if (string-equal '"darwin" system-type)
+				(browse-url-default-macosx-browser (concat "file://" file-name))
+				(browse-url-firefox (concat "file://" file-name)))))
+
+	(defun kannan/notmuch/show-save-all-attachments-to-tmp ()
+		"Save all attachments of the currently open e-mail to the ~/Downloads directory
+
+	Ask the user for an optional prefix for all the filenames."
+		(interactive)
+
+		(with-current-notmuch-show-message
+			(let ((mm-handle (mm-dissect-buffer))
+					;; save-directory can be defined by the user or we will use /tmp
+					(save-directory (if (boundp 'local/email/downloads-directory)
+										local/email/downloads-directory
+										(if (boundp 'local/email/temporary-directory)
+											local/email/temporary-directory '"/tmp")))
+					(filename-prefix
+						(read-string '"Enter a prefix for the attachment files: (default: empty) " "" nil "")))
+				(notmuch-foreach-mime-part
+					(lambda (p)
+						(let ((filename (mm-handle-filename p)))
+							;; filename is nil when the part is not an attachment
+							(if (not (eq filename nil))
+								(mm-save-part-to-file p (expand-file-name (concat filename-prefix filename) save-directory)))))
+					mm-handle))))
+
+	;; When generating a unique message ID for emails sent from Emacs, replace the ".fsf" prefix with
+	;; ".emacs".
+	;; :filter-return is cleaner. Guide: https://emacs.stackexchange.com/a/26556
+	(advice-add 'message-unique-id :filter-return #'kannan/message-unique-id)
+	(defun kannan/message-unique-id (original-return-val)
+		(string-replace ".fsf" ".emacs" original-return-val))
+
+
     (general-imap
         :keymaps '(notmuch-search-mode-map)
         "d" 'kannan/notmuch/delete-thread)
@@ -892,162 +907,35 @@ Useful when viewing a thread with drafts in it which are not duplicates of sent 
         :keymaps '(notmuch-show-mode-map)
         "o" 'kannan/notmuch/view-html-part
         "d" 'kannan/notmuch-show-delete-message-then-next-or-next-thread
+        "M-d" 'kannan/notmuch-show-delete-message-then-next-or-next-thread
         "a" 'notmuch-show-archive-message-then-next-or-next-thread)
     (general-imap
         :keymaps '(notmuch-show-mode-map)
         ". a" 'kannan/notmuch/show-save-all-attachments-to-tmp)
-    (general-nmap
-        :keymaps '(notmuch-show-mode-map)
-        "M-d" 'kannan/notmuch-show-delete-message-then-next-or-next-thread
     (general-imap
         :keymaps '(notmuch-tree-mode-map)
         "d" 'kannan/notmuch-tree-delete-message-then-next-or-next-thread)
     (general-nmap
         :keymaps '(notmuch-tree-mode-map)
-        "M-d" 'kannan/notmuch-tree-delete-message-then-next-or-next-thread)
+        "M-d" 'kannan/notmuch-tree-delete-message-then-next-or-next-thread
         "M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
-(setq-default mml-secure-openpgp-sign-with-sender t)
-
-;; When archiving a thread, remove both inbox and unread tags.
-(advice-add
-    'notmuch-search-archive-thread
-    :before
-    (lambda (&rest r) (notmuch-search-remove-tag '("-unread")))
-    '((name . "notmuch-remove-unread-on-archive")))
-
-(defun kannan/notmuch/delete-thread ()
-    "Delete the current thread by adding a tag to it."
-    (interactive)
-    (notmuch-search-add-tag '("+deleted"))
-    (notmuch-search-next-thread))
-
-(defun kannan/notmuch/view-html-part ()
-    "View the text/html part that the cursor is currently on in a browser"
-    (interactive)
-    (let ((handle (notmuch-show-current-part-handle))
-             (file-name '"/tmp/g.html"))
-        (mm-save-part-to-file handle file-name)
-        (if (string-equal '"darwin" system-type)
-            (browse-url-default-macosx-browser (concat "file://" file-name))
-            (browse-url-firefox (concat "file://" file-name)))))
-
-(defun kannan/notmuch/show-save-all-attachments-to-tmp ()
-    "Save all attachments of the currently open e-mail to the ~/Downloads directory
-
-Ask the user for an optional prefix for all the filenames."
-    (interactive)
-
-    (with-current-notmuch-show-message
-        (let ((mm-handle (mm-dissect-buffer))
-                 ;; save-directory can be defined by the user or we will use /tmp
-                 (save-directory (if (boundp 'local/email/downloads-directory)
-                                     local/email/downloads-directory
-                                     (if (boundp 'local/email/temporary-directory)
-                                         local/email/temporary-directory '"/tmp")))
-                 (filename-prefix
-                     (read-string '"Enter a prefix for the attachment files: (default: empty) " "" nil "")))
-            (notmuch-foreach-mime-part
-                (lambda (p)
-                    (let ((filename (mm-handle-filename p)))
-                        ;; filename is nil when the part is not an attachment
-                        (if (not (eq filename nil))
-                            (mm-save-part-to-file p (expand-file-name (concat filename-prefix filename) save-directory)))))
-                mm-handle))))
-
-;; When generating a unique message ID for emails sent from Emacs, replace the ".fsf" prefix with
-;; ".emacs".
-;; :filter-return is cleaner. Guide: https://emacs.stackexchange.com/a/26556
-(advice-add 'message-unique-id :filter-return #'kannan/message-unique-id)
-(defun kannan/message-unique-id (original-return-val)
-    (string-replace ".fsf" ".emacs" original-return-val))
-
-(require-package 'org-journal)
 (use-package org-journal
+    :defer t
+    :ensure t
     :config
     (setq org-journal-dir (notes-directory-file "journal/")
         org-journal-date-format "%F (%a)"))
+
+;; TODO: Everything before this is using use-package.
 
 (defun kannan/golang-download-dependncies ()
     "This function will download dependencies using gomods"
     (interactive)
     (start-process "download-go-dependencies" "*Go mods*" "go" "mod" "vendor"))
 
-(defun afs/delete-link-at-point ()
-    "Replace an org link by its description or if empty its address
-
-Source function name: afs/org-replace-link-by-link-description
-"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((remove (list (match-beginning 0) (match-end 0)))
-                     (description
-                         (if (match-end 2)
-                             (org-match-string-no-properties 2)
-                             (org-match-string-no-properties 1))))
-                (apply 'delete-region remove)
-                (insert description)
-                (message '"Removed link and inserted title instead")))))
-
-(require 'simpleclip)
-(defun kannan/org/replace-link-from-clipboard ()
-    "Replace an Org link with the same description and the link from the clipboard
-
-Adapted from afs/org-replace-link-by-link-description"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((remove (list (match-beginning 0) (match-end 0)))
-                     (description
-                         (if (match-end 2)
-                             (org-match-string-no-properties 2)
-                             (org-match-string-no-properties 1))))
-                (apply 'delete-region remove)
-                (let
-                    ((new-link (simpleclip-get-contents)))
-                    (org-insert-link nil new-link description)
-                    (message new-link))))))
-
-(defun kannan/org/copy-link-to-clipboard ()
-    "Replace an Org link with the same description and the link from the clipboard
-
-Adapted from afs/org-replace-link-by-link-description"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((link (org-match-string-no-properties 1)))
-                (simpleclip-set-contents link)
-                (message '"Copied: %s" link)))))
-
-(defun kannan/org/copy-description-to-clipboard ()
-    "Replace an Org link with the same description and the link from the clipboard
-
-Adapted from afs/org-replace-link-by-link-description"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((description (org-match-string-no-properties 2)))
-                (simpleclip-set-contents description)
-                (message '"Copied: %s" description)))))
-
-(defun kannan/org/show-link ()
-    "Replace an Org link with the same description and the link from the clipboard
-
-Adapted from afs/org-replace-link-by-link-description"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((link (org-match-string-no-properties 1)))
-                (message link)))))
-
-(defun kannan/org/paste-as-quote ()
-    "Paste the content that is the system clipboard as a quote block in Org mode."
-    (interactive)
-    (org-insert-structure-template '"quote")
-    (insert '"\n")
-    (previous-line)
-    (insert (simpleclip-get-contents)))
+(use-package simpleclip
+  :load-path "lisp/")
 
 ;; ============================================
 ;; Coldnew's Font Size Conf for Org-Table
@@ -1151,7 +1039,9 @@ causes the function to throw an error when this function is executed from visual
     (shell-command-on-region beg end '"iconv --to ascii//translit" nil t)
     (message "where I %d you %d" end beg))
 
-(require-package 'olivetti)
+(use-package olivetti
+    :defer t
+    :ensure t)
 
 (defun kannan/sql-pretty-print ()
     "Pretty print the SQL query in the current buffer
@@ -1172,6 +1062,7 @@ SQL queries.
     (delete-indentation nil (point-min) (point-max)))
 
 (use-package eshell-syntax-highlighting
+    :defer t
     :after eshell-mode
     :hook (eshell-mode-hook)
     :ensure t ;; Install if not already installed.
@@ -1196,8 +1087,10 @@ SQL queries.
 ;;
 ;; Switch input methods using C-\. When in the "Insert" mode, Japanese can be added to the
 ;; buffer. When in other modes, Emacs keybindings will continue to work as usual.
-(require 'mozc)
-(setq default-input-method "japanese-mozc")
+(use-package mozc
+  :load-path "lisp/"
+  :config
+  (setq default-input-method "japanese-mozc"))
 
 (defun kannan/get-strings-without-text-properties (input)
     "From the given list variable `input', get every element which is a string without text properties.
@@ -1290,20 +1183,20 @@ This function is particularly useful when used with the variable where the `ivy-
                                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
                                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
-(require-package 'php-mode)
+(use-package php-mode
+    :defer t
+    :ensure t)
 
 (require 'benchmark)
 
-(require-package 'lua-mode)
 (use-package lua-mode
+    :defer t
+    :ensure t
     :config
     (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)))
 
-;; Jinja2 mode inside the Lisp/ directory
-;; https://github.com/paradoxxxzero/jinja2-mode
 (use-package jinja2-mode
-    :if (file-exists-p "~/.emacs.d/lisp/jinja2-mode.el")
-    :load-path "~/.emacs.d/lisp/jinja2-mode.el")
+  :load-path "lisp/")
 
 ;; Show a list of TODO headlines which don't have a schedule or a deadline
 ;; https://emacs.stackexchange.com/a/16561/31572
@@ -1336,8 +1229,8 @@ This function is particularly useful when used with the variable where the `ivy-
              (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
              (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-    (require-package 'yaml-pro)
     (use-package yaml-pro
+        :defer t
         :ensure t
         :hook (yaml-mode . yaml-pro-ts-mode)
         :config
