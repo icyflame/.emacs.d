@@ -1,6 +1,6 @@
 #+TITLE: @icyflame's Emacs Configuration
 
-*Supported Emacs version:* 29.4
+*Supported Emacs version:* 30.2
 
 This configuration assumes that ~use-package~ and ~sqlite~ are built-in with Emacs. These features
 are present in Emacs 29+.
