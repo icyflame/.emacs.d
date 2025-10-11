@@ -50,6 +50,11 @@
     ;; 1. Don't show splash screen at start-up
     (setq inhibit-splash-screen t)
 
+	;; 6. Move everything defined for the customize system to a separate file
+	;; TODO: What use does the customize system provide? Should I even be using it?
+	(setq custom-file "~/.emacs.d/custom.el")
+	(load custom-file)
+
     ;; 26. Remove trailing whitespace characters from all files
     (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -85,7 +90,6 @@ and remove everything else from the screen"
 
 	;; 20. Set the default width of a tab character
 	(setq-default tab-width 4)
-
 
     (defun kannan/ask-user-approval (prompt)
         "A function to ask the user for approval"
@@ -302,10 +306,6 @@ and remove everything else from the screen"
   (color-theme-tomorrow--define-theme night-bright)
   (color-theme-tomorrow--define-theme day)
   (enable-theme 'tomorrow-night-bright))
-
-;; 6. Move everything defined for the customize system to a separate file
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
 
 ;; 7. Go mode settings
 (use-package go-mode
