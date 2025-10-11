@@ -453,7 +453,80 @@ and remove everything else from the screen"
   (if (not (boundp 'org-agenda-files))
       (message '"ERROR: Variable org-agenda-files is not available. Bind it in local-confs/10_local.el"))
 
-  (add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx"))))
+  (add-hook 'org-mode-hook (lambda () (setq org-odt-preferred-output-format '"docx")))
+
+  ;; Load org-roam and org-ref
+  (load '"~/.emacs.d/machine-specific/org-roam.el")
+  (when (and (boundp 'load-org-ref)
+			 (not (null load-org-ref)))
+	(load '"~/.emacs.d/machine-specific/org-ref.el"))
+
+  ;; 36. Org capture templates
+  ;; Documentation: https://orgmode.org/manual/Capture-templates.html
+  (if (not (boundp 'local-competitive-programming-note-file))
+      (message '"ERROR: Variable local-competitive-programming-note-file is not available. Bind it in local-confs/10_local.el")
+    (add-to-list 'org-capture-templates
+				 '("l" "Captures related to competitive programming problem solving"))
+    (add-to-list 'org-capture-templates
+				 '("lc" "Org entry for solving a new programming problem" entry
+				   (file (lambda () (notes-directory-file local-competitive-programming-note-file)))
+				   "* [%^{Level|UNKNOWN|EASY|MEDIUM|HARD}] %^{Link to Competitive Programming Problem}"
+				   :clock-in t
+				   :jump-to-captured t
+				   :unnarrowed t))
+
+    (defun create-competitive-programming-file ()
+      "A function which will read the link to a programming problem and return a stub"
+      (let ((link (read-string "Link to programming problem: ")))
+        (expand-file-name (format "%s.go" (car (last (split-string (string-trim-right link "/") "/"))))
+						  "~/go_workspace/src/github.com/icyflame/leetcode/")))
+
+    (add-to-list 'org-capture-templates
+				 '("lg" "Go code for solving a programming problem" plain
+				   (file create-competitive-programming-file)
+				   "package main
+
+func main() {
+}
+
+%?"
+				   :jump-to-captured t)))
+
+  (defun create-blog-file ()
+    "Create an org file in ~/blog/."
+    (interactive)
+    (let ((name (read-string "Filename: "))
+          (blog-directory (concat blog-location '"posts-org")))
+      (expand-file-name (format "%s-%s.org"
+                                (format-time-string "%Y-%m-%d") name)
+						blog-directory)))
+
+  (if (and (boundp 'local/load-blog-capture-template)
+           (boundp 'blog-location)
+           local/load-blog-capture-template)
+      (add-to-list 'org-capture-templates
+				   '("b" "Blog post" plain
+					 (file create-blog-file)
+					 ;; I could not move this into a variable despite trying various things.
+					 (file "~/code/blog/posts-org/template.org")
+					 :prepend t
+					 :jump-to-captured t
+					 :unnarrowed t)))
+
+  (add-to-list 'org-capture-templates
+			   '("r" "Add a recommendation to the recommendations list" checkitem
+				 (file (lambda () (notes-directory-file '"RecommendationsList.org")))
+				 "- [ ] %^{Title}
+- *Date added to this list:* %T
+- *Source:* %^{Source}
+- *Author:* %^{Author (if known)}
+- *Link:* %^{Link (if known)}
+- *Tags:* %^{Tags (if required)}
+- *Note:* %?"))
+
+  (add-to-list 'org-capture-templates
+			   '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
+				 "* TODO %?\n  %i\n  %a")))
 
 ;; 19. Install editorconfig
 (use-package editorconfig
@@ -653,77 +726,6 @@ This is to support both older repositories that use `master' as the default bran
     (add-hook 'c++-mode-hook #'yas-minor-mode)
     (yas-reload-all))
 
-;; 36. Org capture templates
-;; Documentation: https://orgmode.org/manual/Capture-templates.html
-(defun create-blog-file ()
-    "Create an org file in ~/blog/."
-    (interactive)
-    (let ((name (read-string "Filename: "))
-             (blog-directory (concat blog-location '"posts-org")))
-             (expand-file-name (format "%s-%s.org"
-                                   (format-time-string "%Y-%m-%d") name)
-                 blog-directory)))
-
-(load '"~/.emacs.d/machine-specific/org-roam.el")
-(when (and (boundp 'load-org-ref)
-          (not (null load-org-ref)))
-    (load '"~/.emacs.d/machine-specific/org-ref.el"))
-
-(if (not (boundp 'local-competitive-programming-note-file))
-    (message '"ERROR: Variable local-competitive-programming-note-file is not available. Bind it in local-confs/10_local.el")
-    (add-to-list 'org-capture-templates
-        '("l" "Captures related to competitive programming problem solving"))
-    (add-to-list 'org-capture-templates
-        '("lc" "Org entry for solving a new programming problem" entry
-             (file (lambda () (notes-directory-file local-competitive-programming-note-file)))
-             "* [%^{Level|UNKNOWN|EASY|MEDIUM|HARD}] %^{Link to Competitive Programming Problem}"
-             :clock-in t
-             :jump-to-captured t
-             :unnarrowed t))
-
-    (defun create-competitive-programming-file ()
-        "A function which will read the link to a programming problem and return a stub"
-        (let ((link (read-string "Link to programming problem: ")))
-            (expand-file-name (format "%s.go" (car (last (split-string (string-trim-right link "/") "/"))))
-                "~/go_workspace/src/github.com/icyflame/leetcode/")))
-
-    (add-to-list 'org-capture-templates
-        '("lg" "Go code for solving a programming problem" plain
-             (file create-competitive-programming-file)
-             "package main
-
-func main() {
-}
-
-%?"
-             :jump-to-captured t)))
-
-(if (and (boundp 'local/load-blog-capture-template)
-        (boundp 'blog-location)
-        local/load-blog-capture-template)
-    (add-to-list 'org-capture-templates
-        '("b" "Blog post" plain
-             (file create-blog-file)
-             ;; I could not move this into a variable despite trying various things.
-             (file "~/code/blog/posts-org/template.org")
-             :prepend t
-             :jump-to-captured t
-             :unnarrowed t)))
-
-(add-to-list 'org-capture-templates
-    '("r" "Add a recommendation to the recommendations list" checkitem
-         (file (lambda () (notes-directory-file '"RecommendationsList.org")))
-         "- [ ] %^{Title}
-- *Date added to this list:* %T
-- *Source:* %^{Source}
-- *Author:* %^{Author (if known)}
-- *Link:* %^{Link (if known)}
-- *Tags:* %^{Tags (if required)}
-- *Note:* %?"))
-
-(add-to-list 'org-capture-templates
-    '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
-         "* TODO %?\n  %i\n  %a"))
 
 ;; 37. Function to kill all comments
 (defun line-length ()
