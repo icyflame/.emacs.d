@@ -526,7 +526,83 @@ func main() {
 
   (add-to-list 'org-capture-templates
 			   '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
-				 "* TODO %?\n  %i\n  %a")))
+				 "* TODO %?\n  %i\n  %a"))
+
+
+	(defun afs/delete-link-at-point ()
+		"Replace an org link by its description or if empty its address
+
+	Source function name: afs/org-replace-link-by-link-description
+	"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((remove (list (match-beginning 0) (match-end 0)))
+						(description
+							(if (match-end 2)
+								(org-match-string-no-properties 2)
+								(org-match-string-no-properties 1))))
+					(apply 'delete-region remove)
+					(insert description)
+					(message '"Removed link and inserted title instead")))))
+
+	(defun kannan/org/replace-link-from-clipboard ()
+		"Replace an Org link with the same description and the link from the clipboard
+
+	Adapted from afs/org-replace-link-by-link-description"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((remove (list (match-beginning 0) (match-end 0)))
+						(description
+							(if (match-end 2)
+								(org-match-string-no-properties 2)
+								(org-match-string-no-properties 1))))
+					(apply 'delete-region remove)
+					(let
+						((new-link (simpleclip-get-contents)))
+						(org-insert-link nil new-link description)
+						(message new-link))))))
+
+	(defun kannan/org/copy-link-to-clipboard ()
+		"Replace an Org link with the same description and the link from the clipboard
+
+	Adapted from afs/org-replace-link-by-link-description"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((link (org-match-string-no-properties 1)))
+					(simpleclip-set-contents link)
+					(message '"Copied: %s" link)))))
+
+	(defun kannan/org/copy-description-to-clipboard ()
+		"Replace an Org link with the same description and the link from the clipboard
+
+	Adapted from afs/org-replace-link-by-link-description"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((description (org-match-string-no-properties 2)))
+					(simpleclip-set-contents description)
+					(message '"Copied: %s" description)))))
+
+	(defun kannan/org/show-link ()
+		"Replace an Org link with the same description and the link from the clipboard
+
+	Adapted from afs/org-replace-link-by-link-description"
+		(interactive)
+		(if (org-in-regexp org-link-bracket-re 1)
+			(save-excursion
+				(let ((link (org-match-string-no-properties 1)))
+					(message link)))))
+
+	(defun kannan/org/paste-as-quote ()
+		"Paste the content that is the system clipboard as a quote block in Org mode."
+		(interactive)
+		(org-insert-structure-template '"quote")
+		(insert '"\n")
+		(previous-line)
+		(insert (simpleclip-get-contents))))
 
 ;; 19. Install editorconfig
 (use-package editorconfig
@@ -858,83 +934,8 @@ This is to support both older repositories that use `master' as the default bran
     (interactive)
     (start-process "download-go-dependencies" "*Go mods*" "go" "mod" "vendor"))
 
-(defun afs/delete-link-at-point ()
-    "Replace an org link by its description or if empty its address
-
-Source function name: afs/org-replace-link-by-link-description
-"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((remove (list (match-beginning 0) (match-end 0)))
-                     (description
-                         (if (match-end 2)
-                             (org-match-string-no-properties 2)
-                             (org-match-string-no-properties 1))))
-                (apply 'delete-region remove)
-                (insert description)
-                (message '"Removed link and inserted title instead")))))
-
 (use-package simpleclip
   :load-path "lisp/")
-
-(defun kannan/org/replace-link-from-clipboard ()
-    "Replace an Org link with the same description and the link from the clipboard
-
-Adapted from afs/org-replace-link-by-link-description"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((remove (list (match-beginning 0) (match-end 0)))
-                     (description
-                         (if (match-end 2)
-                             (org-match-string-no-properties 2)
-                             (org-match-string-no-properties 1))))
-                (apply 'delete-region remove)
-                (let
-                    ((new-link (simpleclip-get-contents)))
-                    (org-insert-link nil new-link description)
-                    (message new-link))))))
-
-(defun kannan/org/copy-link-to-clipboard ()
-    "Replace an Org link with the same description and the link from the clipboard
-
-Adapted from afs/org-replace-link-by-link-description"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((link (org-match-string-no-properties 1)))
-                (simpleclip-set-contents link)
-                (message '"Copied: %s" link)))))
-
-(defun kannan/org/copy-description-to-clipboard ()
-    "Replace an Org link with the same description and the link from the clipboard
-
-Adapted from afs/org-replace-link-by-link-description"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((description (org-match-string-no-properties 2)))
-                (simpleclip-set-contents description)
-                (message '"Copied: %s" description)))))
-
-(defun kannan/org/show-link ()
-    "Replace an Org link with the same description and the link from the clipboard
-
-Adapted from afs/org-replace-link-by-link-description"
-    (interactive)
-    (if (org-in-regexp org-link-bracket-re 1)
-        (save-excursion
-            (let ((link (org-match-string-no-properties 1)))
-                (message link)))))
-
-(defun kannan/org/paste-as-quote ()
-    "Paste the content that is the system clipboard as a quote block in Org mode."
-    (interactive)
-    (org-insert-structure-template '"quote")
-    (insert '"\n")
-    (previous-line)
-    (insert (simpleclip-get-contents)))
 
 ;; ============================================
 ;; Coldnew's Font Size Conf for Org-Table
