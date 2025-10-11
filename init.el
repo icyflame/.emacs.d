@@ -555,19 +555,20 @@ func main() {
     ("\\.yaml\\'" . yaml-mode)
     ("\\.gotmpl\\'" . yaml-mode))
 
-(defun kannan/show-word-count-in-modeline ()
-    "An interactive function which shows the word count of the current buffer in the modeline."
-    (interactive)
-    (setq powerline-display-word-count 't))
-
-(defun kannan/hide-word-count-in-modeline ()
-    "An interactive function which hides the word count of the current buffer from the modeline."
-    (interactive)
-    (setq powerline-display-word-count 'nil))
-
 (use-package powerline
     :ensure t
     :config
+
+	(defun kannan/show-word-count-in-modeline ()
+	  "An interactive function which shows the word count of the current buffer in the modeline."
+	  (interactive)
+	  (setq powerline-display-word-count 't))
+
+	(defun kannan/hide-word-count-in-modeline ()
+      "An interactive function which hides the word count of the current buffer from the modeline."
+      (interactive)
+      (setq powerline-display-word-count 'nil))
+
 
 	(defun powerline-theme-personal ()
 	  "Setup a mode-line with major, evil, and minor modes centered."
