@@ -777,19 +777,17 @@ Useful when viewing a thread with drafts in it which are not duplicates of sent 
         :keymaps '(notmuch-show-mode-map)
         "o" 'kannan/notmuch/view-html-part
         "d" 'kannan/notmuch-show-delete-message-then-next-or-next-thread
+        "M-d" 'kannan/notmuch-show-delete-message-then-next-or-next-thread
         "a" 'notmuch-show-archive-message-then-next-or-next-thread)
     (general-imap
         :keymaps '(notmuch-show-mode-map)
         ". a" 'kannan/notmuch/show-save-all-attachments-to-tmp)
-    (general-nmap
-        :keymaps '(notmuch-show-mode-map)
-        "M-d" 'kannan/notmuch-show-delete-message-then-next-or-next-thread
     (general-imap
         :keymaps '(notmuch-tree-mode-map)
         "d" 'kannan/notmuch-tree-delete-message-then-next-or-next-thread)
     (general-nmap
         :keymaps '(notmuch-tree-mode-map)
-        "M-d" 'kannan/notmuch-tree-delete-message-then-next-or-next-thread)
+        "M-d" 'kannan/notmuch-tree-delete-message-then-next-or-next-thread
         "M-a" 'notmuch-show-archive-message-then-next-or-next-thread))
 
 (setq-default mml-secure-openpgp-sign-with-sender t)
