@@ -28,11 +28,8 @@
     (setq org-roam-capture-templates
         '(("d" "default" plain "%?
 
-* Source
-
 "
               :target (file+head "%<%Y-%m-%d>-${slug}.org" "#+title: ${title}
-#+author:
 #+created: %T
 #+filetags:")
               :unnarrowed t))))
