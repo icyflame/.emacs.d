@@ -999,7 +999,7 @@ Otherwise, return DPI (1 inch = 2.54 cm)
     ;; (find-font (font-spec :name "LiHei Pro"))
     ;; (font-family-list)
 
-    (defvar emacs-font-size-pair '(20 . 23)
+    (defvar emacs-font-size-pair '(34 . 40)
         "Default font size pair for (english . chinese)")
 
     ;; Auto adjust font-size for Hi-res screen
@@ -1007,8 +1007,8 @@ Otherwise, return DPI (1 inch = 2.54 cm)
         (setq emacs-font-size-pair
             (cond
                 ((eq dpi nil) (error "This should not be executed under terminal."))
-                ((> dpi 150) '(24 . 28))
-                (t '(17 . 20))
+                ((> dpi 150) '(34 . 40))
+                (t '(20 . 24))
                 )))
 
     (defvar emacs-font-size-pair-list
