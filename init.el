@@ -604,6 +604,36 @@ func main() {
 		(previous-line)
 		(insert (simpleclip-get-contents))))
 
+;; org-super-agenda
+(use-package org-super-agenda
+  :ensure t
+  :defer t
+  :config
+  ;; `org-super-agenda-header-map' copies from the org-mode-map, causing the header line to not follow
+  ;; the keybindings for Evil mode.
+  ;;
+  ;; We set this to an empty keymap to start from scratch.
+  (setq org-super-agenda-header-map (make-sparse-keymap))
+
+  (org-super-agenda-mode)
+
+  (setq org-super-agenda-groups
+		'(;; Each group has an implicit boolean OR operator between its selectors.
+          (:name "Deadline"
+				 :deadline t)
+		  (:name "Periodic"
+				 :and (:scheduled t
+								  :tag ("chores" "periodic")))
+		  (:name "Scheduled"
+				 :and (:scheduled t
+								  :todo "TODO"))  ; Items that have this TODO keyword
+		  (:name "Waiting"  ; Optionally specify section name
+				 :and (:scheduled t
+								  :todo "WAITING"))
+          ;; After the last group, the agenda will display items that didn't
+          ;; match any of these groups, with the default order position of 99
+          )))
+
 ;; 19. Install editorconfig
 (use-package editorconfig
     :defer t
