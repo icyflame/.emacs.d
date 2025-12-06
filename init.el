@@ -693,7 +693,6 @@ func main() {
 (use-package powerline
     :ensure t
     :config
-
 	(defun kannan/show-word-count-in-modeline ()
 	  "An interactive function which shows the word count of the current buffer in the modeline."
 	  (interactive)
@@ -1358,3 +1357,6 @@ This requires ripgrep to be installed."
 
 (use-package jsonnet-mode
     :ensure t)
+
+(use-package yafolding
+  :ensure t)
