@@ -601,7 +601,18 @@ func main() {
 		(org-insert-structure-template '"quote")
 		(insert '"\n")
 		(previous-line)
-		(insert (simpleclip-get-contents))))
+		(insert (simpleclip-get-contents)))
+
+    (if (boundp 'local-time-maintenance-file)
+        (add-to-list 'org-capture-templates
+            '("i" "Clock-in to work" plain
+                 (file+olp+datetree (lambda () (notes-directory-file local-time-maintenance-file)))
+                 ""
+                 :empty-lines-before 1
+                 :tree-type week
+                 :clock-in t
+                 :clock-keep t
+                 :unnarrowed t))))
 
 ;; org-super-agenda
 (use-package org-super-agenda
@@ -1194,7 +1205,7 @@ This function is particularly useful when used with the variable where the `ivy-
         '("c" "Clip whatever is in the clipboard"))
     (add-to-list 'org-capture-templates
         '("cb" "Something copied from the Firefox Browser" entry
-             (file+datetree (lambda () (notes-directory-file local-clippings-file)))
+             (file+olp+datetree (lambda () (notes-directory-file local-clippings-file)))
              "* Clipping from Firefox at %<%R>
 
 #+begin_quote
