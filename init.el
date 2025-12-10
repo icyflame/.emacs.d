@@ -608,14 +608,13 @@ func main() {
 (use-package org-super-agenda
   :ensure t
   :defer t
+  :hook (org-agenda-mode)
   :config
   ;; `org-super-agenda-header-map' copies from the org-mode-map, causing the header line to not follow
   ;; the keybindings for Evil mode.
   ;;
   ;; We set this to an empty keymap to start from scratch.
   (setq org-super-agenda-header-map (make-sparse-keymap))
-
-  (org-super-agenda-mode)
 
   (setq org-super-agenda-groups
 		'(;; Each group has an implicit boolean OR operator between its selectors.
