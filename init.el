@@ -526,8 +526,7 @@ func main() {
 
   (add-to-list 'org-capture-templates
 			   '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
-				 "* TODO %?\n  %i\n  %a"))
-
+				 "* TODO %?\n:PROPERTIES:\n:created: %T\n:END:  %i"))
 
 	(defun afs/delete-link-at-point ()
 		"Replace an org link by its description or if empty its address
