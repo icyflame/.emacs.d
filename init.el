@@ -1252,6 +1252,7 @@ This function is particularly useful when used with the variable where the `ivy-
 (setq org-export-with-author 'nil)
 (setq org-export-with-toc 'nil)
 (setq org-export-with-sub-superscripts 'nil)
+(setq org-agenda-span 'day)
 
 (unless (boundp 'enable-treesitter)
     (message '"INFO: enable-treesitter is not set. Treesitter will be disabled.")
