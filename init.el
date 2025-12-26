@@ -524,9 +524,13 @@ func main() {
 - *Tags:* %^{Tags (if required)}
 - *Note:* %?"))
 
+  ;; The created timestamp should be an "inactive" timestamp because I don't want to see the time at
+  ;; which tasks were created in the agenda.
+  ;; https://orgmode.org/manual/Timestamps.html
+  ;; https://orgmode.org/manual/Template-expansion.html
   (add-to-list 'org-capture-templates
 			   '("t" "Todo" entry (file+headline default-todo-file-for-computer "Tasks")
-				 "* TODO %?\n:PROPERTIES:\n:created: %T\n:END:  %i"))
+				 "* TODO %?\n:PROPERTIES:\n:created: %U\n:END:  %i"))
 
 	(defun afs/delete-link-at-point ()
 		"Replace an org link by its description or if empty its address
