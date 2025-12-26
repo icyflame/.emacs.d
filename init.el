@@ -834,12 +834,8 @@ This is to support both older repositories that use `master' as the default bran
 (use-package yasnippet
     :defer t
     :ensure t
-    ;; :hook ((org-mode go-mode perl-mode) . #'yas-minor-mode)
+    :hook ((org-mode go-mode perl-mode c++-mode) . #'yas-minor-mode)
     :config
-    (add-hook 'go-mode-hook #'yas-minor-mode)
-    (add-hook 'org-mode-hook #'yas-minor-mode)
-    (add-hook 'perl-mode-hook #'yas-minor-mode)
-    (add-hook 'c++-mode-hook #'yas-minor-mode)
     (yas-reload-all))
 
 (use-package ox-hugo
