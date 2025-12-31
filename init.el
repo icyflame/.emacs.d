@@ -637,6 +637,9 @@ func main() {
 		  (:name "Periodic"
 				 :and (:scheduled t
 								  :tag ("chores" "periodic")))
+		  (:name "Small Tasks - GTD!"
+				 :and (:scheduled t
+								  :tag ("small")))
 		  (:name "Scheduled"
 				 :and (:scheduled t
 								  :todo "TODO"))  ; Items that have this TODO keyword
