@@ -10,3 +10,4 @@
 (setq local/load-blog-capture-template nil)
 (setq blog-location '"TODO-path to blog directory")
 (setq local-time-maintenance-file '"TODO-path to time maintenance file inside the notes directory")
+(setq local/notebook-location '"TODO-path to content-org directory inside notebook repository")

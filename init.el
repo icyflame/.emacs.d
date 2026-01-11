@@ -859,8 +859,43 @@ This is to support both older repositories that use `master' as the default bran
     (yas-reload-all))
 
 (use-package ox-hugo
-    :defer t
-    :ensure t)
+  :if (boundp 'local/notebook-location)
+  :ensure t   ; Auto-install the package from Melpa
+  :pin melpa  ; `package-archives' should already have ("melpa" . "https://melpa.org/packages/")
+  :after ox
+  :config
+  (defun string-to-slug-with-date (input)
+	"Convert the given string into a slug with the date in YYYY-MM-DD- string prefixed to that string
+
+Note Title => 2026-01-10-note-title"
+	(let (now (current-time))
+	  (concat (format-time-string '"%F" now) "-" (string-replace " " "-" (downcase input)))))
+
+  (defun kannan/capture-new-note ()
+	(interactive)
+	(let* ((note-title (read-string "Note title: "))
+		   (note-file (expand-file-name (format "%s.org" (string-to-slug-with-date note-title)) local/notebook-location))
+		   (note-template '"#+hugo_base_dir: ../
+#+hugo_section: note/
+#+hugo_auto_set_lastmod: t
+#+hugo_front_matter_format: yaml
+
+#+title: %s
+#+date: %%U
+#+hugo_draft: true
+
+#+hugo_tags:
+#+hugo_categories:
+
+")
+		   (note-content (format note-template note-title)))
+	  (with-temp-buffer
+		(insert (org-capture-fill-template note-content))
+		(write-file note-file))
+	  (find-file note-file)
+	  (end-of-buffer)))
+
+  (general-nmap "C-c n n" 'kannan/capture-new-note))
 
 (use-package ob-go
     :defer t
