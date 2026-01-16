@@ -668,6 +668,19 @@ func main() {
 
   :defer t)
 
+;; 23. Use conventional-commit.el
+(use-package conventional-commit
+  :init
+  (if (not (file-directory-p "~/.emacs.d/lisp/conventional-commit/"))
+	  (message '"ERROR: Vendored library `conventional-commit` does not exist. Run `git submodule init` and `git submodule update --recursive` to get it."))
+
+  :if (file-directory-p '"~/.emacs.d/lisp/conventional-commit/")
+  :load-path "lisp/conventional-commit/"
+
+  :defer t
+  :hook
+  (git-commit-mode . conventional-commit-setup))
+
 ;; 25. Yaml Mode
 (use-package yaml-mode
     :defer t
@@ -828,8 +841,9 @@ This is to support both older repositories that use `master' as the default bran
 (use-package company
     :defer t
     :ensure t
-    :hook ((go-mode emacs-lisp-mode) . company-mode)
+    :hook ((go-mode emacs-lisp-mode git-commit-mode) . company-mode)
     :config
+	(add-hook 'company-backends #'company-capf)
     (setq company-minimum-prefix-length 3))
 
 ;; 34. Protobuf mode

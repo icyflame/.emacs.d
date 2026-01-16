@@ -4,3 +4,6 @@
 [submodule "lisp/treesit-fold"]
 	path = lisp/treesit-fold
 	url = https://github.com/emacs-tree-sitter/treesit-fold.git
+[submodule "lisp/conventional-commit"]
+	path = lisp/conventional-commit
+	url = https://github.com/Lenbok/conventional-commit.el.git
