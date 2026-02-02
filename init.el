@@ -1370,9 +1370,18 @@ This requires ripgrep to be installed."
              (agenda-files-length-after 0))
         (if (or (null grep-path) (null org-roam-directory))
             (message '"ERROR: Prerequisites not met. Ripgrep must be installed in order to condense the `org-agenda-files' list. `org-roam-directory' must not be `nil'")
-            (setq org-agenda-files (split-string (shell-command-to-string (format '"%s -w '(TODO|WAITING|DONE|CANCELED)' -l %s" grep-path org-roam-directory)) '"\n"))
+            (setq org-agenda-files (kannan/org-roam/condensed-agenda-files))
             (setq agenda-files-length-after (list-length org-agenda-files))
             (message '"INFO: Condensed `org-agenda-files'. Length change: %d => %d" agenda-files-length-before agenda-files-length-after))))
+
+(defun kannan/org-roam/condensed-agenda-files ()
+  "Use `ripgrep' to return the list of files inside org-roam-directory that contain at least one of the TODO keywords.
+
+This requires ripgrep to be installed."
+  (let ((grep-path (executable-find '"rg")))
+    (if (or (null grep-path) (null org-roam-directory))
+        (message '"ERROR: Prerequisites not met. Ripgrep must be installed in order to condense the `org-agenda-files' list. `org-roam-directory' must not be `nil'")
+      (cl-remove-if 'string-empty-p (split-string (shell-command-to-string (format '"%s -w '(TODO|WAITING|DONE|CANCELED)' -l %s" grep-path org-roam-directory)) '"\n")))))
 
 ;; TODO: Reduction of `org-agenda-files' does not work properly yet
 ;; (advice-add #'org-agenda-list
