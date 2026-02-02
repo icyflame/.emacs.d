@@ -151,7 +151,7 @@ and remove everything else from the screen"
         "C-s" 'swiper
         "C-g" 'projectile-ripgrep
 
-        "C-a" 'org-agenda
+        "C-a" 'org-ql-view
         "C-x o c" 'org-capture
 
         "C-x s c" 'flyspell-buffer
@@ -657,6 +657,8 @@ func main() {
 (use-package org-ql-view
   :after org-ql
   :config
+  ;; `org-ql-views' is a Customize variable which is defined in the org-ql-view package (inside the
+  ;; MELPA pacage `org-ql') So, we have to add to this list within a separate `use-package' block.
   (add-to-list 'org-ql-views '("Custom Quick Agenda"
 							   :query (and (not (done))
 										   (or (habit)
