@@ -650,6 +650,24 @@ func main() {
           ;; match any of these groups, with the default order position of 99
           )))
 
+(use-package org-ql
+  :ensure t
+  :after org)
+
+(use-package org-ql-view
+  :after org-ql
+  :config
+  (add-to-list 'org-ql-views '("Custom Quick Agenda"
+							   :query (and (not (done))
+										   (or (habit)
+											   (deadline auto)
+											   (scheduled :to today)
+											   (ts-active :on today)))
+							   :sort (todo priority date)
+							   :super-groups org-super-agenda-groups
+							   :title "Custom Quick Agenda"
+							   :buffers-files kannan/org-roam/condensed-agenda-files)))
+
 ;; 19. Install editorconfig
 (use-package editorconfig
     :defer t
