@@ -440,6 +440,12 @@ and remove everything else from the screen"
 ;;; Set the done time for a TODO item when moving it to DONE
 (use-package org
   :config
+  ;; Default Org export options
+  (setq org-export-with-author 'nil)
+  (setq org-export-with-toc 'nil)
+  (setq org-export-with-sub-superscripts 'nil)
+  (setq org-agenda-span 'day)
+
   (setq org-log-done 'time)
 
   (setq org-todo-keywords
@@ -1327,12 +1333,6 @@ This function is particularly useful when used with the variable where the `ivy-
 
 (use-package jinja2-mode
   :load-path "lisp/")
-
-;; Default Org export options
-(setq org-export-with-author 'nil)
-(setq org-export-with-toc 'nil)
-(setq org-export-with-sub-superscripts 'nil)
-(setq org-agenda-span 'day)
 
 (unless (boundp 'enable-treesitter)
     (message '"INFO: enable-treesitter is not set. Treesitter will be disabled.")
