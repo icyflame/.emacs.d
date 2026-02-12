@@ -668,6 +668,27 @@ func main() {
 							   :sort (todo priority date)
 							   :super-groups org-super-agenda-groups
 							   :title "Custom Quick Agenda"
+							   :buffers-files kannan/org-roam/condensed-agenda-files))
+
+  (setq unscheduled-tasks-super-groups
+		'(;; Each group has an implicit boolean OR operator between its selectors.
+          (:name "Read"
+				 :tag ("read"))
+		  (:name "Write"
+				 :tag ("write"))
+		  (:name "Watch"
+				 :tag ("watch"))
+          ;; After the last group, the agenda will display items that didn't
+          ;; match any of these groups, with the default order position of 99
+          ))
+
+  (add-to-list 'org-ql-views '("Review Unscheduled Tasks"
+							   :query (and (todo)
+										   (not (scheduled))
+										   (not (ts-active)))
+							   :sort (date)
+							   :super-groups unscheduled-tasks-super-groups
+							   :title "Review Unscheduled Tasks"
 							   :buffers-files kannan/org-roam/condensed-agenda-files)))
 
 ;; 19. Install editorconfig
@@ -1306,17 +1327,6 @@ This function is particularly useful when used with the variable where the `ivy-
 
 (use-package jinja2-mode
   :load-path "lisp/")
-
-;; Show a list of TODO headlines which don't have a schedule or a deadline
-;; https://emacs.stackexchange.com/a/16561/31572
-(setq org-agenda-custom-commands
-      '(("u" . "Unscheduled TODO")
-        ("ut" "Unscheduled TODOs"
-         ((todo ""
-                ((org-agenda-overriding-header "\nUnscheduled TODO")
-                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
-         nil
-         nil)))
 
 ;; Default Org export options
 (setq org-export-with-author 'nil)
