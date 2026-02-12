@@ -659,7 +659,7 @@ func main() {
   :config
   ;; `org-ql-views' is a Customize variable which is defined in the org-ql-view package (inside the
   ;; MELPA pacage `org-ql') So, we have to add to this list within a separate `use-package' block.
-  (add-to-list 'org-ql-views '("Custom Quick Agenda"
+  (add-to-list 'org-ql-views '("Quick Agenda"
 							   :query (and (not (done))
 										   (or (habit)
 											   (deadline auto)
