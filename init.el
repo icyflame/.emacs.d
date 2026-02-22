@@ -905,7 +905,6 @@ Note Title => 2026-01-10-note-title"
 #+hugo_draft: true
 
 #+hugo_tags:
-#+hugo_categories:
 
 ")
 		   (note-content (format note-template note-title)))
