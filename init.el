@@ -697,6 +697,28 @@ func main() {
 							   :title "Quick Agenda: Next 30 Days"
 							   :buffers-files kannan/org-roam/condensed-agenda-files))
 
+  ;; TODO: This still does not work properly. I need to do a bit more testing during actual usage
+  ;; (and rather than just on Sundays, because this can be figured out only that way.)
+  (let* ((ts (ts-now))
+		 (dow (ts-dow ts))
+		 (print-format '"%Y-%m-%d %H:%M:%S")
+		 (start-of-week-offset (% (- (+ 6 dow)) 7))
+		 (end-of-week-offset (+ 6 (% (- (+ 6 dow)) 7)))
+		 (ts-start-of-week (->> ts (ts-apply :hour 0 :minute 0 :second 0)
+								(ts-adjust 'day start-of-week-offset)))
+		 (ts-end-of-week (->> ts (ts-apply :hour 23 :minute 59 :second 59)
+							  (ts-adjust 'day end-of-week-offset))))
+	(message '"Week: %d => %d" start-of-week-offset end-of-week-offset)
+	(add-to-list 'org-ql-views '("Quick Agenda: This Week"
+								 :query (and (scheduled
+											  :to 'ts-end-of-week)
+											 (not (done)))
+
+								 :sort (todo priority date)
+								 :super-groups org-super-agenda-groups
+								 :title "Quick Agenda: This Week"
+								 :buffers-files kannan/org-roam/condensed-agenda-files)))
+
   (setq unscheduled-tasks-super-groups
 		'(;; Each group has an implicit boolean OR operator between its selectors.
           (:name "Read"
@@ -1437,6 +1459,23 @@ This requires ripgrep to be installed."
 ;; (advice-add #'org-agenda-list
 ;;     :before
 ;;     #'kannan/org-roam/condense-agenda-files)
+
+(defun kannan/print-week ()
+  "This function prints the time period of the current week. This function mainly exists to test the logic that I am using inside some Org-QL views.
+
+Weeks start on Monday."
+  (interactive)
+  (let* ((ts (ts-now))
+		 (dow (ts-dow ts))
+		 (print-format '"%Y-%m-%d %H:%M:%S")
+		 (ts-start-of-week (->> ts (ts-apply :hour 0 :minute 0 :second 0)
+								(ts-adjust 'day (% (- (+ 6 dow)) 7))))
+		 (ts-end-of-week (->> ts-start-of-week (ts-apply :hour 23 :minute 59 :second 59)
+							  (ts-adjust 'day 6))))
+	(message '"Week: %s - %s (Now = %s)"
+			 (ts-format print-format ts-start-of-week)
+			 (ts-format print-format ts-end-of-week)
+			 (ts-format print-format ts))))
 
 (use-package ledger-mode
     :defer t
