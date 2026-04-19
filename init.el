@@ -665,7 +665,12 @@ func main() {
   :config
   ;; `org-ql-views' is a Customize variable which is defined in the org-ql-view package (inside the
   ;; MELPA pacage `org-ql') So, we have to add to this list within a separate `use-package' block.
-  (add-to-list 'org-ql-views '("Quick Agenda"
+
+  ;; Org-QL ships with a set of default views. They are not relevant for my use-case though, so I
+  ;; will empty them out before adding the views that I care about.
+  (set 'org-ql-views '())
+
+  (add-to-list 'org-ql-views '("Agenda: Today"
 							   :query (and (not (done))
 										   (or (habit)
 											   (deadline auto)
@@ -673,7 +678,23 @@ func main() {
 											   (ts-active :on today)))
 							   :sort (todo priority date)
 							   :super-groups org-super-agenda-groups
-							   :title "Custom Quick Agenda"
+							   :title "Agenda: Today"
+							   :buffers-files kannan/org-roam/condensed-agenda-files))
+
+  (add-to-list 'org-ql-views '("Quick Agenda: Next 7 Days"
+							   :query (and (not (done))
+										   (scheduled :to 7))
+							   :sort (todo priority date)
+							   :super-groups org-super-agenda-groups
+							   :title "Quick Agenda: Next 7 Days"
+							   :buffers-files kannan/org-roam/condensed-agenda-files))
+
+  (add-to-list 'org-ql-views '("Quick Agenda: Next 30 days"
+							   :query (and (not (done))
+										   (scheduled :to 30))
+							   :sort (todo priority date)
+							   :super-groups org-super-agenda-groups
+							   :title "Quick Agenda: Next 30 Days"
 							   :buffers-files kannan/org-roam/condensed-agenda-files))
 
   (setq unscheduled-tasks-super-groups
