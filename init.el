@@ -670,7 +670,7 @@ func main() {
   ;; will empty them out before adding the views that I care about.
   (set 'org-ql-views '())
 
-  (add-to-list 'org-ql-views '("Agenda: Today"
+  (add-to-list 'org-ql-views '("Quick Agenda: Today"
 							   :query (and (not (done))
 										   (or (habit)
 											   (deadline auto)
@@ -678,7 +678,7 @@ func main() {
 											   (ts-active :on today)))
 							   :sort (todo priority date)
 							   :super-groups org-super-agenda-groups
-							   :title "Agenda: Today"
+							   :title "Quick Agenda: Today"
 							   :buffers-files kannan/org-roam/condensed-agenda-files))
 
   (add-to-list 'org-ql-views '("Quick Agenda: Next 7 Days"
