@@ -1493,3 +1493,17 @@ Weeks start on Monday."
 
 (use-package yafolding
   :ensure t)
+
+(defun kannan/copy-absolute-path ()
+  "Print the absolute path for the file or directory that is open currently to the `Messages' buffer"
+  (interactive)
+  (let ((file (or (buffer-file-name)
+                  (and (derived-mode-p 'dired-mode) default-directory))))
+    (unless file
+      (user-error "No file associated with this buffer"))
+    (setq file (expand-file-name file))
+    ;; copy to Emacs kill-ring
+    (kill-new file)
+    (message "Copied absolute path:")
+	(message "%s" file)))
+
