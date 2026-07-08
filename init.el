@@ -697,28 +697,6 @@ func main() {
 							   :title "Quick Agenda: Next 30 Days"
 							   :buffers-files kannan/org-roam/condensed-agenda-files))
 
-  ;; TODO: This still does not work properly. I need to do a bit more testing during actual usage
-  ;; (and rather than just on Sundays, because this can be figured out only that way.)
-  (let* ((ts (ts-now))
-		 (dow (ts-dow ts))
-		 (print-format '"%Y-%m-%d %H:%M:%S")
-		 (start-of-week-offset (% (- (+ 6 dow)) 7))
-		 (end-of-week-offset (+ 6 (% (- (+ 6 dow)) 7)))
-		 (ts-start-of-week (->> ts (ts-apply :hour 0 :minute 0 :second 0)
-								(ts-adjust 'day start-of-week-offset)))
-		 (ts-end-of-week (->> ts (ts-apply :hour 23 :minute 59 :second 59)
-							  (ts-adjust 'day end-of-week-offset))))
-	(message '"Week: %d => %d" start-of-week-offset end-of-week-offset)
-	(add-to-list 'org-ql-views '("Quick Agenda: This Week"
-								 :query (and (scheduled
-											  :to 'ts-end-of-week)
-											 (not (done)))
-
-								 :sort (todo priority date)
-								 :super-groups org-super-agenda-groups
-								 :title "Quick Agenda: This Week"
-								 :buffers-files kannan/org-roam/condensed-agenda-files)))
-
   (setq unscheduled-tasks-super-groups
 		'(;; Each group has an implicit boolean OR operator between its selectors.
           (:name "Read"
